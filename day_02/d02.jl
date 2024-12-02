@@ -13,23 +13,25 @@ function is_safe(lst::Vector{Int})
     all(n -> 1 <= n <= 3, diff_lst) || all(n -> -3 <= n <= -1, diff_lst)
 end
 
+function is_probably_safe(lst::Vector{Int})
+    if is_safe(lst)
+        true
+    else
+        for i in 1:length(lst)
+            if is_safe(deleteat!(copy(lst), i))
+                return true
+            end
+        end
+        false
+    end
+end
+
 function d02_p1(fname::String = "input")
     count(is_safe, parse_file(fname))
 end
 
 function d02_p2(fname::String = "input")
-    function candidate_lsts(lst::Vector{Int})
-        result = Vector{Vector{Int}}()
-        for i in 1:length(lst)
-            push!(result, deleteat!(copy(lst), i))
-        end
-
-        result
-    end
-
-    count(parse_file(fname)) do lst
-        is_safe(lst) || any(is_safe, candidate_lsts(lst))
-    end
+    count(is_probably_safe, parse_file(fname))
 end
 
 end #module
