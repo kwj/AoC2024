@@ -2,7 +2,7 @@
 module Day01
 
 function parse_file(fname::String)
-    data = map(x -> parse(Int, x), hcat(split.(readlines(fname))...))
+    data = map(x -> parse(Int, x), stack(split.(readlines(fname))))
 
     data[1, :], data[2, :]
 end
