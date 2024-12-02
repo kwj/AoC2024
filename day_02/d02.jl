@@ -27,7 +27,9 @@ function d02_p2(fname::String = "input")
         result
     end
 
-    count(lst -> is_safe(lst) || any(is_safe, candidate_lsts(lst)), parse_file(fname))
+    count(parse_file(fname)) do lst
+        is_safe(lst) || any(is_safe, candidate_lsts(lst))
+    end
 end
 
 end #module
