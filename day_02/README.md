@@ -2,7 +2,7 @@
 
 ## Requirement
 
-* [Julia](https://julialang.org/) (confirmed to work with Julia v1.11.1)
+* [Julia](https://julialang.org/) (confirmed to work with Julia v1.11.2)
 
 ## How to use
 
