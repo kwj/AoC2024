@@ -10,7 +10,7 @@ end
 function d01_p1(fname::String = "input")
     left, right = parse_file(fname)
 
-    sum(abs.((-).(sort(right), sort(left))))
+    sum(abs.(sort(right) .- sort(left)))
 end
 
 function d01_p2(fname::String = "input")
