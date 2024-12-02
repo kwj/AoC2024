@@ -21,12 +21,7 @@ function d01_p2(fname::String = "input")
         dic[x] = get(dic, x, 0) + x
     end
 
-    acc = 0
-    for key in left
-        acc += get(dic, key, 0)
-    end
-
-    acc
+    sum(map(x -> get(dic, x, 0), left))
 end
 
 end #module
