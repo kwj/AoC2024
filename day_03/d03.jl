@@ -14,13 +14,13 @@ end
 function d03_p2(fname::String = "input")
     eval_flag = true
     acc = 0
-    for m in eachmatch(r"(mul|do|don't)\((\d+,\d+)?\)", read_file(fname))
-        if m.captures[1] == "do"
+    for m in eachmatch(r"(?<op>mul|do|don't)\((?<numbers>\d+,\d+)?\)", read_file(fname))
+        if m["op"] == "do"
             eval_flag = true
-        elseif m.captures[1] == "don't"
+        elseif m["op"] == "don't"
             eval_flag = false
         elseif eval_flag
-            acc += reduce(*, map(x -> parse(Int, x), split(m.captures[2], ",")))
+            acc += reduce(*, map(x -> parse(Int, x), split(m["numbers"], ",")))
         end
     end
 
