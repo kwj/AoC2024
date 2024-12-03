@@ -6,8 +6,8 @@ URL: https://adventofcode.com/2024
 
 * [Day 1: Historian Hysteria!](./day_01/)
 * [Day 2: Red-Nosed Reports](./day_02/)
+* [Day 3: Mull It Over](./day_03/)
 <!--
-* [Day 3: ](./day_03/)
 * [Day 4: ](./day_04/)
 * [Day 5: ](./day_05/)
 * [Day 6: ](./day_06/)
