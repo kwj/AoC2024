@@ -19,7 +19,7 @@ function d03_p2(fname::String = "input")
             eval_flag = true
         elseif m["op"] == "don't"
             eval_flag = false
-        elseif eval_flag
+        elseif eval_flag && !isnothing(m["numbers"])
             acc += reduce(*, map(x -> parse(Int, x), split(m["numbers"], ",")))
         end
     end
