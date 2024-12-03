@@ -6,14 +6,16 @@ function read_file(fname::String)
 end
 
 function d03_p1(fname::String = "input")
-    re = r"mul\((?<args>\d+,\d+)\)"
+    re = r"mul\((?<args>\d{1,3},\d{1,3})\)"
+
     map(eachmatch(re, read_file(fname))) do m
         reduce(*, map(x -> parse(Int, x), split(m["args"], ",")))
     end |> sum
 end
 
 function d03_p2(fname::String = "input")
-    re = r"(?<flag>do|don't)\(\)|mul\((?<args>\d+,\d+)\)"
+    re = r"(?<flag>do|don't)\(\)|mul\((?<args>\d{1,3},\d{1,3})\)"
+
     enabled = true
     acc = 0
     for m in eachmatch(re, read_file(fname))
