@@ -6,7 +6,7 @@ function parse_file(fname::String)
 end
 
 function d04_p1(fname::String = "input")
-    WORD = ['X', 'M', 'A', 'S']
+    WORD = "XMAS"
     data = parse_file(fname)
 
     acc = 0
