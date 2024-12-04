@@ -39,11 +39,14 @@ function d04_p2(fname::String = "input")
 
     acc = 0
     for ci in findall(x -> x == 'A', data)
-        m, n = Tuple(ci)
-        if checkindex(Bool, 2:(size(data, 1) - 1), m) && checkindex(Bool, 2:(size(data, 2) - 1), n)
+        idx_nw = ci + CartesianIndex(-1, -1)
+        idx_ne = ci + CartesianIndex(-1, 1)
+        idx_sw = ci + CartesianIndex(1, -1)
+        idx_se = ci + CartesianIndex(1, 1)
+        if checkbounds(Bool, data, [idx_nw, idx_ne, idx_sw, idx_se])
             nbrs = [
-                Set([data[m - 1, n - 1], data[m + 1, n + 1]]),
-                Set([data[m + 1, n - 1], data[m - 1, n + 1]])
+                Set([data[idx_nw], data[idx_se]]),
+                Set([data[idx_ne], data[idx_sw]])
             ]
             if all(check_nbr, nbrs)
                 acc += 1
