@@ -11,13 +11,12 @@ function d04_p1(fname::String = "input")
 
     acc = 0
     for ci in findall(x -> x == first(WORD), data)
-        m_base, n_base = Tuple(ci)
         for m_delta in [-1, 0, 1]
             for n_delta in [-1, 0, 1]
+                idx = ci  # Copy a CartesianIndex for working
                 for x in 1:(length(WORD) - 1)
-                    m = m_base + m_delta * x
-                    n = n_base + n_delta * x
-                    if !checkbounds(Bool, data, m, n) || data[m, n] != WORD[x + 1]
+                    idx += CartesianIndex(m_delta, n_delta)
+                    if !checkbounds(Bool, data, idx) || data[idx] != WORD[x + 1]
                         break
                     end
 
