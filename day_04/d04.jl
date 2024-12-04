@@ -11,16 +11,18 @@ function d04_p1(fname::String = "input")
 
     acc = 0
     for ci in findall(x -> x == first(WORD), data)
-        for d1 = -1:1, d2 = -1:1
-            delta = CartesianIndex(d1, d2)
+        for delta = CartesianIndex(-1, -1):CartesianIndex(1, 1)
+            if !checkbounds(Bool, data, ci + delta * (length(WORD) - 1))
+                continue
+            end
+
             idx = ci  # Copy a CartesianIndex for working
-            for x = 1:(length(WORD) - 1)
+            for x = 2:lastindex(WORD)
                 idx += delta
-                if !checkbounds(Bool, data, idx) || data[idx] != WORD[x + 1]
+                if data[idx] != WORD[x]
                     break
                 end
-
-                if x == length(WORD) - 1
+                if x == lastindex(WORD)
                     acc += 1
                 end
             end
