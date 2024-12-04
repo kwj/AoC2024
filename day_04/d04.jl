@@ -14,7 +14,7 @@ function d04_p1(fname::String = "input")
         for d1 = -1:1, d2 = -1:1
             delta = CartesianIndex(d1, d2)
             idx = ci  # Copy a CartesianIndex for working
-            for x in 1:(length(WORD) - 1)
+            for x = 1:(length(WORD) - 1)
                 idx += delta
                 if !checkbounds(Bool, data, idx) || data[idx] != WORD[x + 1]
                     break
