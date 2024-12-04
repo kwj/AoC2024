@@ -33,6 +33,7 @@ function d04_p1(fname::String = "input")
 end
 
 function d04_p2(fname::String = "input")
+    NBR = Set("MS")
     data = parse_file(fname)
 
     acc = 0
@@ -43,7 +44,7 @@ function d04_p2(fname::String = "input")
                 Set([data[m - 1, n - 1], data[m + 1, n + 1]]),
                 Set([data[m + 1, n - 1], data[m - 1, n + 1]])
             ]
-            if all(x -> x == Set(['M', 'S']), nbrs)
+            if all(x -> x == NBR, nbrs)
                 acc += 1
             end
         end
