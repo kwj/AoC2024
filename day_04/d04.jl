@@ -9,6 +9,7 @@ function d04_p1(fname::String = "input")
     WORD = "XMAS"
     data = parse_file(fname)
 
+    @assert length(WORD) > 1 "the length of keyword must be longer than 1"
     acc = 0
     for ci in findall(x -> x == first(WORD), data)
         for delta = CartesianIndex(-1, -1):CartesianIndex(1, 1)
@@ -17,7 +18,7 @@ function d04_p1(fname::String = "input")
             end
 
             idx = ci  # Copy a CartesianIndex for working
-            for x = 2:lastindex(WORD)
+            for x = (firstindex(WORD) + 1):lastindex(WORD)
                 idx += delta
                 if data[idx] != WORD[x]
                     break
