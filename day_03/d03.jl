@@ -9,7 +9,7 @@ function d03_p1(fname::String = "input")
     re = r"mul\((?<args>\d{1,3},\d{1,3})\)"
 
     map(eachmatch(re, read_file(fname))) do m
-        reduce(*, map(x -> parse(Int, x), split(m["args"], ",")))
+        prod(map(x -> parse(Int, x), split(m["args"], ",")))
     end |> sum
 end
 
@@ -24,7 +24,7 @@ function d03_p2(fname::String = "input")
         elseif m["flag"] == "don't"
             enabled = false
         elseif enabled
-            acc += reduce(*, map(x -> parse(Int, x), split(m["args"], ",")))
+            acc += prod(map(x -> parse(Int, x), split(m["args"], ",")))
         end
     end
 
