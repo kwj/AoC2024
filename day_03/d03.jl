@@ -1,34 +1,26 @@
 
 module Day03
 
-function read_file(fname::String)
-    read(fname, String)
+function parse_file(fname::String)
+    join(readlines(fname))
 end
 
 function d03_p1(fname::String = "input")
     re = r"mul\((?<args>\d{1,3},\d{1,3})\)"
+    data = parse_file(fname)
 
-    map(eachmatch(re, read_file(fname))) do m
+    map(eachmatch(re, data)) do m
         prod(map(x -> parse(Int, x), split(m["args"], ",")))
     end |> sum
 end
 
 function d03_p2(fname::String = "input")
-    re = r"(?<flag>do|don't)\(\)|mul\((?<args>\d{1,3},\d{1,3})\)"
+    re = r"mul\((?<args>\d{1,3},\d{1,3})\)"
+    data = parse_file(fname)
 
-    enabled = true
-    acc = 0
-    for m in eachmatch(re, read_file(fname))
-        if m["flag"] == "do"
-            enabled = true
-        elseif m["flag"] == "don't"
-            enabled = false
-        elseif enabled
-            acc += prod(map(x -> parse(Int, x), split(m["args"], ",")))
-        end
-    end
-
-    acc
+    map(eachmatch(re, replace(data, r"don't\(\).*?(do\(\)|$)" => ""))) do m
+        prod(map(x -> parse(Int, x), split(m["args"], ",")))
+    end |> sum
 end
 
 end #module
