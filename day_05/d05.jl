@@ -3,7 +3,7 @@ module Day05
 
 function parse_file(fname::String)
     data = readlines(fname)
-    sep_pos = findfirst(v -> v == "", data)
+    sep_pos = findfirst(isempty, data)
 
     dependency = Dict{Int, Set{Int}}()
     map(data[1:sep_pos - 1]) do s
