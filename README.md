@@ -9,8 +9,8 @@ URL: https://adventofcode.com/2024
 * [Day 3: Mull It Over](./day_03/)
 * [Day 4: Ceres Search](./day_04/)
 * [Day 5: Print Queue](./day_05/)
+* [Day 6: Guard Gallivant](./day_06/)
 <!--
-* [Day 6: ](./day_06/)
 * [Day 7: ](./day_07/)
 * [Day 8: ](./day_08/)
 * [Day 9: ](./day_09/)
