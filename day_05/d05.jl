@@ -2,6 +2,10 @@
 module Day05
 
 function parse_file(fname::String)
+    function make_is_before(dependency::Dict{Int, Set{Int}})
+        (before::Int, after::Int) -> !haskey(dependency, after) || before ∉ dependency[after]
+    end
+
     data = readlines(fname)
     sep_pos = findfirst(isempty, data)
 
@@ -15,11 +19,7 @@ function parse_file(fname::String)
         map(x -> parse(Int, x), split(s, ","))
     end
 
-    dependency, queue
-end
-
-function make_is_before(dependency::Dict{Int, Set{Int}})
-    (before::Int, after::Int) -> !haskey(dependency, after) || before ∉ dependency[after]
+    queue, make_is_before(dependency)
 end
 
 function middle_element(seq::Vector{Int})
@@ -27,11 +27,11 @@ function middle_element(seq::Vector{Int})
 end
 
 function d05_p1(fname::String = "input")
-    dependency, queue = parse_file(fname)
+    queue, is_before = parse_file(fname)
 
     acc = 0
     for pages in queue
-        sorted_pages = sort(pages, lt = make_is_before(dependency))
+        sorted_pages = sort(pages, lt = is_before)
         if pages == sorted_pages
             acc += middle_element(sorted_pages)
         end
@@ -41,11 +41,11 @@ function d05_p1(fname::String = "input")
 end
 
 function d05_p2(fname::String = "input")
-    dependency, queue = parse_file(fname)
+    queue, is_before = parse_file(fname)
 
     acc = 0
     for pages in queue
-        sorted_pages = sort(pages, lt = make_is_before(dependency))
+        sorted_pages = sort(pages, lt = is_before)
         if pages != sorted_pages
             acc += middle_element(sorted_pages)
         end
