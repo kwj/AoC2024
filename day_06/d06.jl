@@ -23,7 +23,7 @@ function find_path(grid::Array{Char, 2}, pos::CartesianIndex{2})
 
         next_pos = pos + step[dir]
         if (next_pos, dir) ∈ path
-            return loop, 0
+            return loop, path
         elseif !checkbounds(Bool, grid, next_pos)
             return escape, path
         elseif grid[next_pos] == '#'
