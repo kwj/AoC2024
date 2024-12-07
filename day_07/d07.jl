@@ -2,13 +2,13 @@
 module Day07
 
 struct Equation
-    value::Int
-    numbers::Vector{Int}
+    value::Int64
+    numbers::Vector{Int64}
 end
 
 function parse_file(fname::String)
     map(split.(readlines(fname), ": ")) do line
-        Equation(parse(Int, line[1]), map(x -> parse(Int, x), split(line[2], " ")))
+        Equation(parse(Int64, line[1]), map(x -> parse(Int64, x), split(line[2], " ")))
     end
 end
 
