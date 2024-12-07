@@ -45,7 +45,6 @@ end
 function d06_p2(fname::String = "input")
     grid = parse_file(fname)
     start = findfirst(x -> x == '^', grid)
-    step = [CartesianIndex(-1, 0), CartesianIndex(0, 1), CartesianIndex(1, 0), CartesianIndex(0, -1)]
 
     path = check_grid(grid, [(start, 1)])
     @assert !isnothing(path) "found a loop"
@@ -53,7 +52,7 @@ function d06_p2(fname::String = "input")
     visited = Set{CartesianIndex{2}}([start])
     acc = 0
     for i = 1:(lastindex(path) - 1)
-        next_pos = (path[i][1] + step[path[i][2]])
+        next_pos = path[i + 1][1]
         if grid[next_pos] == '#' || next_pos ∈ visited
             continue
         end
