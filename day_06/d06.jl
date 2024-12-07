@@ -14,7 +14,7 @@ function check_grid(grid::Array{Char, 2}, path::Vector{Tuple{CartesianIndex{2}, 
     turn_right90(x) = mod1(x + 1, 4)
     pos, dir = path[end]
 
-    route = copy(path)
+    route = copy(path)  # Don't change the `path` argument of the caller for safty
     visited = Set(route)
     while true
         next_pos = pos + step[dir]
