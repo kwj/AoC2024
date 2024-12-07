@@ -9,56 +9,66 @@ function parse_file(fname::String)
     permutedims(stack(data))
 end
 
-@enum Result escape=1 loop=2
-
-function find_path(grid::Array{Char, 2}, pos::CartesianIndex{2})
-    # up(1), right(2), down(3), left(4)
-    dir = 1
+function check_grid(grid::Array{Char, 2}, path::Vector{Tuple{CartesianIndex{2}, Int}})
     step = [CartesianIndex(-1, 0), CartesianIndex(0, 1), CartesianIndex(1, 0), CartesianIndex(0, -1)]
     turn_right90(x) = mod1(x + 1, 4)
+    pos, dir = path[end]
 
-    path = Set{Tuple{CartesianIndex{2}, Int}}()
+    route = copy(path)
+    visited = Set(route)
     while true
-        push!(path, (pos, dir))
-
         next_pos = pos + step[dir]
-        if (next_pos, dir) ∈ path
-            return loop, path
+        if (next_pos, dir) ∈ visited
+            return nothing
         elseif !checkbounds(Bool, grid, next_pos)
-            return escape, path
+            return route
         elseif grid[next_pos] == '#'
             dir = turn_right90(dir)
         else
             pos = next_pos
         end
+        push!(route, (pos, dir))
+        push!(visited, (pos, dir))
     end
 end
 
-function d06(fname::String = "input")
+function d06_p1(fname::String = "input")
     grid = parse_file(fname)
     start = findfirst(x -> x == '^', grid)
 
-    result, path = find_path(grid, start)
-    @assert result == escape "no escape route found"
-    visited = Set(pos for (pos, _) in path)
+    path = check_grid(grid, [(start, 1)])
+    @assert !isnothing(path) "found a loop"
 
-    ans_p1 = length(visited)
+    length(Set(pos for (pos, _) in path))
+end
 
-    pop!(visited, start)  # remove the start position from visited positions
-    ans_p2 = 0
-    for pos in visited
-        grid[pos] = '#'
-        result, _ = find_path(grid, start)
-        if result == loop
-            ans_p2 += 1
+function d06_p2(fname::String = "input")
+    grid = parse_file(fname)
+    start = findfirst(x -> x == '^', grid)
+    step = [CartesianIndex(-1, 0), CartesianIndex(0, 1), CartesianIndex(1, 0), CartesianIndex(0, -1)]
+
+    path = check_grid(grid, [(start, 1)])
+    @assert !isnothing(path) "found a loop"
+
+    visited = Set{CartesianIndex{2}}([start])
+    acc = 0
+    for i = 1:(lastindex(path) - 1)
+        next_pos = (path[i][1] + step[path[i][2]])
+        if grid[next_pos] == '#' || next_pos ∈ visited
+            continue
         end
-        grid[pos] = '.'
+
+        grid[next_pos] = '#'
+        if isnothing(check_grid(grid, path[1:i]))
+            acc += 1
+        end
+        grid[next_pos] = '.'
+        push!(visited, next_pos)
     end
 
-    println(ans_p1)
-    println(ans_p2)
+    acc
 end
 
 end #module
 
-using .Day06: d06
+using .Day06: d06_p1, d06_p2

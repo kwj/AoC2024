@@ -14,8 +14,14 @@ julia> include("d06.jl")
 
 ### Run each solver with the name of the puzzle data file as an argument
 
-*Part one and two*
+*Part one*
 
 ```console
-julia> d06("input")
+julia> d06_p1("input")
+```
+
+*Part two*
+
+```console
+julia> d06_p2("input")
 ```
