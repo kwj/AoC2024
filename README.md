@@ -2,15 +2,19 @@
 
 URL: https://adventofcode.com/2024
 
+## Requirement
+
+* [Julia](https://julialang.org/) (confirmed to work with Julia v1.11.2)
+
 ## Solutions
 
-* [Day 1: Historian Hysteria!](./day_01/)
-* [Day 2: Red-Nosed Reports](./day_02/)
-* [Day 3: Mull It Over](./day_03/)
-* [Day 4: Ceres Search](./day_04/)
-* [Day 5: Print Queue](./day_05/)
-* [Day 6: Guard Gallivant](./day_06/)
-* [Day 7: Bridge Repair](./day_07/)
+* [Day 1: Historian Hysteria!](./src/day_01) d01_p1(), d01_02()
+* [Day 2: Red-Nosed Reports](./src/day_02) d02_p1(), d02_02()
+* [Day 3: Mull It Over](./src/day_03) d03_p1(), d03_02()
+* [Day 4: Ceres Search](./src/day_04) d04_p1(), d04_02()
+* [Day 5: Print Queue](./src/day_05) d05_p1(), d05_02()
+* [Day 6: Guard Gallivant](./src/day_06) d06_p1(), d06_02()
+* [Day 7: Bridge Repair](./src/day_07) d07_p1(), d07_02()
 <!--
 * [Day 8: ](./day_08/)
 * [Day 9: ](./day_09/)
@@ -32,9 +36,42 @@ URL: https://adventofcode.com/2024
 * [Day 25: ](./day_25/)
 -->
 
+## How to use
+
+### Place puzzle input data files into each solution folder in advance
+
+```console
+$ ls src/day_01/
+d01.jl  input
+$
+```
+
+### Start the solver program
+
+```console
+$ sh solve.sh
+               _
+   _       _ _(_)_     |  Documentation: https://docs.julialang.org
+  (_)     | (_) (_)    |
+   _ _   _| |_  __ _   |  Type "?" for help, "]?" for Pkg help.
+  | | | | | | |/ _` |  |
+  | | |_| | | | (_| |  |  Version 1.11.2 (2024-12-01)
+ _/ |\__'_|_|_|\__'_|  |  Official https://julialang.org/ release
+|__/                   |
+
+julia>
+```
+
+### Run a solution
+
+```julia
+julia> d01_p1("input")
+```
+
+
 ## Note
 
-There are no input data files in this repository.
+There are no puzlle input data files in this repository.
 Please get them from the AoC 2024 site.
 
 Please see [here](https://adventofcode.com/about#faq_copying) for the reasons.

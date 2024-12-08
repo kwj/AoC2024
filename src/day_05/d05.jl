@@ -6,7 +6,7 @@ function parse_file(fname::String)
         (before::Int, after::Int) -> !haskey(dependency, after) || before ∉ dependency[after]
     end
 
-    data = readlines(fname)
+    data = readlines(joinpath((@__DIR__), fname))
     sep_pos = findfirst(isempty, data)
 
     dependency = Dict{Int, Set{Int}}()
@@ -57,3 +57,4 @@ end
 end #module
 
 using .Day05: d05_p1, d05_p2
+export d05_p1, d05_p2

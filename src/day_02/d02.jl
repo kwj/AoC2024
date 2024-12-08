@@ -2,7 +2,7 @@
 module Day02
 
 function parse_file(fname::String)
-    map(split.(readlines(fname))) do lst
+    map(split.(readlines(joinpath((@__DIR__), fname)))) do lst
         map(x -> parse(Int, x), lst)
     end
 end
@@ -37,3 +37,4 @@ end
 end #module
 
 using .Day02: d02_p1, d02_p2
+export d02_p1, d02_p2

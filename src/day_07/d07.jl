@@ -7,7 +7,7 @@ struct Equation
 end
 
 function parse_file(fname::String)
-    map(split.(readlines(fname), ": ")) do line
+    map(split.(readlines(joinpath((@__DIR__), fname)), ": ")) do line
         Equation(parse(Int64, line[1]), map(x -> parse(Int64, x), split(line[2], " ")))
     end
 end
@@ -43,3 +43,4 @@ end
 end #module
 
 using .Day07: d07_p1, d07_p2
+export d07_p1, d07_p2

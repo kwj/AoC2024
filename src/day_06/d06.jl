@@ -2,7 +2,7 @@
 module Day06
 
 function parse_file(fname::String)
-    data = map(split.(readlines(fname), "")) do lst
+    data = map(split.(readlines(joinpath((@__DIR__), fname)), "")) do lst
         map(s -> s[1], lst)
     end
 
@@ -72,3 +72,4 @@ end
 end #module
 
 using .Day06: d06_p1, d06_p2
+export d06_p1, d06_p2

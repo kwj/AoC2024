@@ -2,7 +2,7 @@
 module Day01
 
 function parse_file(fname::String)
-    data = map(x -> parse(Int, x), stack(split.(readlines(fname))))
+    data = map(x -> parse(Int, x), stack(split.(readlines(joinpath((@__DIR__), fname)))))
 
     data[1, :], data[2, :]
 end
@@ -27,3 +27,4 @@ end
 end #module
 
 using .Day01: d01_p1, d01_p2
+export d01_p1, d01_p2
