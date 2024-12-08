@@ -72,7 +72,7 @@ julia>
 
 ### Run solutions
 
-For example, part one and part two of Day 1 have their own solutions.
+For example, both parts of Day 1 have their own solutions.
 
 ```julia
 julia> d01_p1("input")
