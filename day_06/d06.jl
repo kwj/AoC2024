@@ -10,6 +10,7 @@ function parse_file(fname::String)
 end
 
 function check_grid(grid::Array{Char, 2}, path::Vector{Tuple{CartesianIndex{2}, Int}})
+    # up(1), right(2), down(3), left(4)
     step = [CartesianIndex(-1, 0), CartesianIndex(0, 1), CartesianIndex(1, 0), CartesianIndex(0, -1)]
     turn_right90(x) = mod1(x + 1, 4)
     pos, dir = path[end]
@@ -36,7 +37,7 @@ function d06_p1(fname::String = "input")
     grid = parse_file(fname)
     start = findfirst(x -> x == '^', grid)
 
-    path = check_grid(grid, [(start, 1)])
+    path = check_grid(grid, [(start, 1)])  # direction: up(1)
     @assert !isnothing(path) "found a loop"
 
     length(Set(pos for (pos, _) in path))
@@ -46,7 +47,7 @@ function d06_p2(fname::String = "input")
     grid = parse_file(fname)
     start = findfirst(x -> x == '^', grid)
 
-    path = check_grid(grid, [(start, 1)])
+    path = check_grid(grid, [(start, 1)])  # direction: up(1)
     @assert !isnothing(path) "found a loop"
 
     confirmed = Set{CartesianIndex{2}}([start])
