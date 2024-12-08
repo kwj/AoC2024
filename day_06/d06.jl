@@ -53,7 +53,7 @@ function d06_p2(fname::String = "input")
     acc = 0
     for i = 1:(lastindex(path) - 1)
         next_pos = path[i + 1][1]
-        if grid[next_pos] == '#' || next_pos ∈ confirmed
+        if next_pos ∈ confirmed
             continue
         end
 
