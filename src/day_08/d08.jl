@@ -25,44 +25,44 @@ function d08_p1(fname::String = "input")
     grid = parse_file(fname)
     antennas = get_antennas(grid)
 
-    antinodes = Set{CartesianIndex{2}}()
+    anti_nodes = Set{CartesianIndex{2}}()
     for lst in values(antennas)
         for pos in combinations(lst, 2)
             v = pos[1] - pos[2]
-            push!(antinodes, pos[1] + v, pos[2] - v)
+            push!(anti_nodes, pos[1] + v, pos[2] - v)
         end
     end
 
-    count(ci -> checkbounds(Bool, grid, ci), antinodes)
+    count(ci -> checkbounds(Bool, grid, ci), anti_nodes)
 end
 
 function d08_p2(fname::String = "input")
     grid = parse_file(fname)
     antennas = get_antennas(grid)
 
-    antinodes = Set{CartesianIndex{2}}()
+    anti_nodes = Set{CartesianIndex{2}}()
     for lst in values(antennas)
         if length(lst) > 1
-            push!(antinodes, lst...)
+            push!(anti_nodes, lst...)
         end
         for pos in combinations(lst, 2)
             v = pos[1] - pos[2]
 
             p1 = pos[1] + v
             while checkbounds(Bool, grid, p1)
-                push!(antinodes, p1)
+                push!(anti_nodes, p1)
                 p1 += v
             end
 
             p2 = pos[2] - v
             while checkbounds(Bool, grid, p2)
-                push!(antinodes, p2)
+                push!(anti_nodes, p2)
                 p2 -= v
             end
         end
     end
 
-    length(antinodes)
+    length(anti_nodes)
 end
 
 end #module
