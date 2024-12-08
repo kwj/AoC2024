@@ -42,19 +42,16 @@ function d08_p2(fname::String = "input")
 
     anti_nodes = Set{CartesianIndex{2}}()
     for lst in values(antennas)
-        if length(lst) > 1
-            push!(anti_nodes, lst...)
-        end
         for pos in combinations(lst, 2)
             v = pos[1] - pos[2]
 
-            p1 = pos[1] + v
+            p1 = pos[1]
             while checkbounds(Bool, grid, p1)
                 push!(anti_nodes, p1)
                 p1 += v
             end
 
-            p2 = pos[2] - v
+            p2 = pos[2]
             while checkbounds(Bool, grid, p2)
                 push!(anti_nodes, p2)
                 p2 -= v
