@@ -44,6 +44,12 @@ The following package was then used.
 
 ## How to use
 
+### [Only the first time] Setup dependencies for this project
+
+```console
+$ sh solve.sh init
+```
+
 ### Place puzzle input data files into each solution folder in advance
 
 For example, if the input file for Day 1 is `input`:
