@@ -40,13 +40,15 @@ URL: https://adventofcode.com/2024
 
 ### Place puzzle input data files into each solution folder in advance
 
+For example, if the input file for Day 1 is `input`:
+
 ```console
 $ ls src/day_01/
 d01.jl  input
 $
 ```
 
-### Start the solver program
+### Start Julia REPL
 
 ```console
 $ sh solve.sh
@@ -62,10 +64,16 @@ $ sh solve.sh
 julia>
 ```
 
-### Run a solution
+### Run solutions for Day 1
+
+Part one and Part two of Day 1 have their own solutions.
 
 ```julia
 julia> d01_p1("input")
+****
+
+julia> d01_p2("input")
+****
 ```
 
 
