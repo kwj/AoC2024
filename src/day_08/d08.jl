@@ -23,10 +23,9 @@ end
 
 function d08_p1(fname::String = "input")
     grid = parse_file(fname)
-    antennas = get_antennas(grid)
 
     anti_nodes = Set{CartesianIndex{2}}()
-    for lst in values(antennas)
+    for lst in values(get_antennas(grid))
         for pos in combinations(lst, 2)
             v = pos[1] - pos[2]
             push!(anti_nodes, pos[1] + v, pos[2] - v)
@@ -38,10 +37,9 @@ end
 
 function d08_p2(fname::String = "input")
     grid = parse_file(fname)
-    antennas = get_antennas(grid)
 
     anti_nodes = Set{CartesianIndex{2}}()
-    for lst in values(antennas)
+    for lst in values(get_antennas(grid))
         for pos in combinations(lst, 2)
             v = pos[1] - pos[2]
 
