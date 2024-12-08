@@ -42,7 +42,9 @@ function d08_p2(fname::String = "input")
 
     antinodes = Set{CartesianIndex{2}}()
     for lst in values(antennas)
-        push!(antinodes, lst...)
+        if length(lst) > 1
+            push!(antinodes, lst...)
+        end
         for pos in combinations(lst, 2)
             v = pos[1] - pos[2]
 
