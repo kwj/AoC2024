@@ -70,9 +70,9 @@ $ sh solve.sh
 julia>
 ```
 
-### Run solutions for Day 1
+### Run solutions
 
-Part one and Part two of Day 1 have their own solutions.
+For example, part one and part two of Day 1 have their own solutions.
 
 ```julia
 julia> d01_p1("input")
