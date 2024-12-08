@@ -8,7 +8,7 @@ I used the Julia programming language.
 
 * [Julia](https://julialang.org/) (confirmed to work with Julia v1.11.2)
 
-The following packages was then used.
+The following package was then used.
 
 - [Combinatorics](https://github.com/JuliaMath/Combinatorics.jl) v1.0.2
 
