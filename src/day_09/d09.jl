@@ -2,7 +2,7 @@
 module Day09
 
 mutable struct Block
-    id::Int
+    id::Int  # 0: free space, otherwise: file
     len::Int
 end
 
