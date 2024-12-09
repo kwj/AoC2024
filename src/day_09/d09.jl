@@ -2,14 +2,14 @@
 module Day09
 
 mutable struct Block
-    id::Int  # 0: free space, otherwise: file
-    len::Int
+    id::Int64  # 0: free space, otherwise: file
+    len::Int64
 end
 
 Base.copy(s::Block) = Block(s.id, s.len)
 
 function parse_file(fname::String)
-    map(x -> parse(Int, x), split.(readlines(joinpath((@__DIR__), fname))[1], ""))
+    map(x -> parse(Int64, x), split.(readlines(joinpath((@__DIR__), fname))[1], ""))
 end
 
 # Note: the `blocks` parameter of the caller will be modified
@@ -21,7 +21,7 @@ function trim_blocks!(blocks::Vector{Block})
     blocks
 end
 
-function make_block_lst(lst::Vector{Int})
+function make_block_lst(lst::Vector{Int64})
     map(collect(enumerate(lst))) do (idx, len)
         if isodd(idx)
             Block((idx + 1) ÷ 2, len)
@@ -69,7 +69,7 @@ function d09_p1(fname::String = "input")
 end
 
 function d09_p2(fname::String = "input")
-    function find_space_block(lst::Vector{Block}, idx::Int)
+    function find_space_block(lst::Vector{Block}, idx::Int64)
         space_blk_idx = findfirst(blk -> blk.id == 0 && lst[idx].len <= blk.len, lst)
         if !isnothing(space_blk_idx) && space_blk_idx < idx
             space_blk_idx
