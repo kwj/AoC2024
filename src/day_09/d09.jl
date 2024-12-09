@@ -13,7 +13,7 @@ function parse_file(fname::String)
 end
 
 # Note: the `blocks` parameter of the caller will be modified
-function trim_blocks(blocks::Vector{Block})
+function trim_blocks!(blocks::Vector{Block})
     while iszero(blocks[end].id) || iszero(blocks[end].len)
         pop!(blocks)
     end
@@ -28,7 +28,7 @@ function make_block_lst(lst::Vector{Int})
         else
             Block(0, len)
         end
-    end |> filter(blk -> blk.len != 0) |> trim_blocks
+    end |> filter(blk -> blk.len != 0) |> trim_blocks!
 end
 
 function checksum(blocks::Vector{Block})
@@ -60,7 +60,7 @@ function d09_p1(fname::String = "input")
         end
 
         # truncate space blocks and empty blocks at the end of block list
-        trim_blocks(blocks)
+        trim_blocks!(blocks)
 
         i += 1
     end
