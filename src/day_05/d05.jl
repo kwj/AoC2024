@@ -2,6 +2,9 @@
 module Day05
 
 function parse_file(fname::String)
+    # Under normal circumstances, this compare function should be implemented
+    # based on the results of topological sorting. The following is a implementation
+    # that only works with the given data. In other words, it cuts corners :p.
     function make_is_before(dic::Dict{Int, Set{Int}})
         (x::Int, y::Int) -> (haskey(dic, x) && y ∈ dic[x]) || !(haskey(dic, y) && x ∈ dic[y])
     end
