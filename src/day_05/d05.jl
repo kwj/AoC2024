@@ -23,7 +23,7 @@ function parse_file(fname::String)
 end
 
 function middle_element(seq::Vector{Int})
-    seq[ceil(Int, length(seq) / 2)]
+    seq[cld(length(seq), 2)]
 end
 
 function d05_p1(fname::String = "input")
