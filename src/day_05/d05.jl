@@ -31,9 +31,8 @@ function d05_p1(fname::String = "input")
 
     acc = 0
     for pages in queue
-        sorted_pages = sort(pages, lt = is_before)
-        if pages == sorted_pages
-            acc += middle_element(sorted_pages)
+        if issorted(pages, lt = is_before)
+            acc += middle_element(pages)
         end
     end
 
@@ -45,9 +44,8 @@ function d05_p2(fname::String = "input")
 
     acc = 0
     for pages in queue
-        sorted_pages = sort(pages, lt = is_before)
-        if pages != sorted_pages
-            acc += middle_element(sorted_pages)
+        if !issorted(pages, lt = is_before)
+            acc += middle_element(sort(pages, lt = is_before))
         end
     end
 
