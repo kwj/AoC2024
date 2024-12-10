@@ -59,7 +59,8 @@ function d09_p1(fname::String = "input")
             end
         end
 
-        # truncate space blocks and empty blocks at the end of block list
+        # Truncate space blocks and empty blocks at the end of block list
+        # to ensure the last block, `blocks[end]`, is a file block
         trim_blocks!(blocks)
 
         i += 1
