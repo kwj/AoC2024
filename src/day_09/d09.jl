@@ -70,9 +70,9 @@ function d09_p1(fname::String = "input")
 end
 
 function d09_p2(fname::String = "input")
-    function find_space_block(lst::Vector{Block}, idx::Int64)
-        space_blk_idx = findfirst(blk -> blk.id == 0 && lst[idx].len <= blk.len, lst)
-        if !isnothing(space_blk_idx) && space_blk_idx < idx
+    function find_space_block(lst::Vector{Block}, src_blk_idx::Int64)
+        space_blk_idx = findfirst(blk -> iszero(blk.id) && lst[src_blk_idx].len <= blk.len, lst)
+        if !isnothing(space_blk_idx) && space_blk_idx < src_blk_idx
             space_blk_idx
         else
             nothing
