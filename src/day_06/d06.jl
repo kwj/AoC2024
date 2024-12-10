@@ -1,6 +1,9 @@
 
 module Day06
 
+# up(1), right(2), down(3), left(4)
+const STEP = CartesianIndex.([(-1, 0), (0, 1), (1, 0), (0, -1)])
+
 function parse_file(fname::String)
     data = map(split.(readlines(joinpath((@__DIR__), fname)), "")) do lst
         map(s -> s[1], lst)
@@ -10,15 +13,13 @@ function parse_file(fname::String)
 end
 
 function check_grid(grid::Array{Char, 2}, path::Vector{Tuple{CartesianIndex{2}, Int}})
-    # up(1), right(2), down(3), left(4)
-    step = [CartesianIndex(-1, 0), CartesianIndex(0, 1), CartesianIndex(1, 0), CartesianIndex(0, -1)]
     turn_right90(x) = mod1(x + 1, 4)
     pos, dir = path[end]
 
     route = copy(path)  # Don't change the `path` argument of the caller for safty
     visited = Set(route)
     while true
-        next_pos = pos + step[dir]
+        next_pos = pos + STEP[dir]
         if (next_pos, dir) ∈ visited
             return nothing
         elseif !checkbounds(Bool, grid, next_pos)

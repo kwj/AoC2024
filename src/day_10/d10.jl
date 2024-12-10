@@ -1,21 +1,16 @@
 
 module Day10
 
+const NBRS = CartesianIndex.([(-1, 0), (0, 1), (1, 0), (0, -1)])
+
 function parse_file(fname::String)
     permutedims(map(x -> parse(Int, x), stack(split.(readlines(joinpath((@__DIR__), fname)), ""))))
 end
 
 function find_goals(grid::Array{Int, 2}, start::CartesianIndex{2})
-    nbrs = [
-        CartesianIndex(-1, 0),
-        CartesianIndex(0, 1),
-        CartesianIndex(1, 0),
-        CartesianIndex(0, -1)
-    ]
-
     reduce(1:9, init = [start]) do xs, n
         Iterators.flatmap(
-            x -> x .+ nbrs |> filter(pos -> checkbounds(Bool, grid, pos) && grid[pos] == n),
+            x -> x .+ NBRS |> filter(pos -> checkbounds(Bool, grid, pos) && grid[pos] == n),
             xs
         ) |> collect
     end
