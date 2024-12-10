@@ -23,8 +23,8 @@ The following package was then used.
 * [Day 7: Bridge Repair](./src/day_07) d07_p1(), d07_02()
 * [Day 8: Resonant Collinearity](./src/day_08/) d08_p1(), d08_p2()
 * [Day 9: Disk Fragmenter](./src/day_09/) d09_p1(), d09_p2()
+* [Day 10: Hoof It](./src/day_10/) d10_p1(), d10_p2()
 <!--
-* [Day 10: ](./src/day_10/)
 * [Day 11: ](./src/day_11/)
 * [Day 12: ](./src/day_12/)
 * [Day 13: ](./src/day_13/)
