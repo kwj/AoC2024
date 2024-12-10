@@ -2,8 +2,8 @@
 module Day05
 
 function parse_file(fname::String)
-    function make_is_before(dependency::Dict{Int, Set{Int}})
-        (before::Int, after::Int) -> !haskey(dependency, after) || before ∉ dependency[after]
+    function make_is_before(dic::Dict{Int, Set{Int}})
+        (x::Int, y::Int) -> (haskey(dic, x) && y ∈ dic[x]) || !(haskey(dic, y) && x ∈ dic[y])
     end
 
     data = readlines(joinpath((@__DIR__), fname))
