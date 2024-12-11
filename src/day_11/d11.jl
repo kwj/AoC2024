@@ -15,7 +15,7 @@ function make_countmap(lst::Vector{Int64})
 end
 
 function blink(cm::Dict{Int64, Int64}, cnt::Int)
-    for _ in 1:cnt
+    for _ = 1:cnt
         new_cm = Dict{Int64, Int64}()
         for (k, v) in pairs(cm)
             if iszero(k)
