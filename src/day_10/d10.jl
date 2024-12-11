@@ -4,7 +4,7 @@ module Day10
 const NBRS = CartesianIndex.([(-1, 0), (0, 1), (1, 0), (0, -1)])
 
 function parse_file(fname::String)
-    permutedims(parse.(Int, stack(split.(readlines(joinpath((@__DIR__), fname)), ""))))
+    parse.(Int, stack(split.(readlines(joinpath((@__DIR__), fname)), ""), dims=1))
 end
 
 function find_goals(grid::Array{Int, 2}, start::CartesianIndex{2})
