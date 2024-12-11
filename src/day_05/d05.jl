@@ -14,13 +14,11 @@ function parse_file(fname::String)
 
     dependency = Dict{Int, Set{Int}}()
     map(data[1:sep_pos - 1]) do s
-        before, after = map(x -> parse(Int, x), split(s, "|"))
+        before, after = parse.(Int, split(s, "|"))
         dependency[before] = push!(get(dependency, before, Set{Int}()), after)
     end
 
-    queue = map(data[sep_pos + 1:end]) do s
-        map(x -> parse(Int, x), split(s, ","))
-    end
+    queue = map(s -> parse.(Int, split(s, ",")), data[sep_pos + 1:end])
 
     queue, make_is_before(dependency)
 end

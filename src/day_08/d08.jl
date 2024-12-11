@@ -4,11 +4,7 @@ module Day08
 import Combinatorics: combinations
 
 function parse_file(fname::String)
-    data = map(split.(readlines(joinpath((@__DIR__), fname)), "")) do lst
-        map(s -> s[1], lst)
-    end
-
-    permutedims(stack(data))
+    permutedims(first.(stack(split.(readlines(joinpath((@__DIR__), fname)), ""))))
 end
 
 function get_antennas(grid::Array{Char, 2})

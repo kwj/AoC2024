@@ -2,7 +2,7 @@
 module Day11
 
 function parse_file(fname::String)
-    map(x -> parse(Int64, x), split(readlines(joinpath((@__DIR__), fname))[1]))
+    parse.(Int64, split(readlines(joinpath((@__DIR__), fname)) |> first))
 end
 
 function make_countmap(lst::Vector{Int64})

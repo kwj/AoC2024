@@ -2,7 +2,7 @@
 module Day04
 
 function parse_file(fname::String)
-    permutedims(map(x -> x[1], stack(split.(readlines(joinpath((@__DIR__), fname)), ""))))
+    permutedims(first.(stack(split.(readlines(joinpath((@__DIR__), fname)), ""))))
 end
 
 function d04_p1(fname::String = "input")
