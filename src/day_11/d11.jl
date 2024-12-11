@@ -1,12 +1,14 @@
 
 module Day11
 
+const CountMap = Dict{Int64, Int64}
+
 function parse_file(fname::String)
     parse.(Int64, split(readlines(joinpath((@__DIR__), fname)) |> first))
 end
 
 function make_countmap(lst::Vector{Int64})
-    cm = Dict{Int64, Int64}()
+    cm = CountMap()
     for v in lst
         cm[v] = get(cm, v, 0) + 1
     end
@@ -14,9 +16,9 @@ function make_countmap(lst::Vector{Int64})
     cm
 end
 
-function blink(cm::Dict{Int64, Int64}, cnt::Int)
+function blink(cm::CountMap, cnt::Int)
     for _ = 1:cnt
-        new_cm = Dict{Int64, Int64}()
+        new_cm = CountMap()
         for (k, v) in pairs(cm)
             if iszero(k)
                 new_cm[1] = get(new_cm, 1, 0) + v
