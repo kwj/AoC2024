@@ -2,7 +2,7 @@
 module Day09
 
 mutable struct Block
-    id::Int64  # 0: free space, otherwise: file
+    id::Int64  # 0: free space, positive numbers (> 0): file
     len::Int64
 end
 
@@ -36,6 +36,7 @@ function checksum(blocks::Vector{Block})
     idx = 0
     for blk in blocks
         if !iszero(blk.id)
+            # Actual ID number is one less than `Block.id`
             acc += sum((blk.id - 1) .* collect(idx:(idx + blk.len - 1)))
         end
         idx += blk.len
