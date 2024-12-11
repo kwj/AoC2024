@@ -24,8 +24,8 @@ The following package was then used.
 * [Day 8: Resonant Collinearity](./src/day_08/) d08_p1(), d08_p2()
 * [Day 9: Disk Fragmenter](./src/day_09/) d09_p1(), d09_p2()
 * [Day 10: Hoof It](./src/day_10/) d10_p1(), d10_p2()
+* [Day 11: Plutonian Pebbles](./src/day_11/) d11_p1(), d11_p2()
 <!--
-* [Day 11: ](./src/day_11/)
 * [Day 12: ](./src/day_12/)
 * [Day 13: ](./src/day_13/)
 * [Day 14: ](./src/day_14/)
@@ -44,7 +44,7 @@ The following package was then used.
 
 ## How to use
 
-### [Only the first time] Setup dependencies for this project
+### [First time only] Setup dependencies for this project
 
 ```console
 $ sh solve.sh init
