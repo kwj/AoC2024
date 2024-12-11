@@ -22,8 +22,8 @@ function blink(cm::Dict{Int64, Int64}, cnt::Int)
                 new_cm[1] = get(new_cm, 1, 0) + v
             elseif iseven(ndigits(k))
                 len = div(ndigits(k), 2)
-                left = parse(Int, string(k)[1:len])
-                right = parse(Int, string(k)[len + 1:end])
+                left = parse(Int64, string(k)[1:len])
+                right = parse(Int64, string(k)[len + 1:end])
                 new_cm[left] = get(new_cm, left, 0) + v
                 new_cm[right] = get(new_cm, right, 0) + v
             else
