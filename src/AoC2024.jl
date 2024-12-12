@@ -12,6 +12,7 @@ solutions = [
     "day_09/d09.jl",
     "day_10/d10.jl",
     "day_11/d11.jl",
+    "day_12/d12.jl",
 ]
 
 for sol in solutions
