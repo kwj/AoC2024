@@ -12,16 +12,7 @@ function is_safe(lst::Vector{Int})
 end
 
 function is_probably_safe(lst::Vector{Int})
-    if is_safe(lst)
-        true
-    else
-        for i = 1:length(lst)
-            if is_safe(deleteat!(copy(lst), i))
-                return true
-            end
-        end
-        false
-    end
+    is_safe(lst) || any(idx -> is_safe(deleteat!(copy(lst), idx)), eachindex(lst))
 end
 
 function d02_p1(fname::String = "input")
