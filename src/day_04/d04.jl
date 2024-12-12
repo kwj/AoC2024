@@ -2,7 +2,7 @@
 module Day04
 
 function parse_file(fname::String)
-    first.(stack(split.(readlines(joinpath((@__DIR__), fname)), ""), dims=1))
+    first.(stack(split.(readlines(joinpath((@__DIR__), fname)), ""), dims = 1))
 end
 
 function d04_p1(fname::String = "input")
