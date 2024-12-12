@@ -24,7 +24,9 @@ function d07_p1(fname::String = "input")
         end
     end
 
-    map(x -> x.value, filter(eq -> eq.value ∈ eval_p1(eq), parse_file(fname))) |> sum
+    mapreduce(+, filter(eqn -> eqn.value ∈ eval_p1(eqn), parse_file(fname))) do x
+        x.value
+    end
 end
 
 function d07_p2(fname::String = "input")
@@ -38,7 +40,9 @@ function d07_p2(fname::String = "input")
         end
     end
 
-    map(x -> x.value, filter(eq -> eq.value ∈ eval_p2(eq), parse_file(fname))) |> sum
+    mapreduce(+, filter(eqn -> eqn.value ∈ eval_p2(eqn), parse_file(fname))) do x
+        x.value
+    end
 end
 
 end #module

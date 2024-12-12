@@ -9,18 +9,18 @@ function d03_p1(fname::String = "input")
     re = r"mul\((?<args>\d{1,3},\d{1,3})\)"
     data = parse_file(fname)
 
-    map(eachmatch(re, data)) do m
+    mapreduce(+, eachmatch(re, data)) do m
         prod(parse.(Int, split(m["args"], ",")))
-    end |> sum
+    end
 end
 
 function d03_p2(fname::String = "input")
     re = r"mul\((?<args>\d{1,3},\d{1,3})\)"
     data = parse_file(fname)
 
-    map(eachmatch(re, replace(data, r"don't\(\).*?(do\(\)|$)" => ""))) do m
+    mapreduce(+, eachmatch(re, replace(data, r"don't\(\).*?(do\(\)|$)" => ""))) do m
         prod(parse.(Int, split(m["args"], ",")))
-    end |> sum
+    end
 end
 
 end #module

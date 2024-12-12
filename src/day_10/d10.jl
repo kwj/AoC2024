@@ -19,13 +19,17 @@ end
 function d10_p1(fname::String = "input")
     grid = parse_file(fname)
 
-    map(ci -> length(find_goals(grid, ci) |> unique), findall(iszero, grid)) |> sum
+    mapreduce(+, findall(iszero, grid)) do ci
+        find_goals(grid, ci) |> unique |> length
+    end
 end
 
 function d10_p2(fname::String = "input")
     grid = parse_file(fname)
 
-    map(ci -> length(find_goals(grid, ci)), findall(iszero, grid)) |> sum
+    mapreduce(+, findall(iszero, grid)) do ci
+        find_goals(grid, ci) |> length
+    end
 end
 
 end #module
