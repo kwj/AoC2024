@@ -3,7 +3,6 @@ module Day12
 
 const MARKED = '\0'
 const DIRS = CartesianIndex.([(-1, 0), (0, 1), (1, 0), (0, -1)])
-const NBRS = Set(DIRS)
 
 function parse_file(fname::String)
     first.(stack(split.(readlines(joinpath((@__DIR__), fname)), ""), dims = 1))
@@ -24,7 +23,7 @@ function get_regions!(grid::Array{Char, 2})
             ci = pop!(queue)
             grid[ci] = MARKED
             push!(rgn, ci)
-            for nbr in filter(x -> checkbounds(Bool, grid, x) && grid[x] == ch, ci .+ NBRS)
+            for nbr in filter(x -> checkbounds(Bool, grid, x) && grid[x] == ch, ci .+ DIRS)
                 push!(queue, nbr)
             end
         end
@@ -38,7 +37,7 @@ function eval_p1(region::Set{CartesianIndex{2}})
     area = length(region)
     perimeter = area * 4
     for ci in region
-        perimeter -= count(x -> x ∈ region, ci .+ NBRS)
+        perimeter -= count(x -> x ∈ region, ci .+ DIRS)
     end
 
     area * perimeter
