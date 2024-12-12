@@ -10,7 +10,7 @@ function d03_p1(fname::String = "input")
     data = parse_file(fname)
 
     map(eachmatch(re, data)) do m
-        prod(map(x -> parse(Int, x), split(m["args"], ",")))
+        prod(parse.(Int, split(m["args"], ",")))
     end |> sum
 end
 
@@ -19,7 +19,7 @@ function d03_p2(fname::String = "input")
     data = parse_file(fname)
 
     map(eachmatch(re, replace(data, r"don't\(\).*?(do\(\)|$)" => ""))) do m
-        prod(map(x -> parse(Int, x), split(m["args"], ",")))
+        prod(parse.(Int, split(m["args"], ",")))
     end |> sum
 end
 
