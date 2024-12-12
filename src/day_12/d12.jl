@@ -1,7 +1,7 @@
 
 module Day12
 
-const MARKED = '\0'
+const CHECKED = '\0'
 const DIRS = CartesianIndex.([(-1, 0), (0, 1), (1, 0), (0, -1)])
 
 function parse_file(fname::String)
@@ -11,19 +11,19 @@ end
 function get_regions!(grid::Array{Char, 2})
     regions = Vector{Set{CartesianIndex{2}}}()
 
-    for idx in findall(isprint, grid)
-        if grid[idx] == MARKED
+    for idx in eachindex(IndexCartesian(), grid)
+        if grid[idx] == CHECKED
             continue
         end
 
-        ch = grid[idx]
+        plant = grid[idx]
+        queue = [idx]
         rgn = Set{CartesianIndex{2}}()
-        queue::Vector{CartesianIndex{2}} = [idx]
         while !isempty(queue)
             ci = pop!(queue)
-            grid[ci] = MARKED
             push!(rgn, ci)
-            for nbr in filter(x -> checkbounds(Bool, grid, x) && grid[x] == ch, ci .+ DIRS)
+            grid[ci] = CHECKED
+            for nbr in filter(x -> checkbounds(Bool, grid, x) && grid[x] == plant, ci .+ DIRS)
                 push!(queue, nbr)
             end
         end
@@ -33,41 +33,34 @@ function get_regions!(grid::Array{Char, 2})
     regions
 end
 
-function eval_p1(region::Set{CartesianIndex{2}})
-    area = length(region)
-    perimeter = area * 4
-    for ci in region
-        perimeter -= count(x -> x ∈ region, ci .+ DIRS)
-    end
-
-    area * perimeter
-end
-
-function eval_p2(region::Set{CartesianIndex{2}})
-    turn_right90(x) = mod1(x + 1, length(DIRS))
-
-    area = length(region)
-    n_sides = 0
-    for idx in eachindex(DIRS)
-        delta = DIRS[idx]
-        edges = Set{CartesianIndex{2}}()
+function d12_p1(fname::String = "input")
+    function eval_p1(region::Set{CartesianIndex{2}})
+        area = length(region)
+        perimeter = area * 4
         for ci in region
-            if ci + delta ∉ region
-                push!(edges, ci)
-            end
+            perimeter -= count(x -> x ∈ region, ci .+ DIRS)
         end
 
-        n_sides += count(x -> x + DIRS[turn_right90(idx)] ∉ edges, edges)
+        area * perimeter
     end
 
-    area * n_sides
-end
-
-function d12_p1(fname::String = "input")
     mapreduce(eval_p1, +, get_regions!(parse_file(fname)))
 end
 
 function d12_p2(fname::String = "input")
+    function eval_p2(region::Set{CartesianIndex{2}})
+        turn_right90(x) = mod1(x + 1, length(DIRS))
+
+        area = length(region)
+        n_sides = 0
+        for idx in eachindex(DIRS)
+            edges = Set(x for x in region if x + DIRS[idx] ∉ region)
+            n_sides += count(x -> x + DIRS[turn_right90(idx)] ∉ edges, edges)
+        end
+
+        area * n_sides
+    end
+
     mapreduce(eval_p2, +, get_regions!(parse_file(fname)))
 end
 
