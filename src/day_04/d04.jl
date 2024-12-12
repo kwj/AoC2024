@@ -18,7 +18,7 @@ function d04_p1(fname::String = "input")
             end
 
             idx = ci  # Copy a CartesianIndex for working
-            for x = (firstindex(WORD) + 1):lastindex(WORD)
+            for x = 2:lastindex(WORD)
                 idx += delta
                 if data[idx] != WORD[x]
                     break
