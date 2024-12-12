@@ -10,6 +10,7 @@ end
 
 function get_regions!(grid::Array{Char, 2})
     regions = Vector{Set{CartesianIndex{2}}}()
+    rgn = Set{CartesianIndex{2}}()
 
     for idx in CartesianIndices(grid)
         if grid[idx] == CHECKED
@@ -17,13 +18,16 @@ function get_regions!(grid::Array{Char, 2})
         end
 
         plant = grid[idx]
+        empty!(rgn)
+
+        grid[idx] = CHECKED
+        push!(rgn, idx)
         queue = [idx]
-        rgn = Set{CartesianIndex{2}}()
         while !isempty(queue)
             ci = pop!(queue)
-            push!(rgn, ci)
-            grid[ci] = CHECKED
             for nbr in filter(x -> checkbounds(Bool, grid, x) && grid[x] == plant, ci .+ DIRS)
+                grid[nbr] = CHECKED
+                push!(rgn, nbr)
                 push!(queue, nbr)
             end
         end
