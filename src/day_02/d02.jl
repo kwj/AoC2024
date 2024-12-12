@@ -6,7 +6,7 @@ function parse_file(fname::String)
 end
 
 function is_safe(lst::Vector{Int})
-    diff_lst = lst[1:end - 1] .- lst[2:end]
+    diff_lst = lst[1:end - 1] - lst[2:end]
 
     all(n -> 1 <= n <= 3, diff_lst) || all(n -> -3 <= n <= -1, diff_lst)
 end
