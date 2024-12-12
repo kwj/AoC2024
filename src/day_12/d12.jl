@@ -10,7 +10,6 @@ end
 
 function get_regions!(grid::Array{Char, 2})
     regions = Vector{Set{CartesianIndex{2}}}()
-    rgn = Set{CartesianIndex{2}}()
 
     for idx in CartesianIndices(grid)
         if grid[idx] == CHECKED
@@ -18,7 +17,7 @@ function get_regions!(grid::Array{Char, 2})
         end
 
         plant = grid[idx]
-        empty!(rgn)
+        rgn = Set{CartesianIndex{2}}()
 
         grid[idx] = CHECKED
         push!(rgn, idx)
