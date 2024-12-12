@@ -34,7 +34,7 @@ function get_regions!(grid::Array{Char, 2})
 end
 
 function d12_p1(fname::String = "input")
-    function eval_p1(region::Set{CartesianIndex{2}})
+    mapreduce(+, get_regions!(parse_file(fname))) do region
         area = length(region)
         perimeter = area * 4
         for ci in region
@@ -43,14 +43,12 @@ function d12_p1(fname::String = "input")
 
         area * perimeter
     end
-
-    mapreduce(eval_p1, +, get_regions!(parse_file(fname)))
 end
 
 function d12_p2(fname::String = "input")
-    function eval_p2(region::Set{CartesianIndex{2}})
-        turn_right90(x) = mod1(x + 1, length(DIRS))
+    turn_right90(x) = mod1(x + 1, length(DIRS))
 
+    mapreduce(+, get_regions!(parse_file(fname))) do region
         area = length(region)
         n_sides = 0
         for idx in eachindex(DIRS)
@@ -60,8 +58,6 @@ function d12_p2(fname::String = "input")
 
         area * n_sides
     end
-
-    mapreduce(eval_p2, +, get_regions!(parse_file(fname)))
 end
 
 end #module
