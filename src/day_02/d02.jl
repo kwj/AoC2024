@@ -15,7 +15,7 @@ function is_probably_safe(lst::Vector{Int})
     if is_safe(lst)
         true
     else
-        for i in 1:length(lst)
+        for i = 1:length(lst)
             if is_safe(deleteat!(copy(lst), i))
                 return true
             end
