@@ -57,7 +57,7 @@ function eval_p2(region::Set{CartesianIndex{2}})
             end
         end
 
-        n_sides += count(ci -> ci + DIRS[turn_right90(idx)] ∉ edges, edges)
+        n_sides += count(x -> x + DIRS[turn_right90(idx)] ∉ edges, edges)
     end
 
     area * n_sides
