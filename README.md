@@ -25,8 +25,8 @@ The following package was then used.
 * [Day 9: Disk Fragmenter](./src/day_09/) d09_p1(), d09_p2()
 * [Day 10: Hoof It](./src/day_10/) d10_p1(), d10_p2()
 * [Day 11: Plutonian Pebbles](./src/day_11/) d11_p1(), d11_p2()
-* [Day 12: Garden Groups](./src/day_12/)
-* [Day 13: Claw Contraption](./src/day_13/)
+* [Day 12: Garden Groups](./src/day_12/) d12_p1(), d12_p2()
+* [Day 13: Claw Contraption](./src/day_13/) d13_p1(), d13_p2()
 <!--
 * [Day 14: ](./src/day_14/)
 * [Day 15: ](./src/day_15/)
