@@ -26,8 +26,8 @@ The following package was then used.
 * [Day 10: Hoof It](./src/day_10/) d10_p1(), d10_p2()
 * [Day 11: Plutonian Pebbles](./src/day_11/) d11_p1(), d11_p2()
 * [Day 12: Garden Groups](./src/day_12/)
+* [Day 13: Claw Contraption](./src/day_13/)
 <!--
-* [Day 13: ](./src/day_13/)
 * [Day 14: ](./src/day_14/)
 * [Day 15: ](./src/day_15/)
 * [Day 16: ](./src/day_16/)
