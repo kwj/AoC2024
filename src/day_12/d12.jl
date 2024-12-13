@@ -53,10 +53,9 @@ function d12_p2(fname::String = "input")
 
     mapreduce(+, get_regions!(parse_file(fname))) do region
         area = length(region)
-        n_sides = 0
-        for idx in eachindex(DIRS)
+        n_sides = mapreduce(+, eachindex(DIRS)) do idx
             edges = Set(x for x in region if x + DIRS[idx] ∉ region)
-            n_sides += count(x -> x + DIRS[turn_right90(idx)] ∉ edges, edges)
+            count(x -> x + DIRS[turn_right90(idx)] ∉ edges, edges)
         end
 
         area * n_sides
