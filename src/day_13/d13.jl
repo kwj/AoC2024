@@ -37,10 +37,10 @@ function play(claw1::Tuple{Int64, Int64, Int64}, claw2::Tuple{Int64, Int64, Int6
 end
 
 function d13_p1(fname::String = "input")
-    games = parse_file(fname)
+    machines = parse_file(fname)
 
     tokens = 0
-    for (a1, b1, c1, a2, b2, c2) in games
+    for (a1, b1, c1, a2, b2, c2) in machines
         result = play((a1, b1, c1), (a2, b2, c2))
         if isnothing(result)
             continue
@@ -56,10 +56,10 @@ function d13_p1(fname::String = "input")
 end
 
 function d13_p2(fname::String = "input")
-    games = parse_file(fname)
+    machines = parse_file(fname)
 
     tokens = 0
-    for (a1, b1, c1, a2, b2, c2) in games
+    for (a1, b1, c1, a2, b2, c2) in machines
         result = play((a1, b1, c1 + 10_000_000_000_000), (a2, b2, c2 + 10_000_000_000_000))
         if isnothing(result)
             continue
