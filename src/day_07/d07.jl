@@ -7,7 +7,7 @@ struct Equation
 end
 
 function parse_file(fname::String)
-    map(split.(readlines(joinpath((@__DIR__), fname)), r":? +")) do lst
+    map(split.(readlines(joinpath(@__DIR__, fname)), r":? +")) do lst
         vs = parse.(Int, lst)
         Equation(vs[1], vs[2:end])
     end

@@ -9,7 +9,7 @@ end
 Base.copy(s::Block) = Block(s.id, s.len)
 
 function parse_file(fname::String)
-    parse.(Int64, split(readlines(joinpath((@__DIR__), fname)) |> first, ""))
+    parse.(Int64, split(readlines(joinpath(@__DIR__, fname)) |> first, ""))
 end
 
 # Note: the `blocks` parameter of the caller will be modified

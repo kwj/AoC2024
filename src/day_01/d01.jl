@@ -2,7 +2,7 @@
 module Day01
 
 function parse_file(fname::String)
-    data = parse.(Int, stack(split.(readlines(joinpath((@__DIR__), fname)))))
+    data = parse.(Int, stack(split.(readlines(joinpath(@__DIR__, fname)))))
 
     data[1, :], data[2, :]
 end

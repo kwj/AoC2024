@@ -5,7 +5,7 @@ module Day06
 const STEP = CartesianIndex.([(-1, 0), (0, 1), (1, 0), (0, -1)])
 
 function parse_file(fname::String)
-    first.(stack(split.(readlines(joinpath((@__DIR__), fname)), ""), dims = 1))
+    first.(stack(split.(readlines(joinpath(@__DIR__, fname)), ""), dims = 1))
 end
 
 function check_grid(grid::Array{Char, 2}, path::Vector{Tuple{CartesianIndex{2}, Int}})

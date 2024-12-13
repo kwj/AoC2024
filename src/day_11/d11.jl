@@ -4,7 +4,7 @@ module Day11
 const CountMap = Dict{Int64, Int64}
 
 function parse_file(fname::String)
-    parse.(Int64, split(readlines(joinpath((@__DIR__), fname)) |> first))
+    parse.(Int64, split(readlines(joinpath(@__DIR__, fname)) |> first))
 end
 
 function make_countmap(lst::Vector{Int64})

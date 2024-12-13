@@ -2,7 +2,7 @@
 module Day03
 
 function parse_file(fname::String)
-    join(readlines(joinpath((@__DIR__), fname)))
+    join(readlines(joinpath(@__DIR__, fname)))
 end
 
 function d03_p1(fname::String = "input")

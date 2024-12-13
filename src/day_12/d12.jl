@@ -5,7 +5,7 @@ const CHECKED = '\0'
 const DIRS = CartesianIndex.([(-1, 0), (0, 1), (1, 0), (0, -1)])
 
 function parse_file(fname::String)
-    first.(stack(split.(readlines(joinpath((@__DIR__), fname)), ""), dims = 1))
+    first.(stack(split.(readlines(joinpath(@__DIR__, fname)), ""), dims = 1))
 end
 
 function get_regions!(grid::Array{Char, 2})

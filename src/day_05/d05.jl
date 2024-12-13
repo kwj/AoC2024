@@ -9,7 +9,7 @@ function parse_file(fname::String)
         (x::Int, y::Int) -> (haskey(dic, x) && y ∈ dic[x]) || !(haskey(dic, y) && x ∈ dic[y])
     end
 
-    data = readlines(joinpath((@__DIR__), fname))
+    data = readlines(joinpath(@__DIR__, fname))
     sep_pos = findfirst(isempty, data)
 
     dependency = Dict{Int, Set{Int}}()

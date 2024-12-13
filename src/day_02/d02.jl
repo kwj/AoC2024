@@ -2,7 +2,7 @@
 module Day02
 
 function parse_file(fname::String)
-    map(lst -> parse.(Int, lst), split.(readlines(joinpath((@__DIR__), fname))))
+    map(lst -> parse.(Int, lst), split.(readlines(joinpath(@__DIR__, fname))))
 end
 
 function is_safe(lst::Vector{Int})
