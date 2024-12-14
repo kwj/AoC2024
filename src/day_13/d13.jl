@@ -2,6 +2,7 @@
 module Day13
 
 function parse_file(fname::String)
+    # Note: There are no negative values in the given input data.
     data = map(eachmatch(r"\d+", read(joinpath(@__DIR__, fname), String))) do m
         parse(Int64, m.match)
     end
