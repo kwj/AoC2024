@@ -54,7 +54,7 @@ function d14_p2(fname::String = "input")
     tx = argmin(t -> var(new_state(px, vx, WIDTH, t)), 1:WIDTH)
     ty = argmin(t -> var(new_state(py, vy, HEIGHT, t)), 1:HEIGHT)
 
-    # [Importatnt]
+    # [Important]
     # Two parameters WIDTH(101) and HEIGHT(103) are relatively prime.
     # We can therefore solve this problem using the Chinese remainder theorem.
     #
