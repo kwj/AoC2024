@@ -55,17 +55,35 @@ function d14_p2(fname::String = "input")
     tx = argmin(t -> var(new_state(px, vx, WIDTH, t)), 0:(WIDTH - 1))
     ty = argmin(t -> var(new_state(py, vy, HEIGHT, t)), 0:(HEIGHT - 1))
 
-    # [Important]
-    # Two parameters WIDTH(101) and HEIGHT(103) are relatively prime.
-    # We can therefore solve this problem using the Chinese remainder theorem.
+    # Assume that `T` is the answer:
+    #   T ≡ tx (modulo WIDTH)
+    #   T ≡ ty (modulo HEIGHT)
+
+    # Check the answer is exist or not
+    (d, p, _) = gcdx(WIDTH, HEIGHT)
+    @assert mod(tx, d) == mod(ty, d) "There is no solution"
+
+    # We can solve this problem using the Chinese remainder theorem.
     #
     # x ≡ b₁ (modulo m₁)
     # x ≡ b₂ (modulo m₂)
-    # gcdx(m₁, m₂) = (d, p, q)
-    #   ---> m₁ * p + m₂ * q = d
-    #        x = mod(b₁ + m₁ * (b₂ - b₁) / d * p, m₁m₂)
-    (d, p, _) = gcdx(WIDTH, HEIGHT)  # d = 1 since WIDTH and HEIGHT are relatively prime
-    mod(tx + WIDTH * div(ty - tx, d) * p, WIDTH * HEIGHT)
+    #   where 0 =< x < m₁ * m₂
+    #
+    # gcdx(m₁, m₂) -> (d, p, q)
+    #  --> m₁ * p + m₂ * q = d
+    #
+    # Assume that `s = (b₂ - b₁) / d`
+    #   m₁ * p + m₂ * q = (b₂ - b₁) / s
+    #    --> s * m₁ * p + s * m₂ * q = b₂ - b₁
+    #        b₁ + s * m₁ * p = b₂ - s * m₂ * q
+    #
+    # Assume that `X = b₁ + s * m₁ * p = b₂ - s * m₂ * q`
+    #   X ≡ b₁ + s * m₁ * p ≡ b₁ (modulo m₁)
+    #   X ≡ b₂ - s * m₂ * q ≡ b₂ (modulo m₂)
+    # -->
+    #   x = mod(X, m₁ * m₂)
+    #     = mod(b₁ + ((b₂ - b₁) / d) * m₁ * p, m₁ * m₂)
+    mod(tx + div(ty - tx, d) * WIDTH * p, WIDTH * HEIGHT)
 end
 
 end #module
