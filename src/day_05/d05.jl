@@ -2,9 +2,19 @@
 module Day05
 
 function parse_file(fname::String)
-    # Under normal circumstances, this compare function should be implemented based on
-    # the results of topological sorting. The following implementation was only confirmed
-    # to work well with the given data. In other words, it cuts corners :p.
+    # Under normal circumstances, this comparison function should be implemented
+    # based on the results of topological sorting. However, there are many loops
+    # in the given input data. For example:
+    #
+    # $ sed -ne '/|/p' input | grep 71 | grep 18
+    # 71|18
+    # $ sed -ne '/|/p' input | grep 71 | grep 58
+    # 58|71
+    # $ sed -ne '/|/p' input | grep 18 | grep 58
+    # 18|58
+    #
+    # I therefore implemented the comparison function as follows. In other words,
+    # it cuts corners :p.
     function make_is_before(dic::Dict{Int, Set{Int}})
         (x::Int, y::Int) -> (haskey(dic, x) && y ∈ dic[x]) || !(haskey(dic, y) && x ∈ dic[y])
     end
