@@ -8,9 +8,10 @@ I used the Julia programming language.
 
 * [Julia](https://julialang.org/) (confirmed to work with Julia v1.11.2)
 
-The following package was then used.
+The following packages were then used.
 
 - [Combinatorics](https://github.com/JuliaMath/Combinatorics.jl) v1.0.2
+- Statistics v1.11.1 (It's distributd with Julia)
 
 ## Solutions
 
@@ -27,8 +28,8 @@ The following package was then used.
 * [Day 11: Plutonian Pebbles](./src/day_11/) d11_p1(), d11_p2()
 * [Day 12: Garden Groups](./src/day_12/) d12_p1(), d12_p2()
 * [Day 13: Claw Contraption](./src/day_13/) d13_p1(), d13_p2()
+* [Day 14: Restroom Redoubt](./src/day_14/) d14_p1(), d14_p2()
 <!--
-* [Day 14: ](./src/day_14/)
 * [Day 15: ](./src/day_15/)
 * [Day 16: ](./src/day_16/)
 * [Day 17: ](./src/day_17/)
