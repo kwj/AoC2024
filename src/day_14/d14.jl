@@ -49,8 +49,9 @@ end
 function d14_p2(fname::String = "input")
     px, py, vx, vy = parse_file(fname)
 
-    # I guess that the picture is complete when robots gather.
-    # So, search for timings when the variances of px and py are lowest.
+    # I guess that the picture will be complete when robots are gathered.
+    # I therefore search for the timings when the variances of
+    # px and py are smallest in the first cycle of each.
     tx = argmin(t -> var(new_state(px, vx, WIDTH, t)), 1:WIDTH)
     ty = argmin(t -> var(new_state(py, vy, HEIGHT, t)), 1:HEIGHT)
 
