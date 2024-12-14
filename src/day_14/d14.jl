@@ -52,8 +52,8 @@ function d14_p2(fname::String = "input")
     # I guess that the picture will be complete when robots are gathered.
     # I therefore search for the timings when the variances of
     # px and py are smallest in the first cycle of each.
-    tx = argmin(t -> var(new_state(px, vx, WIDTH, t)), 1:WIDTH)
-    ty = argmin(t -> var(new_state(py, vy, HEIGHT, t)), 1:HEIGHT)
+    tx = argmin(t -> var(new_state(px, vx, WIDTH, t)), 0:(WIDTH - 1))
+    ty = argmin(t -> var(new_state(py, vy, HEIGHT, t)), 0:(HEIGHT - 1))
 
     # [Important]
     # Two parameters WIDTH(101) and HEIGHT(103) are relatively prime.
