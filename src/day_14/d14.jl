@@ -52,18 +52,29 @@ function d14_p2(fname::String = "input")
     # I guess that the picture will be complete when robots are gathered.
     # I therefore search for the timings when the variances of
     # px and py are smallest in the first cycle of each.
-    tx = argmin(t -> var(new_state(px, vx, WIDTH, t)), 0:(WIDTH - 1))
-    ty = argmin(t -> var(new_state(py, vy, HEIGHT, t)), 0:(HEIGHT - 1))
+    b1 = argmin(t -> var(new_state(px, vx, WIDTH, t)), 0:(WIDTH - 1))
+    b2 = argmin(t -> var(new_state(py, vy, HEIGHT, t)), 0:(HEIGHT - 1))
 
     # Assume that `T` is the answer:
-    #   T ≡ tx (modulo WIDTH)
-    #   T ≡ ty (modulo HEIGHT)
+    #   T ≡ b1 (modulo WIDTH)
+    #   T ≡ b2 (modulo HEIGHT)
+    # and
+    #   T = t1 + t2 * WIDTH
 
-    # Check the answer is exist or not
-    (d, p, _) = gcdx(WIDTH, HEIGHT)
-    @assert mod(tx, d) == mod(ty, d) "There is no solution"
+    # Garner's algorithm
+    # https://cp-algorithms.com/algebra/garners-algorithm.html
+    @assert gcd(WIDTH, HEIGHT) == 1 "Cannot use Garner's algorithm"
 
-    # We can solve this problem using the Chinese remainder theorem.
+    t1 = mod(b1, WIDTH)  # since 0 <= b1 < WIDTH, so `t1 = b1` is also acceptable
+
+    # t1 + t2 * WIDTH ≡ b2  (modulo HEIGHT)
+    #  -->
+    # t2 ≡ (b2 - t1) * WIDTH⁻¹ (module HEIGHT)
+    #  -->
+    # t2 = mod((b2 - t1) * invmod(WIDTH, HEIGHT), HEIGHT)
+    t1 + mod((b2 - t1) * invmod(WIDTH, HEIGHT), HEIGHT) * WIDTH
+
+    # Chinese remainder theorem version
     #
     # x ≡ b₁ (modulo m₁)
     # x ≡ b₂ (modulo m₂)
@@ -83,7 +94,12 @@ function d14_p2(fname::String = "input")
     # -->
     #   x = mod(X, m₁ * m₂)
     #     = mod(b₁ + ((b₂ - b₁) / d) * m₁ * p, m₁ * m₂)
-    mod(tx + div(ty - tx, d) * WIDTH * p, WIDTH * HEIGHT)
+    # ------------------------------------------------------
+    # Check the answer is exist or not
+    # (d, p, _) = gcdx(WIDTH, HEIGHT)
+    # @assert mod(b1 - b2, d) == 0 "There is no solution"
+    #
+    # mod(b1 + div(b2 - b1, d) * WIDTH * p, WIDTH * HEIGHT)
 end
 
 end #module
