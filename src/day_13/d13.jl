@@ -21,7 +21,7 @@ function play(claw1::NTuple{3, Int64}, claw2::NTuple{3, Int64})
         return nothing
     end
 
-    # If `b1 * a2 - b2 * a1` is equal to 0, another processes is required.
+    # If `b1 * a2 - b2 * a1` is equal to 0, another processing is required.
     # Fortunately, there were no such cases in the given data, so it cut corners.
     @assert !iszero(b1 * a2 - b2 * a1) "These two lines are parallel or coincident lines"
     B = (c1 * a2 - c2 * a1) / (b1 * a2 - b2 * a1)
