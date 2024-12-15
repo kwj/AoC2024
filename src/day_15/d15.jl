@@ -33,17 +33,6 @@ function move_robot!(whs::Array{Char, 2}, moves::Vector{CIdx{2}})
             push!(targets, p)
             next_p = p + dir
 
-            # cannot move forward in the `dir` direction
-            if whs[next_p] == '#'
-                empty!(targets)
-                break
-            end
-
-            # the point `p` can move in the `dir` direction
-            if whs[next_p] == '.'
-                continue
-            end
-
             # In the part 2, the `next_p` may already exist in the `queue`
             #
             #   @   (Try to press downward)
@@ -51,13 +40,25 @@ function move_robot!(whs::Array{Char, 2}, moves::Vector{CIdx{2}})
             #  [][]
             #   []  <--- These two blocks fall into the category of this case
             #
-            if next_p ∉ queue
-                push!(queue, next_p)
+            if next_p ∈ queue
+                continue
+            end
 
-                # The `dir` direction is up/down, and the `next_p` is a part of wide box
-                if iszero(dir[2]) && whs[next_p] ∈ wide_box
-                    push!(queue, next_p + adj_side_dir(whs[next_p]))
-                end
+            # the point `p` can move in the `dir` direction
+            if whs[next_p] == '.'
+                continue
+            end
+
+            # cannot move forward in the `dir` direction
+            if whs[next_p] == '#'
+                empty!(targets)
+                break
+            end
+
+            push!(queue, next_p)
+            # The `dir` direction is up/down, and the `next_p` is a part of wide box
+            if iszero(dir[2]) && whs[next_p] ∈ wide_box
+                push!(queue, next_p + adj_side_dir(whs[next_p]))
             end
         end
 
