@@ -81,7 +81,7 @@ end
 function calc_GPS_coordinates(whs::Array{Char, 2})
     gps = Set(['O', '['])
     mapreduce(+, findall(in(gps), whs)) do ci
-        x, y = Tuple(ci + CartesianIndex(-1, -1))
+        x, y = Tuple(ci + CIdx(-1, -1))
         100 * x + y
     end
 end
