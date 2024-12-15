@@ -24,27 +24,30 @@ function move_robot!(whs::Array{Char, 2}, moves::Vector{CIdx{2}})
     wide_box = Set(['[', ']'])
     adj_side_dir(x) =  x == '[' ? CIdx(0, 1) : CIdx(0, -1)
 
-    targets = Vector{CIdx{2}}()  # LIFO queue, aka stack
+    target_queue = Vector{CIdx{2}}()  # LIFO queue, aka stack
+    work_queue = Vector{CIdx{2}}()  # FIFO queue
     robot = findfirst(==('@'), whs)
-    for dir in moves
-        # Warning: the `targets` queue must be empty here!
-        # The following assertion code is not necessary for now but is a safeguard for future me
-        @assert isempty(targets) "the targets queue is not empty"
 
-        queue = [robot]  # FIFO queue
-        while !isempty(queue)
-            p = popfirst!(queue)
-            push!(targets, p)
+    for dir in moves
+        # Warning: the `target_queue` must be empty here!
+        # The following assertion code is not necessary for now but is a safeguard for future me
+        @assert isempty(target_queue) "the target queue is not empty"
+
+        empty!(work_queue)
+        push!(work_queue, robot)
+        while !isempty(work_queue)
+            p = popfirst!(work_queue)
+            push!(target_queue, p)
             next_p = p + dir
 
-            # In the part 2, the `next_p` may already exist in the `queue`
+            # In the part 2, the `next_p` may already exist in the `work_queue`
             #
             #   @   (Try to press downward)
             #   []
             #  [][]
             #   []  <--- These two blocks fall into the category of this case
             #
-            if next_p ∈ queue
+            if next_p ∈ work_queue
                 continue
             end
 
@@ -55,26 +58,26 @@ function move_robot!(whs::Array{Char, 2}, moves::Vector{CIdx{2}})
 
             # cannot move forward in the `dir` direction
             if whs[next_p] == '#'
-                empty!(targets)
+                empty!(target_queue)
                 break
             end
 
-            push!(queue, next_p)
+            push!(work_queue, next_p)
             if iszero(dir[2]) && whs[next_p] ∈ wide_box
-                # Add the another part of wide box to the `queue` when the `dir` direction
+                # Add the another part of wide box to the `work_queue` when the `dir` direction
                 # is up/down and the `next_p` is a part of a wide box
-                push!(queue, next_p + adj_side_dir(whs[next_p]))
+                push!(work_queue, next_p + adj_side_dir(whs[next_p]))
             end
         end
 
-        # When the `targets` queue is empty, it indicates that the robot cannot move
-        if isempty(targets)
+        # When the `target_queue` is empty, it indicates that the robot cannot move
+        if isempty(target_queue)
             continue
         end
 
         # Move the robot one step to the `dir` direction
-        while !isempty(targets)
-            ci = pop!(targets)
+        while !isempty(target_queue)
+            ci = pop!(target_queue)
             whs[ci], whs[ci + dir] = whs[ci + dir], whs[ci]
         end
         robot += dir
