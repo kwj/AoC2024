@@ -62,14 +62,17 @@ function move_robot!(whs::Array{Char, 2}, moves::Vector{CIdx{2}})
             end
         end
 
-        # When the `targets` queue isn't empty, it indicates that the robot can move
-        if !isempty(targets)
-            while !isempty(targets)
-                ci = pop!(targets)
-                whs[ci], whs[ci + dir] = whs[ci + dir], whs[ci]
-            end
-            robot += dir
+        # When the `targets` queue is empty, it indicates that the robot cannot move
+        if isempty(targets)
+            continue
         end
+
+        # Move the robot one step
+        while !isempty(targets)
+            ci = pop!(targets)
+            whs[ci], whs[ci + dir] = whs[ci + dir], whs[ci]
+        end
+        robot += dir
     end
 
     whs
