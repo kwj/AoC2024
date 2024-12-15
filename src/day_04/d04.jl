@@ -13,7 +13,7 @@ function d04_p1(fname::String = "input")
 
     @assert length(WORD) > 1 "the length of keyword must be longer than 1"
     acc = 0
-    for ci in findall(x -> x == first(WORD), data)
+    for ci in findall(==(first(WORD)), data)
         for delta = CIdx(-1, -1):CIdx(1, 1)
             if !checkbounds(Bool, data, ci + delta * (length(WORD) - 1))
                 continue

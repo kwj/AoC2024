@@ -34,7 +34,7 @@ end
 
 function d06_p1(fname::String = "input")
     grid = parse_file(fname)
-    start = findfirst(x -> x == '^', grid)
+    start = findfirst(==('^'), grid)
 
     path = check_grid(grid, [(start, 1)])  # direction: up(1)
     @assert !isnothing(path) "found a loop"
@@ -44,7 +44,7 @@ end
 
 function d06_p2(fname::String = "input")
     grid = parse_file(fname)
-    start = findfirst(x -> x == '^', grid)
+    start = findfirst(==('^'), grid)
 
     path = check_grid(grid, [(start, 1)])  # direction: up(1)
     @assert !isnothing(path) "found a loop"

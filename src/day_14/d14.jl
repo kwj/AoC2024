@@ -30,7 +30,7 @@ function d14_p1(fname::String = "input")
         cmp.(<, new_state(py, vy, HEIGHT, 100), div(HEIGHT, 2) + 1),
     )
     mapreduce(*, [[1, 1], [1, -1], [-1, 1], [-1, -1]]) do quad
-        count(x -> x == quad, eachrow(robots))
+        count(==(quad), eachrow(robots))
     end
 end
 
