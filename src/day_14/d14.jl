@@ -24,26 +24,14 @@ end
 function d14_p1(fname::String = "input")
     px, py, vx, vy = parse_file(fname)
 
-    grid = zeros(Int, WIDTH, HEIGHT)
-    for pos in eachrow(hcat(new_state(px, vx, WIDTH, 100), new_state(py, vy, HEIGHT, 100)))
-        grid[CartesianIndex(pos...)] += 1
-    end
-
-    # [grid]
-    #   +---------- H
-    #   | n1 | n3 |
-    #   |----+----|
-    #   | n2 | n4 |
-    #   |----------
-    #   W
-    #
     # Note: WIDTH and HEIGHT are odd numbers
-    n1 = grid[1:(WIDTH ÷ 2), 1:(HEIGHT ÷ 2)] |> sum
-    n2 = grid[(WIDTH ÷ 2 + 2):end, 1:(HEIGHT ÷ 2)] |> sum
-    n3 = grid[1:(WIDTH ÷ 2), (HEIGHT ÷ 2 + 2):end] |> sum
-    n4 = grid[(WIDTH ÷ 2 + 2):end, (HEIGHT ÷ 2 + 2):end] |> sum
-
-    n1 * n2 * n3 * n4
+    robots = hcat(
+        cmp.(<, new_state(px, vx, WIDTH, 100), div(WIDTH, 2) + 1),
+        cmp.(<, new_state(py, vy, HEIGHT, 100), div(HEIGHT, 2) + 1),
+    )
+    mapreduce(*, [[1, 1], [1, -1], [-1, 1], [-1, -1]]) do quad
+        count(x -> x == quad, eachrow(robots))
+    end
 end
 
 function d14_p2(fname::String = "input")
