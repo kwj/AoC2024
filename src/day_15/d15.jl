@@ -72,7 +72,7 @@ function move_robot!(whs::Array{Char, 2}, moves::Vector{CIdx{2}})
             continue
         end
 
-        # Move the robot one step
+        # Move the robot one step to the `dir` direction
         while !isempty(targets)
             ci = pop!(targets)
             whs[ci], whs[ci + dir] = whs[ci + dir], whs[ci]
