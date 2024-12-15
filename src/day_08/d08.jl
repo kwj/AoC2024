@@ -3,15 +3,17 @@ module Day08
 
 import Combinatorics: combinations
 
+const CIdx = CartesianIndex
+
 function parse_file(fname::String)
     first.(stack(split.(readlines(joinpath(@__DIR__, fname)), ""), dims = 1))
 end
 
 function get_antennas(grid::Array{Char, 2})
-    antennas = Dict{Char, Vector{CartesianIndex{2}}}()
+    antennas = Dict{Char, Vector{CIdx{2}}}()
     for ci in findall(x -> x != '.', grid)
         key = grid[ci]
-        antennas[key] = push!(get!(antennas, key, Vector{CartesianIndex{2}}()), ci)
+        antennas[key] = push!(get!(antennas, key, Vector{CIdx{2}}()), ci)
     end
 
     antennas
@@ -20,7 +22,7 @@ end
 function d08_p1(fname::String = "input")
     grid = parse_file(fname)
 
-    anti_nodes = Set{CartesianIndex{2}}()
+    anti_nodes = Set{CIdx{2}}()
     for lst in values(get_antennas(grid))
         for pos in combinations(lst, 2)
             v = pos[1] - pos[2]
@@ -34,7 +36,7 @@ end
 function d08_p2(fname::String = "input")
     grid = parse_file(fname)
 
-    anti_nodes = Set{CartesianIndex{2}}()
+    anti_nodes = Set{CIdx{2}}()
     for lst in values(get_antennas(grid))
         for pos in combinations(lst, 2)
             v = pos[1] - pos[2]

@@ -1,23 +1,25 @@
 
 module Day12
 
+const CIdx = CartesianIndex
+const CIndices = CartesianIndices
 const CHECKED = '\0'
-const DIRS = CartesianIndex.([(-1, 0), (0, 1), (1, 0), (0, -1)])
+const DIRS = CIdx.([(-1, 0), (0, 1), (1, 0), (0, -1)])
 
 function parse_file(fname::String)
     first.(stack(split.(readlines(joinpath(@__DIR__, fname)), ""), dims = 1))
 end
 
 function get_regions!(grid::Array{Char, 2})
-    regions = Vector{Set{CartesianIndex{2}}}()
+    regions = Vector{Set{CIdx{2}}}()
 
-    for idx in CartesianIndices(grid)
+    for idx in CIndices(grid)
         if grid[idx] == CHECKED
             continue
         end
 
         plant = grid[idx]
-        rgn = Set{CartesianIndex{2}}()
+        rgn = Set{CIdx{2}}()
 
         grid[idx] = CHECKED
         push!(rgn, idx)

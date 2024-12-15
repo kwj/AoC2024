@@ -1,14 +1,16 @@
 
 module Day06
 
+const CIdx = CartesianIndex
+
 # up(1), right(2), down(3), left(4)
-const STEP = CartesianIndex.([(-1, 0), (0, 1), (1, 0), (0, -1)])
+const STEP = CIdx.([(-1, 0), (0, 1), (1, 0), (0, -1)])
 
 function parse_file(fname::String)
     first.(stack(split.(readlines(joinpath(@__DIR__, fname)), ""), dims = 1))
 end
 
-function check_grid(grid::Array{Char, 2}, path::Vector{Tuple{CartesianIndex{2}, Int}})
+function check_grid(grid::Array{Char, 2}, path::Vector{Tuple{CIdx{2}, Int}})
     turn_right90(x) = mod1(x + 1, 4)
     pos, dir = path[end]
 
@@ -47,7 +49,7 @@ function d06_p2(fname::String = "input")
     path = check_grid(grid, [(start, 1)])  # direction: up(1)
     @assert !isnothing(path) "found a loop"
 
-    confirmed = Set{CartesianIndex{2}}([start])
+    confirmed = Set{CIdx{2}}([start])
     acc = 0
     for i = 1:(lastindex(path) - 1)
         next_pos = path[i + 1][1]
