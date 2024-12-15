@@ -28,8 +28,8 @@ function move_robot!(whs::Array{Char, 2}, moves::Vector{CIdx{2}})
     robot = findfirst(==('@'), whs)
     for dir in moves
         # Warning: the `targets` queue must be empty here!
-        # The following code is not necessary for now but is a safeguard for future me
-        empty!(targets)
+        # The following assertion code is not necessary for now but is a safeguard for future me
+        @assert isempty(targets) "the targets queue is not empty"
 
         queue = [robot]  # FIFO queue
         while !isempty(queue)
