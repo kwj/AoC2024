@@ -55,23 +55,24 @@ function d14_p2(fname::String = "input")
     b1 = argmin(t -> var(new_state(px, vx, WIDTH, t)), 0:(WIDTH - 1))
     b2 = argmin(t -> var(new_state(py, vy, HEIGHT, t)), 0:(HEIGHT - 1))
 
-    # Assume that `T` is the answer:
-    #   T ≡ b1 (modulo WIDTH)
-    #   T ≡ b2 (modulo HEIGHT)
-    # and
-    #   T = t1 + t2 * WIDTH
-
     # Garner's algorithm
     # https://cp-algorithms.com/algebra/garners-algorithm.html
     @assert gcd(WIDTH, HEIGHT) == 1 "Cannot use Garner's algorithm"
 
+    # Assume that `T = t1 + t2 * WIDTH` is the answer:
+    #   T ≡ b1 (modulo WIDTH)
+    #   T ≡ b2 (modulo HEIGHT)
     t1 = mod(b1, WIDTH)  # since 0 <= b1 < WIDTH, so `t1 = b1` is also acceptable
 
-    # t1 + t2 * WIDTH ≡ b2  (modulo HEIGHT)
+    # t1 + t2 * WIDTH ≡ b2 (modulo HEIGHT)
     #  -->
     # t2 ≡ (b2 - t1) * WIDTH⁻¹ (module HEIGHT)
     #  -->
     # t2 = mod((b2 - t1) * invmod(WIDTH, HEIGHT), HEIGHT)
+    #  -->
+    # T = t1 + t2 * WIDTH
+    #   = t1 + mod((b2 - t1) * invmod(WIDTH, HEIGHT), HEIGHT) * WIDTH
+    # ------------------------------------------------------
     t1 + mod((b2 - t1) * invmod(WIDTH, HEIGHT), HEIGHT) * WIDTH
 
     # Chinese remainder theorem version
