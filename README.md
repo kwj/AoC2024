@@ -29,8 +29,8 @@ The following packages were then used.
 * [Day 12: Garden Groups](./src/day_12/) d12_p1(), d12_p2()
 * [Day 13: Claw Contraption](./src/day_13/) d13_p1(), d13_p2()
 * [Day 14: Restroom Redoubt](./src/day_14/) d14_p1(), d14_p2()
+* [Day 15: Warehouse Woes](./src/day_15/) d15_p1(), d15_p2()
 <!--
-* [Day 15: ](./src/day_15/)
 * [Day 16: ](./src/day_16/)
 * [Day 17: ](./src/day_17/)
 * [Day 18: ](./src/day_18/)
