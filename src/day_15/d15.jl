@@ -107,7 +107,7 @@ function d15_p2(fname::String = "input")
 
         map(eachrow(whs)) do row
             Iterators.flatmap(c -> wider[c], row) |> collect
-        end |> stack |> permutedims
+        end |> m -> stack(m, dims = 1)
     end
 
     whs, moves = parse_file(fname)
