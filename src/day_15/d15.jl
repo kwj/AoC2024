@@ -24,9 +24,13 @@ function move_robot!(whs::Array{Char, 2}, moves::Vector{CIdx{2}})
     wide_box = Set(['[', ']'])
     adj_side_dir(x) =  x == '[' ? CIdx(0, 1) : CIdx(0, -1)
 
+    targets = Vector{CIdx{2}}()  # LIFO queue, aka stack
     robot = findfirst(==('@'), whs)
     for dir in moves
-        targets = Vector{CIdx{2}}()  # FILO queue
+        # Warning: the `targets` queue must be empty here!
+        # The following code is not necessary for now but is a safeguard for future me
+        empty!(targets)
+
         queue = [robot]  # FIFO queue
         while !isempty(queue)
             p = popfirst!(queue)
@@ -56,8 +60,9 @@ function move_robot!(whs::Array{Char, 2}, moves::Vector{CIdx{2}})
             end
 
             push!(queue, next_p)
-            # The `dir` direction is up/down, and the `next_p` is a part of wide box
             if iszero(dir[2]) && whs[next_p] ∈ wide_box
+                # Add the another part of wide box to the `queue` when the `dir` direction
+                # is up/down and the `next_p` is a part of a wide box
                 push!(queue, next_p + adj_side_dir(whs[next_p]))
             end
         end
