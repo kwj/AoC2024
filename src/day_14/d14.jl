@@ -18,7 +18,7 @@ function parse_file(fname::String)
 end
 
 function new_state(p::AbstractVector{Int}, v::AbstractVector{Int}, m::Int, t::Int)
-    mod1.(p + t .* v, m)
+    mod1.(p + t * v, m)
 end
 
 function d14_p1(fname::String = "input")
