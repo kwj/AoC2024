@@ -62,10 +62,12 @@ function move_robot!(whs::Array{Char, 2}, moves::Vector{CIdx{2}})
                 break
             end
 
+            # Add the `next_p` to the `work_queue` for later checking
             push!(work_queue, next_p)
+
+            # If the `dir` direction is up/down and the `next_p` is a wide box,
+            # add the another part of the wide box to the `work_queue` too.
             if iszero(dir[2]) && whs[next_p] ∈ wide_box
-                # Add the another part of wide box to the `work_queue` when the `dir` direction
-                # is up/down and the `next_p` is a part of a wide box
                 push!(work_queue, next_p + adj_side_dir(whs[next_p]))
             end
         end
