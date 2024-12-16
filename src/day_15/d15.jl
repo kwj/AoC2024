@@ -42,7 +42,7 @@ function move_robot!(whs::Array{Char, 2}, moves::Vector{CIdx{2}})
 
             # In the part 2, the `next_p` may already exist in the `check_queue`
             #
-            #   @   (Try to press downward)
+            #   @   (Move downward)
             #   []
             #  [][]
             #   []  <--- These two blocks fall into the category of this case
@@ -51,12 +51,12 @@ function move_robot!(whs::Array{Char, 2}, moves::Vector{CIdx{2}})
                 continue
             end
 
-            # the point `p` can move in the `dir` direction
+            # If the `next_p` is an empty space, the point `p` can move to the `dir` direction.
             if whs[next_p] == '.'
                 continue
             end
 
-            # cannot move forward in the `dir` direction
+            # The point `p` cannot move to the `dir` direction
             if whs[next_p] == '#'
                 empty!(target_queue)
                 break
@@ -66,7 +66,7 @@ function move_robot!(whs::Array{Char, 2}, moves::Vector{CIdx{2}})
             push!(check_queue, next_p)
 
             # If the `dir` direction is up/down and the `next_p` is a wide box,
-            # add the another part of the wide box to the `check_queue` too.
+            # add the position of the another part of the wide box to the `check_queue` too.
             if iszero(dir[2]) && whs[next_p] ∈ wide_box
                 push!(check_queue, next_p + adj_side_dir(whs[next_p]))
             end
