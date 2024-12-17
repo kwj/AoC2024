@@ -32,8 +32,8 @@ The following packages were then used.
 * [Day 14: Restroom Redoubt](./src/day_14/) d14_p1(), d14_p2()
 * [Day 15: Warehouse Woes](./src/day_15/) d15_p1(), d15_p2()
 * [Day 16: Reindeer Maze](./src/day_16/) d16_p1(), d16_p2()
+* [Day 17: Chronospatial Computer](./src/day_17/) d17_p1(), d17_p2()
 <!--
-* [Day 17: ](./src/day_17/)
 * [Day 18: ](./src/day_18/)
 * [Day 19: ](./src/day_19/)
 * [Day 20: ](./src/day_20/)
