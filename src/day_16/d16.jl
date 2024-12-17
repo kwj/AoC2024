@@ -103,13 +103,13 @@ end
 function d16_p2(fname::String = "input")
     to_2d_idx(ci::CIdx{3}) = CIdx(ci[1], ci[2])
 
-    function dfs(ci::CIdx{3}, visited::Set{CIdx{2}})
+    function dfs!(ci::CIdx{3}, visited::Set{CIdx{2}})
         push!(visited, to_2d_idx(ci))
 
         prevs = path_info[ci]
         if !isnothing(prevs)
             for prev_ci in prevs
-                dfs(prev_ci, visited)
+                dfs!(prev_ci, visited)
             end
         end
     end
@@ -124,7 +124,7 @@ function d16_p2(fname::String = "input")
     # in reverse order of where they came from
     goal = CIdx(Tuple(goal_2d)..., argmin(points[Tuple(goal_2d)..., :]))
     visited = Set{CIdx{2}}()
-    dfs(goal, visited)
+    dfs!(goal, visited)
 
     length(visited)
 end
