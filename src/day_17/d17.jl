@@ -88,14 +88,13 @@ end
 #=
 Observations of inputs and outputs, I felt the following points.
 
-  - Loop until the register of `A` is zero
-  - `A` is shifted 3 bits to the right in one loop
-  - The calculation of the output value does not seem particularly meaningful
+  - The seed value for calculation to output one-digit number is the lowest
+    3-bits of the register `A`
+  - The register `B` and `C` are overwritten with some values at the beginning of each loop
+  - The value of the register `A` is shifted 3-bits to the right on each loop
+  - Loop until the value of the register `A` is zero
 
-What is cleart that there is the relationship between the length of the output and
-the range of initial value of `A`.
-
-I therefore decided to search for the initial value of register `A` from the output result.
+I therefore decided to search for the initial value of the register `A` from the output result.
 =#
 function d17_p2(fname::String = "input")
     function dfs(a::Int64, n::Int64)
