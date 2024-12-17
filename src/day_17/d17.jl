@@ -99,6 +99,34 @@ the range of initial value of `A`.
 I therefore decided to search for the initial value of register `A` from the output result.
 =#
 function d17_p2(fname::String = "input")
+    function dfs(a::Int64, n::Int64)
+        for i = 0:7
+            if run_program!(Register(a + i, reg.B, reg.C), program) == program[n + 1:end]
+                if n == 0
+                    return a + i
+                end
+
+                result = dfs((a + i) << 3, n - 1)
+                if !isnothing(result)
+                    return result
+                end
+            end
+        end
+
+        nothing
+    end
+
+    reg, program = parse_file(fname)
+
+    result = dfs(0, length(program) - 1)
+    @assert !isnothing(result) "Can't find the answer"
+    result
+end
+
+#=
+# Initial version
+
+function d17_p2(fname::String = "input")
     reg, program = parse_file(fname)
 
     len = length(program)
@@ -115,6 +143,7 @@ function d17_p2(fname::String = "input")
 
     minimum(uppers)
 end
+=#
 
 end #module
 
