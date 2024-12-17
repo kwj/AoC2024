@@ -43,14 +43,21 @@ function dijkstra(maze::Array{Char, 2}, start::CIdx{3}, goal::CIdx{2})
         new_pt = points[crnt_idx] + inc
 
         if new_pt == points[new_idx]
+            # Merge
             push!(path_info[new_idx], crnt_idx)
         elseif new_pt < points[new_idx]
+            # Continue search
             path_info[new_idx] = [crnt_idx]
             points[new_idx] = new_pt
             pq[new_idx] = new_pt
         end
     end
 
+    # `points` and `path_info` arrays
+    #   [:, :, 1] - heading north
+    #   [:, :, 2] - heading east
+    #   [:, :, 3] - heading south
+    #   [:, :, 4] - heading west
     points = fill(typemax(Int), size(maze)..., 4)
     points[start] = 0
     path_info = Array{Union{Nothing, Vector{CIdx{3}}}}(nothing, size(maze)..., 4)
@@ -99,10 +106,10 @@ function d16_p2(fname::String = "input")
     function dfs(ci::CIdx{3}, visited::Set{CIdx{2}})
         push!(visited, to_2d_idx(ci))
 
-        nexts = path_info[ci]
-        if !isnothing(nexts)
-            for next_ci in nexts
-                dfs(next_ci, visited)
+        prevs = path_info[ci]
+        if !isnothing(prevs)
+            for prev_ci in prevs
+                dfs(prev_ci, visited)
             end
         end
     end
@@ -113,6 +120,8 @@ function d16_p2(fname::String = "input")
 
     points, path_info = dijkstra(maze, start, goal_2d)
 
+    # From the goal to the start, retrace all shortest paths
+    # in reverse order of where they came from
     goal = CIdx(Tuple(goal_2d)..., argmin(points[Tuple(goal_2d)..., :]))
     visited = Set{CIdx{2}}()
     dfs(goal, visited)
