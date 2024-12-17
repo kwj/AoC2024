@@ -82,15 +82,14 @@ end
 function d17_p1(fname::String = "input")
     reg, program = parse_file(fname)
 
-    buf = run_program!(reg, program)
-    println(join(string.(buf), ","))
+    println(join(string.(run_program!(reg, program)), ","))
 end
 
 #=
 Observations of inputs and outputs, I felt the following points.
 
   - Loop until the register of `A` is zero
-  - `A`` is shifted 3 bits to the right in one loop
+  - `A` is shifted 3 bits to the right in one loop
   - The calculation of the output value does not seem particularly meaningful
 
 What is cleart that there is the relationship between the length of the output and
