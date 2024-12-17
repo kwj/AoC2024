@@ -99,8 +99,8 @@ I therefore decided to search for the initial value of the register `A` from the
 function d17_p2(fname::String = "input")
     function dfs(a::Int64, n::Int64)
         for i = 0:7
-            if run_program!(Register(a + i, reg.B, reg.C), program) == program[n + 1:end]
-                if n == 0
+            if run_program!(Register(a + i, reg.B, reg.C), program) == program[n:end]
+                if n == 1
                     return a + i
                 end
 
@@ -116,8 +116,9 @@ function d17_p2(fname::String = "input")
 
     reg, program = parse_file(fname)
 
-    result = dfs(0, length(program) - 1)
+    result = dfs(0, length(program))
     @assert !isnothing(result) "Can't find the answer"
+
     result
 end
 
