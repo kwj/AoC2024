@@ -53,7 +53,8 @@ function d14_p2(fname::String = "input")
 
     # t1 + t2 * WIDTH ≡ b2 (modulo HEIGHT)
     #  -->
-    # t2 ≡ (b2 - t1) * WIDTH⁻¹ (module HEIGHT)
+    # t2 ≡ (b2 - t1) * WIDTH⁻¹ (modulo HEIGHT)
+    #    ≡ (b2 - t1) * invmod(WIDTH, HEIGHT) (modulo HEIGHT)
     #  -->
     # t2 = mod((b2 - t1) * invmod(WIDTH, HEIGHT), HEIGHT)
     #  -->
