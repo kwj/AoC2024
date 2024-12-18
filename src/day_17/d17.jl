@@ -95,6 +95,12 @@ Observations of inputs and outputs, I felt the following points.
   - Loop until the value of the register `A` is zero
 
 I therefore decided to search for the initial value of the register `A` from the output result.
+Specifically, they are as follows:
+
+  1. The number `a1` to determine the last one-digit of the output is in `0 <= a1 < 8`.
+  2. The number `a2` to determine the last two-digit of the output is in `a1 * 8 <= a2 < a1 * 8 + 8`.
+  3. The number `a3` to determine the last three-digit of the output is in `a2 * 8 <= a3 < a2 * 8 + 8`.
+    ...
 =#
 function d17_p2(fname::String = "input")
     function dfs(a::Int64, n::Int64)
