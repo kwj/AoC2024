@@ -8,7 +8,7 @@ function parse_file(fname::String)
     parse.(Int, stack(split.(readlines(joinpath(@__DIR__, fname)), ""), dims = 1))
 end
 
-function find_goals(grid::Array{Int, 2}, start::CIdx{2})
+function find_all_goals(grid::Array{Int, 2}, start::CIdx{2})
     reduce(1:9, init = [start]) do xs, n
         Iterators.flatmap(
             x -> x .+ NBRS |> filter(pos -> checkbounds(Bool, grid, pos) && grid[pos] == n),
@@ -21,7 +21,7 @@ function d10_p1(fname::String = "input")
     grid = parse_file(fname)
 
     mapreduce(+, findall(iszero, grid)) do ci
-        find_goals(grid, ci) |> unique |> length
+        find_all_goals(grid, ci) |> unique |> length
     end
 end
 
@@ -29,7 +29,7 @@ function d10_p2(fname::String = "input")
     grid = parse_file(fname)
 
     mapreduce(+, findall(iszero, grid)) do ci
-        find_goals(grid, ci) |> length
+        find_all_goals(grid, ci) |> length
     end
 end
 
