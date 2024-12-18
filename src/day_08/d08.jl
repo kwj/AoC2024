@@ -11,7 +11,7 @@ end
 
 function get_antennas(grid::Array{Char, 2})
     antennas = Dict{Char, Vector{CIdx{2}}}()
-    for ci in findall(x -> x != '.', grid)
+    for ci in findall(!=('.'), grid)
         key = grid[ci]
         antennas[key] = push!(get!(antennas, key, Vector{CIdx{2}}()), ci)
     end
