@@ -1,6 +1,10 @@
 
 module Day18
 
+#
+# TODO: To improve performance, try the binary search in part two.
+#
+
 import DataStructures: PriorityQueue, dequeue!
 
 const CIdx = CartesianIndex
