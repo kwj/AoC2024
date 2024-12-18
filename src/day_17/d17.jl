@@ -122,28 +122,6 @@ function d17_p2(fname::String = "input")
     result
 end
 
-#=
-# Initial version
-
-function d17_p2(fname::String = "input")
-    reg, program = parse_file(fname)
-
-    len = length(program)
-    uppers::Vector{Int64} = [(1 << (3 * len)) - 1]
-
-    for n in reverse(0:(len - 1))
-        block = 1 << (3 * n)
-        uppers = Iterators.flatmap(uppers) do upper
-            filter(Iterators.take(Iterators.countfrom(upper, -block), 8) |> collect) do x
-                run_program!(Register(x, reg.B, reg.C), program)[(n + 1):end] == program[(n + 1):end]
-            end
-        end |> collect
-    end
-
-    minimum(uppers)
-end
-=#
-
 end #module
 
 using .Day17: d17_p1, d17_p2
