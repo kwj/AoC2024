@@ -42,38 +42,38 @@ function run_program!(reg::Register, program::Vector{Int64})
 
     buf = Vector{Int64}()
 
-    ip = 1
+    ip = 1  # instruction pointer
     while ip < length(program)
+        # fetch
         opc = program[ip]
         opr = program[ip + 1]
+
+        # decode & execute
         if opc == ADV
             reg.A >>>= combo_operand(opr)
-            ip += 2
         elseif opc == BXL
             reg.B ⊻= opr
-            ip += 2
         elseif opc == BST
             reg.B = combo_operand(opr) & 0b111
-            ip += 2
         elseif opc == JNZ
-            if iszero(reg.A)
-                ip += 2
-            else
+            if !iszero(reg.A)
+                # set new address specified by the operand to the instruction
+                # pointer, and repeat cycle (jump to the fetch stage)
                 ip = opr + 1
+                continue
             end
         elseif opc == BXC
             reg.B ⊻= reg.C
-            ip += 2
         elseif opc == OUT
             push!(buf, combo_operand(opr) & 0b111)
-            ip += 2
         elseif opc == BDV
             reg.B = reg.A >>> combo_operand(opr)
-            ip += 2
         elseif opc == CDV
             reg.C = reg.A >>> combo_operand(opr)
-            ip += 2
         end
+
+        # set the next opcode address to the instruction pointer, and repeat cycle
+        ip += 2
     end
 
     buf
