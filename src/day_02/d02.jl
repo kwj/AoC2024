@@ -8,7 +8,7 @@ end
 function is_safe(lst::Vector{Int})
     diff_lst = lst[1:end - 1] - lst[2:end]
 
-    all(n -> 1 <= n <= 3, diff_lst) || all(n -> -3 <= n <= -1, diff_lst)
+    all(in(1:3), diff_lst) || all(in(-3:-1), diff_lst)
 end
 
 function is_probably_safe(lst::Vector{Int})
