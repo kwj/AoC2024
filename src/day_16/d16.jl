@@ -101,19 +101,6 @@ function d16_p1(fname::String = "input")
 end
 
 function d16_p2(fname::String = "input")
-    to_2d_idx(ci::CIdx{3}) = CIdx(ci[1], ci[2])
-
-    function dfs!(ci::CIdx{3}, visited::Set{CIdx{2}})
-        push!(visited, to_2d_idx(ci))
-
-        prevs = path_info[ci]
-        if !isnothing(prevs)
-            for prev_ci in prevs
-                dfs!(prev_ci, visited)
-            end
-        end
-    end
-
     maze = parse_file(fname)
     start = CIdx(Tuple(findfirst(==('S'), maze))..., 2)  # 2: East
     goal_2d = findfirst(==('E'), maze)
@@ -122,9 +109,22 @@ function d16_p2(fname::String = "input")
 
     # From the goal to the start, retrace all shortest paths
     # in reverse order of where they came from
+    to_2d_idx(ci::CIdx{3}) = CIdx(ci[1], ci[2])
     goal = CIdx(Tuple(goal_2d)..., argmin(points[Tuple(goal_2d)..., :]))
     visited = Set{CIdx{2}}()
-    dfs!(goal, visited)
+
+    queue = [goal]
+    while !isempty(queue)
+        ci = pop!(queue)
+        push!(visited, to_2d_idx(ci))
+
+        prevs = path_info[ci]
+        if !isnothing(prevs)
+            for prev_ci in prevs
+                push!(queue, prev_ci)
+            end
+        end
+    end
 
     length(visited)
 end
