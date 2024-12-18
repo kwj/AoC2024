@@ -17,11 +17,9 @@ end
 function dijkstra(grid::Array{Int, 2}, start::CIdx{2}, goal::CIdx{2})
     dest_tbl = fill(typemax(Int), size(grid)...)
     dest_tbl[start] = 0
-    prev_tbl = Array{Union{Nothing, CIdx{2}}}(nothing, size(grid)...)
 
     pq = PriorityQueue{CIdx{2}, Int}()
     pq[start] = 0
-
     while !isempty(pq)
         ci = dequeue!(pq)
         if ci == goal
@@ -33,7 +31,6 @@ function dijkstra(grid::Array{Int, 2}, start::CIdx{2}, goal::CIdx{2})
             new_dest = dest_tbl[ci] + 1
             if dest_tbl[adj] > new_dest
                 dest_tbl[adj] = new_dest
-                prev_tbl[adj] = ci
                 pq[adj] = new_dest
             end
         end
