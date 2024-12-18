@@ -110,8 +110,7 @@ function d17_p2(fname::String = "input")
                     return a + i
                 end
 
-                result = dfs((a + i) << 3, n - 1)
-                if !isnothing(result)
+                if (result = dfs((a + i) << 3, n - 1); !isnothing(result))
                     return result
                 end
             end
