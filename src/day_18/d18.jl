@@ -9,14 +9,18 @@ const DIRS = CIdx.([(-1, 0), (0, 1), (1, 0), (0, -1)])
 const X_SIZE = 71
 const Y_SIZE = 71
 
+const NUM_FALLING_OBJS = 1024
+
 function parse_file(fname::String)
     data = parse.(Int, stack(split.(readlines(joinpath(@__DIR__, fname)), ","), dims = 1)) .+ 1
     zip(data[:, 1], data[:, 2]) |> collect
 end
 
+# Get the lowest number of steps by Dijkstra's algorithm.
+# If there is no path to the goal, it returns 0.
 function dijkstra(grid::Array{Int, 2}, start::CIdx{2}, goal::CIdx{2})
-    dest_tbl = fill(typemax(Int), size(grid)...)
-    dest_tbl[start] = 0
+    dist_tbl = fill(typemax(Int), size(grid)...)
+    dist_tbl[start] = 0
 
     pq = PriorityQueue{CIdx{2}, Int}()
     pq[start] = 0
@@ -24,14 +28,14 @@ function dijkstra(grid::Array{Int, 2}, start::CIdx{2}, goal::CIdx{2})
         ci = dequeue!(pq)
         if ci == goal
             # Return the number of steps to the goal
-            return dest_tbl[goal]
+            return dist_tbl[goal]
         end
 
         for adj in filter(x -> checkbounds(Bool, grid, x) && iszero(grid[x]), ci .+ DIRS)
-            new_dest = dest_tbl[ci] + 1
-            if dest_tbl[adj] > new_dest
-                dest_tbl[adj] = new_dest
-                pq[adj] = new_dest
+            new_dist = dist_tbl[ci] + 1
+            if dist_tbl[adj] > new_dist
+                dist_tbl[adj] = new_dist
+                pq[adj] = new_dist
             end
         end
     end
@@ -45,7 +49,7 @@ function d18_p1(fname::String = "input")
     goal = CIdx(X_SIZE, Y_SIZE)
     grid = zeros(Int, X_SIZE, Y_SIZE)
 
-    for pos in parse_file(fname)[1:1024]
+    for pos in parse_file(fname)[1:NUM_FALLING_OBJS]
         grid[pos...] = 1
     end
 
@@ -57,16 +61,16 @@ function d18_p2(fname::String = "input")
     goal = CIdx(X_SIZE, Y_SIZE)
     grid = zeros(Int, X_SIZE, Y_SIZE)
 
-    falling_bytes = parse_file(fname)
+    falling_objs = parse_file(fname)
 
     # binary search
-    L = 1024
-    R = length(falling_bytes)
+    L = NUM_FALLING_OBJS
+    R = lastindex(falling_objs)
     while L + 1 < R
         fill!(grid, 0)
 
         m = div(L + R, 2)
-        for pos in falling_bytes[1:m]
+        for pos in falling_objs[1:m]
             grid[pos...] = 1
         end
         if iszero(dijkstra(grid, start, goal))
@@ -76,7 +80,7 @@ function d18_p2(fname::String = "input")
         end
     end
 
-    x, y = falling_bytes[R] .- 1
+    x, y = falling_objs[R] .- 1
     println(x, ",", y)
 end
 
