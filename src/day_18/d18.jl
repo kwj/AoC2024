@@ -61,16 +61,16 @@ function d18_p2(fname::String = "input")
     goal = CIdx(X_SIZE, Y_SIZE)
     grid = zeros(Int, X_SIZE, Y_SIZE)
 
-    falling_objs = parse_file(fname)
+    all_objects = parse_file(fname)
 
     # binary search
     L = NUM_FALLING_OBJS
-    R = lastindex(falling_objs)
+    R = lastindex(all_objects)
     while L + 1 < R
         fill!(grid, 0)
 
         m = div(L + R, 2)
-        for pos in falling_objs[1:m]
+        for pos in all_objects[1:m]
             grid[pos...] = 1
         end
         if iszero(dijkstra(grid, start, goal))
@@ -80,7 +80,7 @@ function d18_p2(fname::String = "input")
         end
     end
 
-    x, y = falling_objs[R] .- 1
+    x, y = all_objects[R] .- 1
     println(x, ",", y)
 end
 
