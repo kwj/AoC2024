@@ -15,9 +15,9 @@ function is_possible(design::AbstractString, towels::Vector{SubString{String}})
         return true
     end
 
-    any(towels) do towel
-        if startswith(design, towel)
-            is_possible((@view design[length(towel) + 1:end]), towels)
+    any(towels) do x
+        if startswith(design, x)
+            is_possible((@view design[length(x) + 1:end]), towels)
         else
             false
         end
