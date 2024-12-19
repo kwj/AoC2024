@@ -63,6 +63,7 @@ function d14_p2(fname::String = "input")
     # ------------------------------------------------------
     t1 + mod((b2 - t1) * invmod(WIDTH, HEIGHT), HEIGHT) * WIDTH
 
+
     # Chinese remainder theorem version
     #
     # x ≡ b₁ (modulo m₁)
