@@ -25,30 +25,26 @@ function is_possible(design::AbstractString, towels::Vector{SubString{String}})
 end
 
 function count_combinations(design::AbstractString, towels::Vector{SubString{String}}, memo::Dict{String, Int})
-    function aux(d::AbstractString)
-        if haskey(memo, d)
-            return memo[d]
-        end
-
-        if iszero(length(d))
-            return 1
-        end
-
-        ret = sum(towels) do towel
-            if startswith(d, towel)
-                aux(@view d[length(towel) + 1:end])
-            else
-                0
-            end
-        end
-        if !haskey(memo, ret)
-            memo[d] = ret
-        end
-
-        ret
+    if haskey(memo, design)
+        return memo[design]
     end
 
-    aux(design)
+    if iszero(length(design))
+        return 1
+    end
+
+    ret = sum(towels) do x
+        if startswith(design, x)
+            count_combinations((@view design[length(x) + 1:end]), towels, memo)
+        else
+            0
+        end
+    end
+    if !haskey(memo, ret)
+        memo[design] = ret
+    end
+
+    ret
 end
 
 function d19_p1(fname::String = "input")
