@@ -24,7 +24,7 @@ function is_possible(design::AbstractString, towels::Vector{SubString{String}})
     end
 end
 
-function count_combinations(design::AbstractString, towels::Vector{SubString{String}}, memo::Dict{String, Int})
+function count_combinations(design::AbstractString, towels::Vector{SubString{String}}, memo::Dict{String, Int64})
     if haskey(memo, design)
         return memo[design]
     end
@@ -55,7 +55,7 @@ end
 
 function d19_p2(fname::String = "input")
     towels, designs = parse_file(fname)
-    memo = Dict{String, Int}()
+    memo = Dict{String, Int64}()
 
     sum(design -> count_combinations(design, towels, memo), designs)
 end
