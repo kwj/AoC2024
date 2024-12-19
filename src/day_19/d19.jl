@@ -64,6 +64,51 @@ function d19_p2(fname::String = "input")
     sum(design -> count_combinations(design, towels, memo), designs)
 end
 
+
+#=
+alternative version: a little slow
+
+function parse_file(fname::String)
+    data = readlines(joinpath(@__DIR__, fname))
+
+    towels = map(t -> (t, length(t)), split(data[1], ", "))
+    designs = data[3:end]
+
+    towels, designs
+end
+
+function find_combinations(design::String, towels::Vector{Tuple{SubString{String}, Int}})
+    memo = Dict{Int, Int}()
+
+    function aux(idx::Int)
+        if idx > length(design)
+            1
+        else
+            get!(memo, idx) do
+                mapreduce(+, filter(x -> startswith(design[idx:end], x[1]), towels), init = 0) do towel
+                    aux(idx + towel[2])
+                end
+            end
+        end
+    end
+
+    aux(1)
+end
+
+function d19_p1(fname::String = "input")
+    towels, designs = parse_file(fname)
+
+    count(design -> !iszero(find_combinations(design, towels)), designs)
+end
+
+function d19_p2(fname::String = "input")
+    towels, designs = parse_file(fname)
+
+    sum(design -> find_combinations(design, towels), designs)
+end
+
+=#
+
 end #module
 
 using .Day19: d19_p1, d19_p2
