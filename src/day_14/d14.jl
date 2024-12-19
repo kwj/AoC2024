@@ -37,10 +37,10 @@ function d14_p2(fname::String = "input")
     px, py, vx, vy = parse_file(fname)
 
     # I guess that the picture will be complete when robots are gathered.
-    # I therefore search for the timings when the variances of
+    # I therefore search for the timings when the population variances of
     # px and py are smallest in the first cycle of each.
-    b1 = argmin(t -> var(new_state(px, vx, WIDTH, t)), 0:(WIDTH - 1))
-    b2 = argmin(t -> var(new_state(py, vy, HEIGHT, t)), 0:(HEIGHT - 1))
+    b1 = argmin(t -> var(new_state(px, vx, WIDTH, t), corrected = false), 0:(WIDTH - 1))
+    b2 = argmin(t -> var(new_state(py, vy, HEIGHT, t), corrected = false), 0:(HEIGHT - 1))
 
     # Garner's algorithm
     # https://cp-algorithms.com/algebra/garners-algorithm.html
