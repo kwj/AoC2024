@@ -17,7 +17,7 @@ function is_possible(design::AbstractString, towels::Vector{SubString{String}})
 
     any(towels) do towel
         if startswith(design, towel)
-            is_possible(design[length(towel) + 1:end], towels)
+            is_possible((@view design[length(towel) + 1:end]), towels)
         else
             false
         end
@@ -36,7 +36,7 @@ function count_combinations(design::AbstractString, towels::Vector{SubString{Str
 
         ret = sum(towels) do towel
             if startswith(d, towel)
-                aux(d[length(towel) + 1:end])
+                aux(@view d[length(towel) + 1:end])
             else
                 0
             end
@@ -66,7 +66,7 @@ end
 
 
 #=
-alternative version: a little slow
+alternative version:
 
 function parse_file(fname::String)
     data = readlines(joinpath(@__DIR__, fname))
@@ -85,7 +85,7 @@ function find_combinations(design::String, towels::Vector{Tuple{SubString{String
             1
         else
             get!(memo, idx) do
-                mapreduce(+, filter(x -> startswith(design[idx:end], x[1]), towels), init = 0) do towel
+                mapreduce(+, filter(x -> startswith((@view design[idx:end]), x[1]), towels), init = 0) do towel
                     aux(idx + towel[2])
                 end
             end
