@@ -4,6 +4,7 @@ module Day20
 import DataStructures: PriorityQueue, dequeue!
 
 const CIdx = CartesianIndex
+const CIndices = CartesianIndices
 
 struct Delta
     move::CIdx{2}
@@ -37,7 +38,7 @@ function dijkstra(maze::Array{Char, 2}, start::CIdx{2}, goal::CIdx{2})
     end
 
     visit_map = Dict{CIdx{2}, Int}()
-    map(eachindex(IndexCartesian(), dist_tbl)) do ci
+    foreach(CIndices(dist_tbl)) do ci
         if dist_tbl[ci] != typemax(Int)
             visit_map[ci] = dist_tbl[ci]
         end
