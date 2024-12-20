@@ -5,6 +5,11 @@ import DataStructures: PriorityQueue, dequeue!
 
 const CIdx = CartesianIndex
 
+struct Delta
+    move::CIdx{2}
+    dist::Int
+end
+
 function parse_file(fname::String)
     first.(stack(split.(readlines(joinpath(@__DIR__, fname)), ""), dims = 1))
 end
@@ -45,14 +50,14 @@ end
 function count_savings(visited::Dict{CIdx{2}, Int}, dist::Int, thr::Int)
     delta_lst = filter(collect(Iterators.product(-dist:dist, -dist:dist))) do (x, y)
         abs(x) + abs(y) <= dist && !(x == 0 && y == 0)
-    end |> lst -> map(x -> CIdx(x), lst)
+    end |> lst -> map(x -> Delta(CIdx(x), abs(x[1]) + abs(x[2])), lst)
 
     acc = 0
     for ci in keys(visited)
-        for delta in delta_lst
-            new_ci = ci + delta
+        for d in delta_lst
+            new_ci = ci + d.move
             if haskey(visited, new_ci) && visited[ci] < visited[new_ci]
-                if (visited[new_ci] - visited[ci]) - (abs(delta[1]) + abs(delta[2])) >= thr
+                if (visited[new_ci] - visited[ci]) - d.dist >= thr
                     acc += 1
                 end
             end
