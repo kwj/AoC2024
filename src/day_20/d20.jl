@@ -37,27 +37,27 @@ function dijkstra(maze::Array{Char, 2}, start::CIdx{2}, goal::CIdx{2})
         end
     end
 
-    visited_map = Dict{CIdx{2}, Int}()
+    distance_map = Dict{CIdx{2}, Int}()
     foreach(CIndices(dist_tbl)) do ci
         if dist_tbl[ci] != typemax(Int)
-            visited_map[ci] = dist_tbl[ci]
+            distance_map[ci] = dist_tbl[ci]
         end
     end
 
-    visited_map
+    distance_map
 end
 
-function count_savings(visited::Dict{CIdx{2}, Int}, dist::Int, thr::Int)
-    delta_lst = filter(collect(Iterators.product(-dist:dist, -dist:dist))) do (x, y)
-        abs(x) + abs(y) <= dist && !(x == 0 && y == 0)
+function count_savings(dist_map::Dict{CIdx{2}, Int}, cheat_dur::Int, thr::Int)
+    delta_lst = filter(collect(Iterators.product(-cheat_dur:cheat_dur, -cheat_dur:cheat_dur))) do (x, y)
+        1 < abs(x) + abs(y) <= cheat_dur
     end |> lst -> map(x -> Delta(CIdx(x), abs(x[1]) + abs(x[2])), lst)
 
     acc = 0
-    for src in keys(visited)
+    for src in keys(dist_map)
         for d in delta_lst
             dest = src + d.move
-            if haskey(visited, dest) && visited[dest] > visited[src]
-                if (visited[dest] - visited[src]) - d.dist >= thr
+            if haskey(dist_map, dest) && dist_map[dest] > dist_map[src]
+                if (dist_map[dest] - dist_map[src]) - d.dist >= thr
                     acc += 1
                 end
             end
