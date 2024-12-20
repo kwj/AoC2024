@@ -46,7 +46,7 @@ function dijkstra(maze::Array{Char, 2}, start::CIdx{2}, goal::CIdx{2})
     visit_map
 end
 
-# dist: Manhattan distance
+# Note: `dist` is a Manhattan distance
 function count_savings(visited::Dict{CIdx{2}, Int}, dist::Int, thr::Int)
     delta_lst = filter(collect(Iterators.product(-dist:dist, -dist:dist))) do (x, y)
         abs(x) + abs(y) <= dist && !(x == 0 && y == 0)
