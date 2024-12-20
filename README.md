@@ -10,7 +10,6 @@ I used the Julia programming language.
 
 The following packages were then used.
 
-- [Combinatorics.jl](https://github.com/JuliaMath/Combinatorics.jl) v1.0.2
 - [DataStructures.jl](https://github.com/JuliaCollections/DataStructures.jl) v0.18.20
 - Statistics v1.11.1 (It's distributd with Julia)
 

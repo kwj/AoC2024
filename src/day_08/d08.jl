@@ -1,8 +1,6 @@
 
 module Day08
 
-import Combinatorics: combinations
-
 const CIdx = CartesianIndex
 
 function parse_file(fname::String)
@@ -23,10 +21,10 @@ function d08_p1(fname::String = "input")
     grid = parse_file(fname)
 
     anti_nodes = Set{CIdx{2}}()
-    for lst in values(get_antennas(grid))
-        for pos in combinations(lst, 2)
-            v = pos[1] - pos[2]
-            push!(anti_nodes, pos[1] + v, pos[2] - v)
+    for ants in values(get_antennas(grid))
+        for i = firstindex(ants):(lastindex(ants) - 1), j = (i + 1):lastindex(ants)
+            v = ants[i] - ants[j]
+            push!(anti_nodes, ants[i] + v, ants[j] - v)
         end
     end
 
@@ -37,20 +35,20 @@ function d08_p2(fname::String = "input")
     grid = parse_file(fname)
 
     anti_nodes = Set{CIdx{2}}()
-    for lst in values(get_antennas(grid))
-        for pos in combinations(lst, 2)
-            v = pos[1] - pos[2]
+    for ants in values(get_antennas(grid))
+        for i = firstindex(ants):(lastindex(ants) - 1), j = (i + 1):lastindex(ants)
+            v = ants[i] - ants[j]
 
-            p1 = pos[1]
-            while checkbounds(Bool, grid, p1)
-                push!(anti_nodes, p1)
-                p1 += v
+            p = ants[i]
+            while checkbounds(Bool, grid, p)
+                push!(anti_nodes, p)
+                p += v
             end
 
-            p2 = pos[2]
-            while checkbounds(Bool, grid, p2)
-                push!(anti_nodes, p2)
-                p2 -= v
+            p = ants[j]
+            while checkbounds(Bool, grid, p)
+                push!(anti_nodes, p)
+                p -= v
             end
         end
     end
