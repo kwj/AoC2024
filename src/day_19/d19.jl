@@ -55,45 +55,28 @@ end
 
 
 #=
-alternative version:
+alternative version: a little slow
 
-function parse_file(fname::String)
-    data = readlines(joinpath(@__DIR__, fname))
-
-    towels = map(t -> (t, length(t)), split(data[1], ", "))
-    designs = data[3:end]
-
-    towels, designs
+function count_combinations(design::String, towels::Vector{Towel})
+    count_combinations_aux(1, design, towels, Dict{Int, Int}())
 end
 
-function find_combinations(design::String, towels::Vector{Tuple{SubString{String}, Int}})
-    memo = Dict{Int, Int}()
-
-    function aux(idx::Int)
-        if idx > length(design)
-            1
-        else
-            get!(memo, idx) do
-                mapreduce(+, filter(x -> startswith((@view design[idx:end]), x[1]), towels), init = 0) do towel
-                    aux(idx + towel[2])
-                end
+function count_combinations_aux(idx::Int, design::String, towels::Vector{Towel}, memo::Dict{Int64, Int64})
+    if idx > length(design)
+        1
+    else
+        get!(memo, idx) do
+            mapreduce(+, filter(x -> startswith((@view design[idx:end]), x.pattern), towels), init = 0) do towel
+                count_combinations_aux(idx + towel.len, design, towels, memo)
             end
         end
     end
-
-    aux(1)
-end
-
-function d19_p1(fname::String = "input")
-    towels, designs = parse_file(fname)
-
-    count(design -> !iszero(find_combinations(design, towels)), designs)
 end
 
 function d19_p2(fname::String = "input")
     towels, designs = parse_file(fname)
 
-    sum(design -> find_combinations(design, towels), designs)
+    sum(design -> count_combinations(design, towels), designs)
 end
 
 =#
