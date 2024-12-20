@@ -44,7 +44,7 @@ end
 # dist: Manhattan distance
 function count_savings(visited::Dict{CIdx{2}, Int}, dist::Int, thr::Int)
     delta_lst = filter(collect(Iterators.product(-dist:dist, -dist:dist))) do (x, y)
-        !(x == 0 && y == 0) && abs(x) + abs(y) <= dist
+        abs(x) + abs(y) <= dist && !(x == 0 && y == 0)
     end |> lst -> map(x -> CIdx(x), lst)
 
     acc = 0
@@ -67,8 +67,7 @@ function d20_p1(fname::String = "input"; thr::Int = 100)
     start = findfirst(==('S'), maze)
     goal = findfirst(==('E'), maze)
 
-    visited = dijkstra(maze, start, goal)
-    count_savings(visited, 2, thr)
+    count_savings(dijkstra(maze, start, goal), 2, thr)
 end
 
 function d20_p2(fname::String = "input"; thr::Int = 100)
@@ -76,8 +75,7 @@ function d20_p2(fname::String = "input"; thr::Int = 100)
     start = findfirst(==('S'), maze)
     goal = findfirst(==('E'), maze)
 
-    visited = dijkstra(maze, start, goal)
-    count_savings(visited, 20, thr)
+    count_savings(dijkstra(maze, start, goal), 20, thr)
 end
 
 end #module
