@@ -72,6 +72,7 @@ function d20_p1(fname::String = "input"; thr::Int = 100)
     start = findfirst(==('S'), maze)
     goal = findfirst(==('E'), maze)
 
+    @assert thr > 0 "The threshold must be greater than 0"
     count_savings(dijkstra(maze, start, goal), 2, thr)
 end
 
@@ -80,6 +81,7 @@ function d20_p2(fname::String = "input"; thr::Int = 100)
     start = findfirst(==('S'), maze)
     goal = findfirst(==('E'), maze)
 
+    @assert thr > 0 "The threshold must be greater than 0"
     count_savings(dijkstra(maze, start, goal), 20, thr)
 end
 
