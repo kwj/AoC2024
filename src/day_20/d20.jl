@@ -53,11 +53,11 @@ function count_savings(visited::Dict{CIdx{2}, Int}, dist::Int, thr::Int)
     end |> lst -> map(x -> Delta(CIdx(x), abs(x[1]) + abs(x[2])), lst)
 
     acc = 0
-    for ci in keys(visited)
+    for src in keys(visited)
         for d in delta_lst
-            new_ci = ci + d.move
-            if haskey(visited, new_ci) && visited[ci] < visited[new_ci]
-                if (visited[new_ci] - visited[ci]) - d.dist >= thr
+            dest = src + d.move
+            if haskey(visited, dest) && visited[dest] > visited[src]
+                if (visited[dest] - visited[src]) - d.dist >= thr
                     acc += 1
                 end
             end
