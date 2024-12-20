@@ -61,7 +61,7 @@ function count_savings(maze::Array{Char, 2}, cheat_dur::Int, thr::Int)
     for src in keys(dist_map)
         for d in delta_lst
             dest = src + d.move
-            if haskey(dist_map, dest) && dist_map[dest] > dist_map[src]
+            if haskey(dist_map, dest)
                 if (dist_map[dest] - dist_map[src]) - d.dist >= thr
                     acc += 1
                 end
