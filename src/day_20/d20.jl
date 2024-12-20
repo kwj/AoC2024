@@ -62,22 +62,22 @@ function count_savings(visited::Dict{CIdx{2}, Int}, dist::Int, thr::Int)
     acc
 end
 
-function d20_p1(fname::String = "input")
+function d20_p1(fname::String = "input"; thr::Int = 100)
     maze = parse_file(fname)
     start = findfirst(==('S'), maze)
     goal = findfirst(==('E'), maze)
 
     visited = dijkstra(maze, start, goal)
-    count_savings(visited, 2, 100)
+    count_savings(visited, 2, thr)
 end
 
-function d20_p2(fname::String = "input")
+function d20_p2(fname::String = "input"; thr::Int = 100)
     maze = parse_file(fname)
     start = findfirst(==('S'), maze)
     goal = findfirst(==('E'), maze)
 
     visited = dijkstra(maze, start, goal)
-    count_savings(visited, 20, 100)
+    count_savings(visited, 20, thr)
 end
 
 end #module
