@@ -21,7 +21,7 @@ function d01_p2(fname::String = "input")
         dic[x] = get(dic, x, 0) + x
     end
 
-    mapreduce(x -> get(dic, x, 0), +, left)
+    sum(get(dic, x, 0) for x in left)
 end
 
 end #module
