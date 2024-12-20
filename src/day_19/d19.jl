@@ -16,7 +16,7 @@ function parse_file(fname::String)
 end
 
 function is_possible(d::AbstractString, towels::Vector{Towel})
-    iszero(length(d)) || any(towels) do x
+    isempty(d) || any(towels) do x
         if startswith(d, x.pattern)
             is_possible((@view d[x.len + 1:end]), towels)
         else
