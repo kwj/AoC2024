@@ -24,27 +24,23 @@ function is_possible(design::AbstractString, towels::Vector{SubString{String}})
     end
 end
 
-function count_combinations(design::AbstractString, towels::Vector{SubString{String}}, memo::Dict{String, Int64})
-    if haskey(memo, design)
-        return memo[design]
-    end
-
-    if iszero(length(design))
+function count_combinations(d::AbstractString, towels::Vector{SubString{String}}, memo::Dict{String, Int64})
+    if iszero(length(d))
         return 1
     end
 
-    ret = sum(towels) do x
-        if startswith(design, x)
-            count_combinations((@view design[length(x) + 1:end]), towels, memo)
-        else
-            0
+    # I don't know the reason why using the `get!()` function increases number of memory allocations.
+    if !haskey(memo, d)
+        memo[d] = sum(towels) do x
+            if startswith(d, x)
+                count_combinations((@view d[length(x) + 1:end]), towels, memo)
+            else
+                0
+            end
         end
     end
-    if !haskey(memo, ret)
-        memo[design] = ret
-    end
 
-    ret
+    memo[d]
 end
 
 function d19_p1(fname::String = "input")
