@@ -36,9 +36,12 @@ end
 function d14_p2(fname::String = "input")
     px, py, vx, vy = parse_file(fname)
 
-    # I guess that the picture will be complete when robots are gathered.
-    # I therefore search for the timings when the population variances of
-    # px and py are smallest in the first cycle of each.
+    # The problem statement says that most of the robots should arrange
+    # themselves INTO a picture of a Christmas tree when the picture
+    # is appeared.
+    #
+    # So, I first find the timings when the variances of px and py are
+    # lowest in the first cycle of each.
     b1 = argmin(t -> var(new_state(px, vx, WIDTH, t), corrected = false), 0:(WIDTH - 1))
     b2 = argmin(t -> var(new_state(py, vy, HEIGHT, t), corrected = false), 0:(HEIGHT - 1))
 
@@ -46,7 +49,7 @@ function d14_p2(fname::String = "input")
     # https://cp-algorithms.com/algebra/garners-algorithm.html
     @assert gcd(WIDTH, HEIGHT) == 1 "Cannot use Garner's algorithm"
 
-    # Assume that `T = t1 + t2 * WIDTH` is the answer:
+    # Assume that the answer T is equal to `t1 + t2 * WIDTH`.
     #   T ≡ b1 (modulo WIDTH)
     #   T ≡ b2 (modulo HEIGHT)
     t1 = mod(b1, WIDTH)  # since 0 <= b1 < WIDTH, so `t1 = b1` is also acceptable
