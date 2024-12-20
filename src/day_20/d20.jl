@@ -37,17 +37,22 @@ function dijkstra(maze::Array{Char, 2}, start::CIdx{2}, goal::CIdx{2})
         end
     end
 
-    distance_map = Dict{CIdx{2}, Int}()
+    dist_map = Dict{CIdx{2}, Int}()
     foreach(CIndices(dist_tbl)) do ci
         if dist_tbl[ci] != typemax(Int)
-            distance_map[ci] = dist_tbl[ci]
+            dist_map[ci] = dist_tbl[ci]
         end
     end
 
-    distance_map
+    dist_map
 end
 
-function count_savings(dist_map::Dict{CIdx{2}, Int}, cheat_dur::Int, thr::Int)
+function count_savings(maze::Array{Char, 2}, cheat_dur::Int, thr::Int)
+    start = findfirst(==('S'), maze)
+    goal = findfirst(==('E'), maze)
+    @assert !isnothing(start) && !isnothing(goal) "invalid map"
+
+    dist_map = dijkstra(maze, start, goal)
     delta_lst = filter(collect(Iterators.product(-cheat_dur:cheat_dur, -cheat_dur:cheat_dur))) do (x, y)
         1 < abs(x) + abs(y) <= cheat_dur
     end |> lst -> map(x -> Delta(CIdx(x), abs(x[1]) + abs(x[2])), lst)
@@ -68,21 +73,15 @@ function count_savings(dist_map::Dict{CIdx{2}, Int}, cheat_dur::Int, thr::Int)
 end
 
 function d20_p1(fname::String = "input"; thr::Int = 100)
-    maze = parse_file(fname)
-    start = findfirst(==('S'), maze)
-    goal = findfirst(==('E'), maze)
-
     @assert thr > 0 "The threshold must be greater than 0"
-    count_savings(dijkstra(maze, start, goal), 2, thr)
+
+    count_savings(parse_file(fname), 2, thr)
 end
 
 function d20_p2(fname::String = "input"; thr::Int = 100)
-    maze = parse_file(fname)
-    start = findfirst(==('S'), maze)
-    goal = findfirst(==('E'), maze)
-
     @assert thr > 0 "The threshold must be greater than 0"
-    count_savings(dijkstra(maze, start, goal), 20, thr)
+
+    count_savings(parse_file(fname), 20, thr)
 end
 
 end #module
