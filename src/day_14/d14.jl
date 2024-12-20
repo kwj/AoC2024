@@ -52,7 +52,8 @@ function d14_p2(fname::String = "input")
     # Assume that the answer T is equal to `t1 + t2 * WIDTH`.
     #   T ≡ b1 (modulo WIDTH)
     #   T ≡ b2 (modulo HEIGHT)
-    t1 = mod(b1, WIDTH)  # since 0 <= b1 < WIDTH, so `t1 = b1` is also acceptable
+    #
+    # Since 0 <= b1 < WIDTH, so assume that t1 = b1
 
     # t1 + t2 * WIDTH ≡ b2 (modulo HEIGHT)
     #  -->
@@ -60,11 +61,12 @@ function d14_p2(fname::String = "input")
     #    ≡ (b2 - t1) * invmod(WIDTH, HEIGHT) (modulo HEIGHT)
     #  -->
     # t2 = mod((b2 - t1) * invmod(WIDTH, HEIGHT), HEIGHT)
+    #    = mod((b2 - b1) * invmod(WIDTH, HEIGHT), HEIGHT)
     #  -->
     # T = t1 + t2 * WIDTH
-    #   = t1 + mod((b2 - t1) * invmod(WIDTH, HEIGHT), HEIGHT) * WIDTH
+    #   = b1 + mod((b2 - b1) * invmod(WIDTH, HEIGHT), HEIGHT) * WIDTH
     # ------------------------------------------------------
-    t1 + mod((b2 - t1) * invmod(WIDTH, HEIGHT), HEIGHT) * WIDTH
+    b1 + mod((b2 - b1) * invmod(WIDTH, HEIGHT), HEIGHT) * WIDTH
 
 
     # Chinese remainder theorem version
