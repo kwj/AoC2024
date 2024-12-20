@@ -37,14 +37,14 @@ function dijkstra(maze::Array{Char, 2}, start::CIdx{2}, goal::CIdx{2})
         end
     end
 
-    visit_map = Dict{CIdx{2}, Int}()
+    visited_map = Dict{CIdx{2}, Int}()
     foreach(CIndices(dist_tbl)) do ci
         if dist_tbl[ci] != typemax(Int)
-            visit_map[ci] = dist_tbl[ci]
+            visited_map[ci] = dist_tbl[ci]
         end
     end
 
-    visit_map
+    visited_map
 end
 
 function count_savings(visited::Dict{CIdx{2}, Int}, dist::Int, thr::Int)
