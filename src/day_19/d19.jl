@@ -10,14 +10,10 @@ function parse_file(fname::String)
     towels, designs
 end
 
-function is_possible(design::AbstractString, towels::Vector{SubString{String}})
-    if iszero(length(design))
-        return true
-    end
-
-    any(towels) do x
-        if startswith(design, x)
-            is_possible((@view design[length(x) + 1:end]), towels)
+function is_possible(d::AbstractString, towels::Vector{SubString{String}})
+    iszero(length(d)) || any(towels) do x
+        if startswith(d, x)
+            is_possible((@view d[length(x) + 1:end]), towels)
         else
             false
         end
@@ -25,10 +21,6 @@ function is_possible(design::AbstractString, towels::Vector{SubString{String}})
 end
 
 function count_combinations(d::AbstractString, towels::Vector{SubString{String}}, memo::Dict{String, Int64})
-    if iszero(length(d))
-        return 1
-    end
-
     # I don't know the reason why using the `get!()` function increases number of memory allocations.
     if !haskey(memo, d)
         memo[d] = sum(towels) do x
@@ -51,7 +43,7 @@ end
 
 function d19_p2(fname::String = "input")
     towels, designs = parse_file(fname)
-    memo = Dict{String, Int64}()
+    memo = Dict{String, Int64}("" => 1)
 
     sum(design -> count_combinations(design, towels, memo), designs)
 end
