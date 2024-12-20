@@ -11,8 +11,9 @@ function parse_file(fname::String)
     tpl = stack(
         map(readlines(joinpath(@__DIR__, fname))) do line
             parse.(Int, match(re, line).captures)
-        end
-    ) |> eachrow
+        end,
+        dims = 1
+    ) |> eachcol
 
     tpl[1] .+ 1, tpl[2] .+ 1, tpl[3], tpl[4]
 end
