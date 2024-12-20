@@ -41,28 +41,36 @@ function d14_p2(fname::String = "input")
     # themselves INTO a picture of a Christmas tree when the picture
     # is appeared.
     #
-    # So, I first find the timings when the variances of px and py are
-    # lowest in the first cycle of each.
+    # I first find the timings when the variances of px and py are lowest
+    # in the first cycle of each. These smallest variances mean the timings when
+    # many robots are clustered in each of the vertical and horizontal directions.
     b1 = argmin(t -> var(new_state(px, vx, WIDTH, t), corrected = false), 0:(WIDTH - 1))
     b2 = argmin(t -> var(new_state(py, vy, HEIGHT, t), corrected = false), 0:(HEIGHT - 1))
+
+    # Assume that T is the timing at which most of the robots gather both
+    # vertically and horizontally, the following equations hold:
+    #
+    #   T ≡ b1 (modulo WIDTH)
+    #   T ≡ b2 (modulo HEIGHT)
+    #
+    # So, this is a problem about the Chinese remainder theorem.
 
     # Garner's algorithm
     # https://cp-algorithms.com/algebra/garners-algorithm.html
     @assert gcd(WIDTH, HEIGHT) == 1 "Cannot use Garner's algorithm"
-
-    # Assume that the answer T is equal to `t1 + t2 * WIDTH`.
-    #   T ≡ b1 (modulo WIDTH)
-    #   T ≡ b2 (modulo HEIGHT)
     #
-    # Since 0 <= b1 < WIDTH, so assume that t1 = b1
-
+    # Assume that T is equal to `t1 + t2 * WIDTH`.
+    #
     # t1 + t2 * WIDTH ≡ b2 (modulo HEIGHT)
     #  -->
     # t2 ≡ (b2 - t1) * WIDTH⁻¹ (modulo HEIGHT)
     #    ≡ (b2 - t1) * invmod(WIDTH, HEIGHT) (modulo HEIGHT)
     #  -->
     # t2 = mod((b2 - t1) * invmod(WIDTH, HEIGHT), HEIGHT)
-    #    = mod((b2 - b1) * invmod(WIDTH, HEIGHT), HEIGHT)
+    #
+    # Since 0 <= b1 < WIDTH, so assume that t1 is equal to b1
+    #  -->
+    # t2 = mod((b2 - b1) * invmod(WIDTH, HEIGHT), HEIGHT)
     #  -->
     # T = t1 + t2 * WIDTH
     #   = b1 + mod((b2 - b1) * invmod(WIDTH, HEIGHT), HEIGHT) * WIDTH
@@ -70,7 +78,7 @@ function d14_p2(fname::String = "input")
     b1 + mod((b2 - b1) * invmod(WIDTH, HEIGHT), HEIGHT) * WIDTH
 
 
-    # Chinese remainder theorem version
+    # Note: Chinese remainder theorem version
     #
     # x ≡ b₁ (modulo m₁)
     # x ≡ b₂ (modulo m₂)
