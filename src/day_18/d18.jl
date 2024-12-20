@@ -44,15 +44,19 @@ function dijkstra(grid::Array{Int, 2}, start::CIdx{2}, goal::CIdx{2})
     0
 end
 
+# Note: The matrix referenced by the argument `grid` is modified
+function drop_objects!(grid::Array{Int, 2}, objects::Vector{NTuple{2, Int}}, n::Int)
+    foreach(x -> grid[x...] = 1, objects[1:n])
+end
+
 function d18_p1(fname::String = "input")
     start = CIdx(1, 1)
     goal = CIdx(X_SIZE, Y_SIZE)
     grid = zeros(Int, X_SIZE, Y_SIZE)
 
-    for pos in parse_file(fname)[1:NUM_FALLING_OBJS]
-        grid[pos...] = 1
-    end
+    all_objects = parse_file(fname)
 
+    drop_objects!(grid, all_objects, NUM_FALLING_OBJS)
     dijkstra(grid, start, goal)
 end
 
@@ -70,9 +74,7 @@ function d18_p2(fname::String = "input")
         fill!(grid, 0)
 
         m = div(L + R, 2)
-        for pos in all_objects[1:m]
-            grid[pos...] = 1
-        end
+        drop_objects!(grid, all_objects, m)
         if iszero(dijkstra(grid, start, goal))
             R = m
         else
@@ -80,8 +82,7 @@ function d18_p2(fname::String = "input")
         end
     end
 
-    x, y = all_objects[R] .- 1
-    println(x, ",", y)
+    join(all_objects[R] .- 1, ",")
 end
 
 end #module
