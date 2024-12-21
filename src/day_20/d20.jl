@@ -1,8 +1,6 @@
 
 module Day20
 
-import DataStructures: PriorityQueue, dequeue!
-
 const CIdx = CartesianIndex
 const CIndices = CartesianIndices
 
