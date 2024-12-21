@@ -15,26 +15,16 @@ function parse_file(fname::String)
     first.(stack(split.(readlines(joinpath(@__DIR__, fname)), ""), dims = 1))
 end
 
-function dijkstra(maze::Array{Char, 2}, start::CIdx{2}, goal::CIdx{2})
+function get_path_info(grid::Array{Char, 2}, start::CIdx{2}, goal::CIdx{2})
     DIRS = CIdx.([(-1, 0), (0, 1), (1, 0), (0, -1)])
-    dist_tbl = fill(typemax(Int), size(maze)...)
-    dist_tbl[start] = 0
+    dist_tbl = fill(typemax(Int), size(grid)...)
 
-    pq = PriorityQueue{CIdx{2}, Int}()
-    pq[start] = 0
-    while !isempty(pq)
-        ci = dequeue!(pq)
-        if ci == goal
-            break
-        end
-
-        for new_ci in filter(x -> checkbounds(Bool, maze, x) && maze[x] != '#', ci .+ DIRS)
-            new_dist = dist_tbl[ci] + 1
-            if dist_tbl[new_ci] > new_dist
-                dist_tbl[new_ci] = new_dist
-                pq[new_ci] = new_dist
-            end
-        end
+    dist_tbl[start] = dist = 0
+    pos = start
+    while pos != goal
+        pos = first(filter(x -> grid[x] != '#' && dist_tbl[x] == typemax(Int), pos .+ DIRS))
+        dist += 1
+        dist_tbl[pos] = dist
     end
 
     dist_map = Dict{CIdx{2}, Int}()
@@ -47,12 +37,12 @@ function dijkstra(maze::Array{Char, 2}, start::CIdx{2}, goal::CIdx{2})
     dist_map
 end
 
-function count_savings(maze::Array{Char, 2}, cheat_dur::Int, thr::Int)
-    start = findfirst(==('S'), maze)
-    goal = findfirst(==('E'), maze)
+function count_savings(grid::Array{Char, 2}, cheat_dur::Int, thr::Int)
+    start = findfirst(==('S'), grid)
+    goal = findfirst(==('E'), grid)
     @assert !isnothing(start) && !isnothing(goal) "invalid map"
 
-    dist_map = dijkstra(maze, start, goal)
+    dist_map = get_path_info(grid, start, goal)
     delta_lst = filter(collect(Iterators.product(-cheat_dur:cheat_dur, -cheat_dur:cheat_dur))) do (x, y)
         1 < abs(x) + abs(y) <= cheat_dur
     end |> lst -> map(x -> Delta(CIdx(x), abs(x[1]) + abs(x[2])), lst)
