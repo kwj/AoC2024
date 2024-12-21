@@ -27,14 +27,7 @@ function get_path_info(grid::Array{Char, 2}, start::CIdx{2}, goal::CIdx{2})
         dist_tbl[pos] = dist
     end
 
-    dist_map = Dict{CIdx{2}, Int}()
-    foreach(CIndices(dist_tbl)) do ci
-        if dist_tbl[ci] != typemax(Int)
-            dist_map[ci] = dist_tbl[ci]
-        end
-    end
-
-    dist_map
+    dist_tbl
 end
 
 function count_savings(grid::Array{Char, 2}, cheat_dur::Int, thr::Int)
@@ -42,17 +35,17 @@ function count_savings(grid::Array{Char, 2}, cheat_dur::Int, thr::Int)
     goal = findfirst(==('E'), grid)
     @assert !isnothing(start) && !isnothing(goal) "invalid map"
 
-    dist_map = get_path_info(grid, start, goal)
     delta_lst = filter(collect(Iterators.product(-cheat_dur:cheat_dur, -cheat_dur:cheat_dur))) do (x, y)
         1 < abs(x) + abs(y) <= cheat_dur
     end |> lst -> map(x -> Delta(CIdx(x), abs(x[1]) + abs(x[2])), lst)
 
+    dist_tbl = get_path_info(grid, start, goal)
     acc = 0
-    for src in keys(dist_map)
+    for x in findall(!=(typemax(Int)), dist_tbl)
         for d in delta_lst
-            dest = src + d.move
-            if haskey(dist_map, dest)
-                if (dist_map[dest] - dist_map[src]) - d.dist >= thr
+            y = x + d.move
+            if checkbounds(Bool, dist_tbl, y) && dist_tbl[y] != typemax(Int)
+                if dist_tbl[y] - dist_tbl[x] - d.dist >= thr
                     acc += 1
                 end
             end
