@@ -29,7 +29,7 @@ function get_path_info(grid::Array{Char, 2}, start::CIdx{2}, goal::CIdx{2})
     dist_tbl
 end
 
-function count_savings(grid::Array{Char, 2}, cheat_dur::Int, thr::Int)
+function count_cheats(grid::Array{Char, 2}, cheat_dur::Int, thr::Int)
     start = findfirst(==('S'), grid)
     goal = findfirst(==('E'), grid)
     @assert !isnothing(start) && !isnothing(goal) "invalid map"
@@ -57,13 +57,13 @@ end
 function d20_p1(fname::String = "input"; thr::Int = 100)
     @assert thr > 0 "The threshold must be greater than 0"
 
-    count_savings(parse_file(fname), 2, thr)
+    count_cheats(parse_file(fname), 2, thr)
 end
 
 function d20_p2(fname::String = "input"; thr::Int = 100)
     @assert thr > 0 "The threshold must be greater than 0"
 
-    count_savings(parse_file(fname), 20, thr)
+    count_cheats(parse_file(fname), 20, thr)
 end
 
 end #module
