@@ -2,7 +2,6 @@
 module Day20
 
 const CIdx = CartesianIndex
-const CIndices = CartesianIndices
 
 struct Delta
     move::CIdx{2}
