@@ -13,6 +13,7 @@ function parse_file(fname::String)
     first.(stack(split.(readlines(joinpath(@__DIR__, fname)), ""), dims = 1))
 end
 
+# Note: There is only a single path from the start to the end, with no branches.
 function get_path_info(grid::Array{Char, 2}, start::CIdx{2}, goal::CIdx{2})
     DIRS = CIdx.([(-1, 0), (0, 1), (1, 0), (0, -1)])
     dist_tbl = fill(typemax(Int), size(grid)...)
@@ -33,11 +34,11 @@ function count_savings(grid::Array{Char, 2}, cheat_dur::Int, thr::Int)
     goal = findfirst(==('E'), grid)
     @assert !isnothing(start) && !isnothing(goal) "invalid map"
 
+    dist_tbl = get_path_info(grid, start, goal)
     delta_lst = filter(collect(Iterators.product(-cheat_dur:cheat_dur, -cheat_dur:cheat_dur))) do (x, y)
         1 < abs(x) + abs(y) <= cheat_dur
     end |> lst -> map(x -> Delta(CIdx(x), abs(x[1]) + abs(x[2])), lst)
 
-    dist_tbl = get_path_info(grid, start, goal)
     acc = 0
     for x in findall(!=(typemax(Int)), dist_tbl)
         for d in delta_lst
