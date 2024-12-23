@@ -56,6 +56,7 @@ function make_costmap(n_robots::Int)
     # between each key is 0, and the cost of pressing a key is 1.
     base_costmap = CostMap()
     for x in keys(dpad_map), y in keys(dpad_map)
+        (isnothing(x) || isnothing(y)) && continue
         base_costmap[x, y] = 1
     end
 
