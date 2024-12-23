@@ -35,14 +35,14 @@ function next_costmap(pad_map::Dict{Key, Pos}, base_costmap::CostMap; cnt = 1)
             # Note: Reason for adding an `A`
             # Indirect input requires pressing the activate key `A` after the move.
             if pad_map[s][2] == not_key[2] && pad_map[d][1] == not_key[1]
-                keys = [hs * vs * "A"]
+                mv_keys = [hs * vs * "A"]
             elseif pad_map[s][1] == not_key[1] && pad_map[d][2] == not_key[2]
-                keys = [vs * hs * "A"]
+                mv_keys = [vs * hs * "A"]
             else
-                keys = [hs * vs * "A", vs * hs * "A"]
+                mv_keys = [hs * vs * "A", vs * hs * "A"]
             end
 
-            new_map[s, d] = minimum(sum(base_costmap[tpl...] for tpl in zip("A" * k, k)) for k in keys)
+            new_map[s, d] = minimum(sum(base_costmap[tpl...] for tpl in zip("A" * k, k)) for k in mv_keys)
         end
 
         base_costmap = copy(new_map)
