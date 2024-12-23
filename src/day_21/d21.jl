@@ -32,6 +32,8 @@ function next_costmap(pad_map::Dict{Key, Pos}, base_costmap::CostMap; cnt = 1)
             vs = (delta[1] > 0 ? 'v' : '^') ^ abs(delta[1])
             hs = (delta[2] > 0 ? '>' : '<') ^ abs(delta[2])
 
+            # Note: Reason for adding an `A`
+            # Indirect input requires pressing the activate key `A` after the move.
             if pad_map[s][2] == not_key[2] && pad_map[d][1] == not_key[1]
                 keys = [hs * vs * "A"]
             elseif pad_map[s][1] == not_key[1] && pad_map[d][2] == not_key[2]
@@ -50,6 +52,8 @@ function next_costmap(pad_map::Dict{Key, Pos}, base_costmap::CostMap; cnt = 1)
 end
 
 function make_costmap(n_robots::Int)
+    # Since this keypad is used directly by a human, the cost of the movement
+    # between each key is 0, and only the of pressing it is 1.
     base_costmap = CostMap()
     for x in keys(dpad_map), y in keys(dpad_map)
         base_costmap[x, y] = 1
