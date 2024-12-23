@@ -52,8 +52,8 @@ function next_costmap(pad_map::Dict{Key, Pos}, base_costmap::CostMap; cnt = 1)
 end
 
 function make_costmap(n_robots::Int)
-    # Since this keypad is used directly by a human, the cost of the movement
-    # between each key is 0, and only the of pressing it is 1.
+    # If a keypad is used directly by a human, the cost of the movement
+    # between each key is 0, and the cost of pressing a key is 1.
     base_costmap = CostMap()
     for x in keys(dpad_map), y in keys(dpad_map)
         base_costmap[x, y] = 1
