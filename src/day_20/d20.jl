@@ -12,7 +12,9 @@ function parse_file(fname::String)
     first.(stack(split.(readlines(joinpath(@__DIR__, fname)), ""), dims = 1))
 end
 
-# Note: There is only a single path from the start to the end, with no branches.
+# Note:
+# The problem statements says there is only a single path from the start to the end.
+# In addition, I assume that there are NO BRANCHES.
 function get_path_info(grid::Array{Char, 2}, start::CIdx{2}, goal::CIdx{2})
     DIRS = CIdx.([(-1, 0), (0, 1), (1, 0), (0, -1)])
     dist_tbl = fill(typemax(Int), size(grid)...)
