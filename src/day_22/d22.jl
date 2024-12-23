@@ -6,14 +6,14 @@ module Day22
 32 = 2^5
 2048 = 2^11
 
-modulo 16777216
-  = 0x1000000 = 0b1000000000000000000000000
+modulo 16777216 = bitwise `AND` operation with 0xFFFFFFFF
+  16777216 = 0x1000000 = 0b1000000000000000000000000
 =#
 
 function next_secret(n::Int)
-    n = (n ⊻ (n << 6)) & 0xffffff
-    n = (n ⊻ (n >> 5)) & 0xffffff
-    n = (n ⊻ (n << 11)) & 0xffffff
+    n = (n ⊻ (n << 6)) & 0xFFFFFF
+    n = (n ⊻ (n >> 5)) & 0xFFFFFF
+    n = (n ⊻ (n << 11)) & 0xFFFFFF
 
     n
 end
