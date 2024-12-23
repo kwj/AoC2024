@@ -14,7 +14,7 @@ end
 
 # Note:
 # The problem statements says there is only a single path from the start to the end.
-# In addition, I assume that there are NO BRANCHES.
+# So, there are NO BRANCHES in the grid.
 function get_path_info(grid::Array{Char, 2}, start::CIdx{2}, goal::CIdx{2})
     DIRS = CIdx.([(-1, 0), (0, 1), (1, 0), (0, -1)])
     dist_tbl = fill(typemax(Int), size(grid)...)
