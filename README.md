@@ -35,8 +35,8 @@ The following packages were then used.
 * [Day 18: RAM Run](./src/day_18/d18.jl) d18_p1(), d18_p2()
 * [Day 19: Linen Layout](./src/day_19/d19.jl) d19_p1(), d19_p2()
 * [Day 20: Race Condition](./src/day_20/d20.jl) d20_p1(), d20_p2()
+* [Day 21: Keypad Conundrum](./src/day_21/d21.jl) d21_p1(), d21_p2()
 <!--
-* [Day 21: ](./src/day_21/d21.jl)
 * [Day 22: ](./src/day_22/d22.jl)
 * [Day 23: ](./src/day_23/d23.jl)
 * [Day 24: ](./src/day_24/d24.jl)
