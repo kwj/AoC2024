@@ -22,6 +22,8 @@ function parse_file(fname::String)
     map(x -> parse(Int, x), readlines(joinpath(@__DIR__, fname)))
 end
 
+const Key = NTuple{4, Int}
+
 function d22_p1(fname::String = "input")
     function repeat_func(n::Int, cnt::Int)
         foreach(_ -> n = next_secret(n), 1:cnt)
@@ -34,26 +36,25 @@ end
 
 function d22_p2(fname::String = "input")
     data = parse_file(fname)
-    memory_size = 4
-    prices = fill(0, 2001)
-    total_bananas = Dict{NTuple{4, Int}, Int}()
-    seen = Set{NTuple{4, Int}}()
+    total_bananas = Dict{Key, Int}()
+    seen = Set{Key}()
 
     for n in data
         empty!(seen)
-        for i = 1:2000
-            prices[i] = mod(n, 10)
-            n = next_secret(n)
-        end
-        prices[end] = mod(n, 10)
+        key::Key = (0, 0, 0, 0)
 
-        diff = prices[2:end] - prices[1:end - 1]
-        for i = 1:(length(diff) - memory_size + 1)
-            key = Tuple(view(diff, i:(i + memory_size - 1)))
-            if key ∉ seen
-                total_bananas[key] = get(total_bananas, key, 0) + prices[i + memory_size]
+        prev_price = mod(n, 10)
+        for idx = 1:2000
+            n = next_secret(n)
+            price = mod(n, 10)
+            key = (key[2], key[3], key[4], price - prev_price)
+
+            if key ∉ seen && idx >= 4
+                total_bananas[key] = get(total_bananas, key, 0) + price
                 push!(seen, key)
             end
+
+            prev_price = price
         end
     end
 
