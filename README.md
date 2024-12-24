@@ -37,8 +37,8 @@ The following packages were then used.
 * [Day 20: Race Condition](./src/day_20/d20.jl) d20_p1(), d20_p2()
 * [Day 21: Keypad Conundrum](./src/day_21/d21.jl) d21_p1(), d21_p2()
 * [Day 22: Monkey Market](./src/day_22/d22.jl) d22_p1(), d22_p2()
+* [Day 23: LAN Party](./src/day_23/d23.jl) d23_p1(), d23_p2()
 <!--
-* [Day 23: ](./src/day_23/d23.jl)
 * [Day 24: ](./src/day_24/d24.jl)
 * [Day 25: ](./src/day_25/d25.jl)
 -->
