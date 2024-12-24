@@ -35,13 +35,22 @@ end
 gamma(g::UDGraph, x::String) = g.adj_map[x]
 degree(g::UDGraph, x::String) = length(gamma(g, x))
 
+function all_maximal_cliques(G::UDGraph)
+    cliques = Vector{Vector{String}}()
+
+    for clq in Channel(c -> expand!(CliqueState(G), Set(keys(G.adj_map)), Set(keys(G.adj_map)), c))
+        push!(cliques, clq)
+    end
+
+    cliques
+end
+
 function expand!(state::CliqueState, subg::Set{String}, cand::Set{String}, c::Channel)
     if isempty(subg)
         put!(c, copy(state.Q))
     else
         pivot = argmax(x -> degree(state.graph, x), subg)
-        r_cpl = setdiff(cand, gamma(state.graph, pivot))
-        for q in r_cpl
+        for q in setdiff(cand, gamma(state.graph, pivot))
             push!(state.Q, q)
 
             q_nbrs = gamma(state.graph, q)
@@ -88,16 +97,7 @@ end
 function d23_p2(fname::String = "input")
     G = parse_file(fname)
 
-    max_len = 0
-    max_clique = ""
-    for clq in Channel(c -> expand!(CliqueState(G), Set(keys(G.adj_map)), Set(keys(G.adj_map)), c))
-        if length(clq) > max_len
-            max_len = length(clq)
-            max_clique = clq
-        end
-    end
-
-    join(sort(max_clique), ",")
+    join(sort(argmax(length, all_maximal_cliques(G))), ",")
 end
 
 end #module
