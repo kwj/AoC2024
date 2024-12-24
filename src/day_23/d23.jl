@@ -37,17 +37,14 @@ degree(g::UDGraph, x::String) = length(gamma(g, x))
 
 function all_maximal_cliques(G::UDGraph)
     cliques = Vector{Vector{String}}()
-
-    for clq in Channel(c -> expand!(CliqueState(G), Set(keys(G.adj_map)), Set(keys(G.adj_map)), c))
-        push!(cliques, clq)
-    end
+    expand!(CliqueState(G), Set(keys(G.adj_map)), Set(keys(G.adj_map)), cliques)
 
     cliques
 end
 
-function expand!(state::CliqueState, subg::Set{String}, cand::Set{String}, c::Channel)
+function expand!(state::CliqueState, subg::Set{String}, cand::Set{String}, result::Vector{Vector{String}})
     if isempty(subg)
-        put!(c, copy(state.Q))
+        push!(result, copy(state.Q))
     else
         pivot = argmax(x -> degree(state.graph, x), subg)
         for q in setdiff(cand, gamma(state.graph, pivot))
@@ -56,7 +53,7 @@ function expand!(state::CliqueState, subg::Set{String}, cand::Set{String}, c::Ch
             q_nbrs = gamma(state.graph, q)
             subg_q = subg ∩ q_nbrs
             cand_q = cand ∩ q_nbrs
-            expand!(state, subg_q, cand_q, c)
+            expand!(state, subg_q, cand_q, result)
 
             pop!(cand, q)
             pop!(state.Q)
