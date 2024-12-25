@@ -27,7 +27,6 @@ function d25_p1(fname::String = "input")
 
     lock_n = map(m -> map(count, eachcol(m)), lock)
     key_n = map(m -> map(count, eachcol(m)), key)
-    height = size(lock[1], 1)
 
     acc = 0
     for (i, j) in Iterators.product(1:lastindex(lock), 1:lastindex(key))
