@@ -59,7 +59,7 @@ function to_decimal(wires::Dict{String, Bool}, prefix::Char)
     ans
 end
 
-function simulate!(wires::Dict{String, Bool}, gates::Vector{LogicGate})
+function simulate(wires::Dict{String, Bool}, gates::Vector{LogicGate})
     next_gates = Vector{LogicGate}()
     while !isempty(gates)
         empty!(next_gates)
@@ -79,7 +79,7 @@ end
 function d24_p1(fname::String = "input")
     wires, gates = parse_file(fname)
 
-    simulate!(wires, gates)
+    simulate(wires, gates)
 end
 
 #=
@@ -280,7 +280,7 @@ function d24_p2(fname::String = "input")
     y = to_decimal(C.wires, 'y')
     x_y = x + y
 
-    simulate!(C.wires, C.gates)
+    simulate(C.wires, C.gates)
     z = to_decimal(C.wires, 'z')
 
     @printf "x = %d, y = %d, x + y = %d\n" x y x_y
