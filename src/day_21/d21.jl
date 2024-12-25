@@ -51,16 +51,18 @@ function next_costmap(pad_map::Dict{Key, Pos}, base_costmap::CostMap; cnt = 1)
     new_map
 end
 
-function make_costmap(n_robots::Int)
+function make_costmap(n_indirect_keypad::Int)
+    @assert n_indirect_keypad > 0 "invalid parameter"
+
     # If a keypad is used directly by a human, the cost of the movement
     # between each key is 0, and the cost of pressing a key is 1.
-    base_costmap = CostMap()
+    direct_dpad_costmap = CostMap()
     for x in keys(dpad_map), y in keys(dpad_map)
         (isnothing(x) || isnothing(y)) && continue
-        base_costmap[x, y] = 1
+        direct_dpad_costmap[x, y] = 1
     end
 
-    next_costmap(npad_map, next_costmap(dpad_map, base_costmap, cnt = n_robots))
+    next_costmap(npad_map, next_costmap(dpad_map, direct_dpad_costmap, cnt = n_indirect_keypad))
 end
 
 function parse_file(fname::String)
