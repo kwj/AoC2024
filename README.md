@@ -39,9 +39,7 @@ The following packages were then used.
 * [Day 22: Monkey Market](./src/day_22/d22.jl) d22_p1(), d22_p2()
 * [Day 23: LAN Party](./src/day_23/d23.jl) d23_p1(), d23_p2()
 * [Day 24: Crossed Wires](./src/day_24/d24.jl) d24_p1(), d24_p2()
-<!--
-* [Day 25: ](./src/day_25/d25.jl)
--->
+* [Day 25: Code Chronicle](./src/day_25/d25.jl) d25_p1()
 
 ## How to use
 
