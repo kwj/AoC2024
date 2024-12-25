@@ -245,6 +245,9 @@ function fix_adder(c::Circuit, tpl::Tuple{Int, Vector{LogicGate}})
         return AND.out
     else
         # Full adder
+        #
+        # The following process assumes that there is at most one failure,
+        # two output lines are only swapped, per an adder.
         for i = 1:(lastindex(ns) - 1), j = 2:lastindex(ns)
             # swap
             lg_vec[i].out, lg_vec[j].out = lg_vec[j].out, lg_vec[i].out
