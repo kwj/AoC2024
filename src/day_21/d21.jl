@@ -19,6 +19,51 @@ const npad_keys::Array{Key, 2} = [
 ]
 const npad_map = Dict{Key, Pos}(v => k for (k, v) in pairs(IndexCartesian(), npad_keys))
 
+#=
+  H: Human
+  R: Robot
+  P: Keypad (directional or numerical)
+  ---: Wired connection
+  ==>: Robot's arm
+
+The situation of Part 1 (Two directional keypads that robots are using):
+
+  indoor |         outdoor            | indoor
+     [H] |  [R]      [R]      [R]     |
+         | +---+    +---+    +---+    |
+      P--|---. |==>|P|  |==>|P|  |==>|P|
+         | +---+    +---+    +---+    |
+
+If there are no robots:
+
+      indoor
+     [H]
+   direct |P|
+    input
+
+If there are no indirect directional keypads:
+
+  indoor |  outdoor | indoor
+     [H] |  [R]     |
+         | +---+    |   029A -->
+      P--|---. |==>|P|    <A ^A >^^A vvvA
+         | +---+    |
+
+If there is one indirect directional keypad:
+
+  indoor |      outdoor      | indoor
+     [H] |  [R]      [R]     |
+         | +---+    +---+    |    <A | ^A | >^^A | vvvA -->
+      P--|---. |==>|P|  |==>|P|     v<<A >>^A | <A >A | vA <^A A >A | <vA A A >^A
+         | +---+    +---+    |
+=#
+
+# keystroke movement by robot's arm (Starting with the `A` key)
+# [example]
+#   029A on the numerical pad:
+#     A -> 2 -> 9 -> A => (A, 0), (0, 2), (2, 9), (9, A)
+keystroke_movement(key_sequence::String) = zip("A" * key_sequence, key_sequence)
+
 function next_costmap(pad_map::Dict{Key, Pos}, base_costmap::CostMap; cnt = 1)
     not_key = pad_map[nothing]
     new_map = CostMap()
@@ -32,8 +77,8 @@ function next_costmap(pad_map::Dict{Key, Pos}, base_costmap::CostMap; cnt = 1)
             vs = (delta[1] > 0 ? 'v' : '^') ^ abs(delta[1])
             hs = (delta[2] > 0 ? '>' : '<') ^ abs(delta[2])
 
-            # Note: Reason for adding an `A`
-            # Indirect input requires pressing the activate key `A` after the move.
+            # On indirect input, pressing the activate key `A` after the move is required
+            # to press a target key by the robot's arm.
             if pad_map[s][2] == not_key[2] && pad_map[d][1] == not_key[1]
                 mv_keys = [hs * vs * "A"]
             elseif pad_map[s][1] == not_key[1] && pad_map[d][2] == not_key[2]
@@ -42,7 +87,7 @@ function next_costmap(pad_map::Dict{Key, Pos}, base_costmap::CostMap; cnt = 1)
                 mv_keys = [hs * vs * "A", vs * hs * "A"]
             end
 
-            new_map[s, d] = minimum(sum(base_costmap[tpl...] for tpl in zip("A" * k, k)) for k in mv_keys)
+            new_map[s, d] = minimum(sum(base_costmap[tpl...] for tpl in keystroke_movement(k)) for k in mv_keys)
         end
 
         base_costmap = copy(new_map)
@@ -76,7 +121,7 @@ function d21_p1(fname::String = "input")
     costmap = make_costmap(2)
 
     mapreduce(+, data) do (code, n)
-        sum(costmap[tpl...] for tpl in zip("A" * code, code)) * n
+        sum(costmap[tpl...] for tpl in keystroke_movement(code)) * n
     end
 end
 
@@ -85,7 +130,7 @@ function d21_p2(fname::String = "input")
     costmap = make_costmap(25)
 
     mapreduce(+, data) do (code, n)
-        sum(costmap[tpl...] for tpl in zip("A" * code, code)) * n
+        sum(costmap[tpl...] for tpl in keystroke_movement(code)) * n
     end
 end
 
