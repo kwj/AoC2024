@@ -39,7 +39,7 @@ If there are no robots:
 
       indoor
      [H]
-   direct |P|
+   direct |N|
     input
 
 If there are no indirect directional keypads:
