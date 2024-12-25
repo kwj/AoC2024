@@ -8,10 +8,14 @@ I used the Julia programming language.
 
 * [Julia](https://julialang.org/) (confirmed to work with Julia v1.11.2)
 
-The following packages were then used.
+The following external package was used.
 
 - [DataStructures.jl](https://github.com/JuliaCollections/DataStructures.jl) v0.18.20
-- Statistics v1.11.1 (It's distributd with Julia)
+
+And then, Julia's standard libraries:
+
+- Printf
+- Statistics
 
 ## Solutions
 
