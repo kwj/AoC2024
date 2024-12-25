@@ -240,7 +240,7 @@ function fix_adder(c::Circuit, tpl::Tuple{Int, Vector{LogicGate}})
         XOR, AND = c.gates[ns[1]], c.gates[ns[2]]
         XOR.out, AND.out = AND.out, XOR.out
         push!(c.swapped, XOR.out, AND.out)
-        println("\nSwapped output: ", XOR.out, ", ", AND.out)
+        println("\nSwapped output lines: ", XOR.out, ", ", AND.out)
 
         return AND.out
     else
@@ -251,7 +251,7 @@ function fix_adder(c::Circuit, tpl::Tuple{Int, Vector{LogicGate}})
 
             if is_valid_FA(lg_vec..., idx)
                 push!(c.swapped, lg_vec[i].out, lg_vec[j].out)
-                println("\nSwapped output: ", lg_vec[i].out, ", ", lg_vec[j].out, "\n")
+                println("\nSwapped output lines: ", lg_vec[i].out, ", ", lg_vec[j].out, "\n")
 
                 return lg_vec[end].out
             end
@@ -278,14 +278,13 @@ function d24_p2(fname::String = "input")
     # validation
     x = to_decimal(C.wires, 'x')
     y = to_decimal(C.wires, 'y')
-    x_y = x + y
 
     simulate(C.wires, C.gates)
     z = to_decimal(C.wires, 'z')
 
-    @printf "x = %d, y = %d, x + y = %d\n" x y x_y
+    @printf "x = %d, y = %d, x + y = %d\n" x y (x + y)
     @printf "Simulation result: %d  -- " z
-    x_y == z ? println("Matched.\n") : println("Mismatched.\n")
+    x + y == z ? println("Matched.\n") : println("Mismatched.\n")
 
     join(sort(C.swapped), ",")
 end
