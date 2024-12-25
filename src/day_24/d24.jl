@@ -23,7 +23,6 @@ function parse_file(fname::String)
     wires = Dict{String, Bool}()
     gates = Vector{LogicGate}()
 
-    #data = readlines(fname)
     data = readlines(joinpath(@__DIR__, fname))
     sep_pos = findfirst(isempty, data)
 
@@ -212,7 +211,7 @@ function check_adder(c::Circuit, idx::Int)
     if XOR.out == tag('z', idx)
         AND.out
     else
-        # wrong logic gate
+        # wrong adder
         println("[Wrong Adder]")
         println("No.: ", idx)
         println("  Cin: ", cin)
@@ -247,7 +246,7 @@ function check_adder(c::Circuit, idx::Int, cin::String)
     if check_FA_connections(XOR1, XOR2, AND1, AND2, OR, idx)
         return OR.out
     else
-        # wrong logic gate
+        # wrong adder
         println("[Wrong Adder]")
         println("No.: ", idx)
         println("  Cin: ", cin)
@@ -279,7 +278,7 @@ function fix_adder(c::Circuit, tpl::Tuple{Int, Vector{LogicGate}})
         XOR.out, AND.out = AND.out, XOR.out
         push!(c.swapped, XOR.out)
         push!(c.swapped, AND.out)
-        println("\nSwapped: ", XOR.out, ", ", AND.out)
+        println("\nSwapped output: ", XOR.out, ", ", AND.out)
 
         return AND.out
     else
@@ -291,7 +290,7 @@ function fix_adder(c::Circuit, tpl::Tuple{Int, Vector{LogicGate}})
             if check_FA_connections(lg_vec..., idx)
                 push!(c.swapped, lg_vec[i].out)
                 push!(c.swapped, lg_vec[j].out)
-                println("\nSwapped: ", lg_vec[i].out, ", ", lg_vec[j].out, "\n")
+                println("\nSwapped output: ", lg_vec[i].out, ", ", lg_vec[j].out, "\n")
 
                 return lg_vec[end].out
             end
@@ -311,6 +310,7 @@ function d24_p2(fname::String = "input")
     cin = ""
     for idx = 0:(n_adders - 1)
         if iszero(idx)
+            # Half adder
             result = check_adder(circuit, idx)
             if typeof(result) == String
                 cin = result
@@ -318,6 +318,7 @@ function d24_p2(fname::String = "input")
                 cin = fix_adder(circuit, result)
             end
         else
+            # Full adder
             result = check_adder(circuit, idx, cin)
             if typeof(result) == String
                 cin = result
