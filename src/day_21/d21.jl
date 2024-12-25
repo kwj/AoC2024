@@ -22,7 +22,8 @@ const npad_map = Dict{Key, Pos}(v => k for (k, v) in pairs(IndexCartesian(), npa
 #=
   H: Human
   R: Robot
-  P: Keypad (directional or numerical)
+  P: Keypad (directional)
+  N: Keypad (numerical)
   ---: Wired connection
   ==>: Robot's arm
 
@@ -31,7 +32,7 @@ The situation of Part 1 (Two directional keypads that robots are using):
   indoor |         outdoor            | indoor
      [H] |  [R]      [R]      [R]     |
          | +---+    +---+    +---+    |
-      P--|---. |==>|P|  |==>|P|  |==>|P|
+      P--|---. |==>|P|  |==>|P|  |==>|N|
          | +---+    +---+    +---+    |
 
 If there are no robots:
@@ -46,7 +47,7 @@ If there are no indirect directional keypads:
   indoor |  outdoor | indoor
      [H] |  [R]     |
          | +---+    |   029A -->
-      P--|---. |==>|P|    <A ^A >^^A vvvA
+      P--|---. |==>|N|    <A ^A >^^A vvvA
          | +---+    |
 
 If there is one indirect directional keypad:
@@ -54,7 +55,7 @@ If there is one indirect directional keypad:
   indoor |      outdoor      | indoor
      [H] |  [R]      [R]     |
          | +---+    +---+    |    <A | ^A | >^^A | vvvA -->
-      P--|---. |==>|P|  |==>|P|     v<<A >>^A | <A >A | vA <^A A >A | <vA A A >^A
+      P--|---. |==>|P|  |==>|N|     v<<A >>^A | <A >A | vA <^A A >A | <vA A A >^A
          | +---+    +---+    |
 =#
 
