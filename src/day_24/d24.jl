@@ -197,7 +197,7 @@ function check_adder(c::Circuit, idx::Int)
     end
 end
 
-function check_FA_connections(
+function is_valid_FA(
     XOR1::LogicGate,
     XOR2::LogicGate,
     AND1::LogicGate,
@@ -218,7 +218,7 @@ function check_adder(c::Circuit, idx::Int, cin::String)
     AND2 = find_gates(c.gates, [cin, XOR1.out], op = :AND, mode = :ANY) |> first
     OR = find_gates(c.gates, [AND1.out, AND2.out], op = :OR, mode = :ANY) |> first
 
-    if check_FA_connections(XOR1, XOR2, AND1, AND2, OR, idx)
+    if is_valid_FA(XOR1, XOR2, AND1, AND2, OR, idx)
         return OR.out
     else
         # wrong adder
@@ -253,7 +253,7 @@ function fix_adder(c::Circuit, tpl::Tuple{Int, Vector{LogicGate}})
             # swap
             lg_vec[i].out, lg_vec[j].out = lg_vec[j].out, lg_vec[i].out
 
-            if check_FA_connections(lg_vec..., idx)
+            if is_valid_FA(lg_vec..., idx)
                 push!(c.swapped, lg_vec[i].out, lg_vec[j].out)
                 println("\nSwapped output: ", lg_vec[i].out, ", ", lg_vec[j].out, "\n")
 
