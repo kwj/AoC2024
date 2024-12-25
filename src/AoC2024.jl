@@ -24,6 +24,7 @@ solutions = [
     "day_21/d21.jl",
     "day_22/d22.jl",
     "day_23/d23.jl",
+    "day_24/d24.jl",
 ]
 
 for sol in solutions
