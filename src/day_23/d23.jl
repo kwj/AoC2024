@@ -94,7 +94,7 @@ end
 function d23_p2(fname::String = "input")
     G = parse_file(fname)
 
-    join(sort(argmax(length, all_maximal_cliques(G))), ",")
+    println(join(sort(argmax(length, all_maximal_cliques(G))), ","))
 end
 
 end #module

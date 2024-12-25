@@ -284,7 +284,7 @@ function d24_p2(fname::String = "input")
     @printf "Simulation result: %d  -- " z
     x + y == z ? println("Matched.\n") : println("Mismatched.\n")
 
-    join(sort(C.swapped), ",")
+    println(join(sort(C.swapped), ","))
 end
 
 end #module

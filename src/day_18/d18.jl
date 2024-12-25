@@ -82,7 +82,7 @@ function d18_p2(fname::String = "input")
         end
     end
 
-    join(all_objects[R] .- 1, ",")
+    println(join(all_objects[R] .- 1, ","))
 end
 
 end #module
