@@ -210,8 +210,8 @@ function check_adder(c::Circuit, idx::Int, cin::String)
     AND1 = first(find_gates(c.gates, [tag('x', idx), tag('y', idx)], op = :AND))
 
     # It is assumed that only one gate is found in the follwoing searches.
-    XOR2 = find_gates(c.gates, [cin, XOR1.out], op = :XOR, mode = :ANY) |> first
-    AND2 = find_gates(c.gates, [cin, XOR1.out], op = :AND, mode = :ANY) |> first
+    XOR2 = find_gates(c.gates, [cin], op = :XOR) |> first
+    AND2 = find_gates(c.gates, [cin], op = :AND) |> first
     OR = find_gates(c.gates, [AND1.out, AND2.out], op = :OR, mode = :ANY) |> first
 
     if is_valid_FA(XOR1, XOR2, AND1, AND2, OR, idx)
