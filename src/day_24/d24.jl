@@ -1,7 +1,7 @@
 
 module Day24
 
-import Printf.@sprintf
+import Printf: @printf, @sprintf
 
 mutable struct LogicGate
     id::Int
@@ -40,15 +40,11 @@ function parse_file(fname::String)
 end
 
 function op(func::Symbol, x::Bool, y::Bool)
-    if func == :AND
-        x & y
-    elseif func == :OR
-        x | y
-    elseif func == :XOR
-        x ⊻ y
-    else
-        error("invalid func")
-    end
+    func == :AND && return x & y
+    func == :OR && return x | y
+    func == :XOR && return x ⊻ y
+
+    error("invalid func")
 end
 
 function to_decimal(wires::Dict{String, Bool}, prefix::Char)
@@ -269,17 +265,29 @@ function fix_adder(c::Circuit, tpl::Tuple{Int, Vector{LogicGate}})
 end
 
 function d24_p2(fname::String = "input")
-    circuit = Circuit(parse_file(fname)...)
-    n_adders = count(k -> k[1] == 'x', collect(keys(circuit.wires)))
+    C = Circuit(parse_file(fname)...)
+    n_adders = count(k -> k[1] == 'x', collect(keys(C.wires)))
 
     cin = ""
     for idx = 0:(n_adders - 1)
         # idx == 0 -> Half adder, otherwise -> Full adder
-        result = iszero(idx) ? check_adder(circuit, idx) : check_adder(circuit, idx, cin)
-        cin = typeof(result) == String ? result : fix_adder(circuit, result)
+        result = iszero(idx) ? check_adder(C, idx) : check_adder(C, idx, cin)
+        cin = typeof(result) == String ? result : fix_adder(C, result)
     end
 
-    join(sort(circuit.swapped), ",")
+    # validation
+    x = to_decimal(C.wires, 'x')
+    y = to_decimal(C.wires, 'y')
+    x_y = x + y
+
+    simulate!(C.wires, C.gates)
+    z = to_decimal(C.wires, 'z')
+
+    @printf "x = %d, y = %d, x + y = %d\n" x y x_y
+    @printf "Simulation result: %d  -- " z
+    x_y == z ? println("Matched.\n") : println("Mismatched.\n")
+
+    join(sort(C.swapped), ",")
 end
 
 end #module
