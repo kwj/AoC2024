@@ -278,9 +278,7 @@ function d24_p2(fname::String = "input")
     # validation
     x = to_decimal(C.wires, 'x')
     y = to_decimal(C.wires, 'y')
-
-    simulate(C.wires, C.gates)
-    z = to_decimal(C.wires, 'z')
+    z = simulate(C.wires, C.gates)
 
     @printf "x = %d, y = %d, x + y = %d\n" x y (x + y)
     @printf "Simulation result: %d  -- " z
