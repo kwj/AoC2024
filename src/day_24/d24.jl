@@ -162,21 +162,18 @@ function find_gates(
     out::Union{String, Nothing} = nothing,
     mode::Symbol = :ALL
 )
+    @assert !isempty(inp) "there are no input wire names"
+
     if mode == :ALL
         result = filter(gate -> all(i -> i ∈ gate.inp, inp), gates)
     elseif mode == :ANY
         result = filter(gate -> any(i -> i ∈ gate.inp, inp), gates)
     else
-        @assert !isempty(inp) "invalid search mode"
+        @error "invalid mode"
     end
 
-    if !isnothing(op)
-        result = filter(x -> x.op == op, result)
-    end
-
-    if !isnothing(out)
-        result = filter(x -> x.out == out, result)
-    end
+    !isnothing(op) && begin result = filter(x -> x.op == op, result) end
+    !isnothing(out) && begin result = filter(x -> x.out == out, result) end
 
     result
 end
@@ -246,8 +243,7 @@ function fix_adder(c::Circuit, tpl::Tuple{Int, Vector{LogicGate}})
         # Half adder
         XOR, AND = c.gates[ns[1]], c.gates[ns[2]]
         XOR.out, AND.out = AND.out, XOR.out
-        push!(c.swapped, XOR.out)
-        push!(c.swapped, AND.out)
+        push!(c.swapped, XOR.out, AND.out)
         println("\nSwapped output: ", XOR.out, ", ", AND.out)
 
         return AND.out
@@ -258,8 +254,7 @@ function fix_adder(c::Circuit, tpl::Tuple{Int, Vector{LogicGate}})
             lg_vec[i].out, lg_vec[j].out = lg_vec[j].out, lg_vec[i].out
 
             if check_FA_connections(lg_vec..., idx)
-                push!(c.swapped, lg_vec[i].out)
-                push!(c.swapped, lg_vec[j].out)
+                push!(c.swapped, lg_vec[i].out, lg_vec[j].out)
                 println("\nSwapped output: ", lg_vec[i].out, ", ", lg_vec[j].out, "\n")
 
                 return lg_vec[end].out
@@ -279,23 +274,9 @@ function d24_p2(fname::String = "input")
 
     cin = ""
     for idx = 0:(n_adders - 1)
-        if iszero(idx)
-            # Half adder
-            result = check_adder(circuit, idx)
-            if typeof(result) == String
-                cin = result
-            else
-                cin = fix_adder(circuit, result)
-            end
-        else
-            # Full adder
-            result = check_adder(circuit, idx, cin)
-            if typeof(result) == String
-                cin = result
-            else
-                cin = fix_adder(circuit, result)
-            end
-        end
+        # idx == 0 -> Half adder, otherwise -> Full adder
+        result = iszero(idx) ? check_adder(circuit, idx) : check_adder(circuit, idx, cin)
+        cin = typeof(result) == String ? result : fix_adder(circuit, result)
     end
 
     join(sort(circuit.swapped), ",")
