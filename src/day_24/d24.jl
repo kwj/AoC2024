@@ -260,14 +260,6 @@ function check_adder(c::Circuit, idx::Int, cin::String)
     end
 end
 
-function swap_output(c::Circuit, id1::Int, id2::Int)
-    c.gates[id1].out, c.gates[id2].out = c.gates[id2].out, c.gates[id1].out
-    push!(c.swapped, c.gates[id1].out)
-    push!(c.swapped, c.gates[id2].out)
-
-    true
-end
-
 function fix_adder(c::Circuit, tpl::Tuple{Int, Vector{LogicGate}})
     idx, lg_vec = tpl
     ns = map(lg -> lg.id, lg_vec)
