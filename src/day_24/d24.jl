@@ -186,8 +186,9 @@ end
 
 # Half adder
 function check_adder(c::Circuit, idx::Int)
-    XOR = first(find_gates(c.gates, [tag('x', idx), tag('y', idx)], op = :XOR))
-    AND = first(find_gates(c.gates, [tag('x', idx), tag('y', idx)], op = :AND))
+    xin, yin = tag('x', idx), tag('y', idx)
+    XOR = first(find_gates(c.gates, [xin, yin], op = :XOR))
+    AND = first(find_gates(c.gates, [xin, yin], op = :AND))
 
     if XOR.out == tag('z', idx)
         AND.out
