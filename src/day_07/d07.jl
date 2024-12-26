@@ -1,44 +1,51 @@
 
 module Day07
 
-struct Equation
-    value::Int64
-    numbers::Vector{Int64}
-end
-
 function parse_file(fname::String)
     map(split.(readlines(joinpath(@__DIR__, fname)), r":? +")) do lst
         vs = parse.(Int, lst)
-        Equation(vs[1], vs[2:end])
+        (vs[2:end], vs[1])
     end
+end
+
+function calibration(ns::AbstractVector{Int}, target::Int, mode::Symbol = :P1)
+    if length(ns) == 1
+        return target == ns[1]
+    end
+
+    init, last = (@view ns[1:end - 1]), ns[end]
+
+    target < last && return false
+
+    # addition
+    if calibration(init, target - last, mode)
+        return true
+    end
+
+    # multiplication
+    if iszero(mod(target, last)) && calibration(init, div(target, last), mode)
+        return true
+    end
+
+    # concatination (Part 2)
+    if mode == :P2
+        k = 10 ^ ndigits(last)
+        if mod(target, k) == last && calibration(init, div(target, k), mode)
+            return true
+        end
+    end
+
+    false
 end
 
 function d07_p1(fname::String = "input")
-    function eval_p1(eqn::Equation)
-        @assert length(eqn.numbers) > 1 "invalid data"
-
-        reduce(eqn.numbers[2:end], init = eqn.numbers[1:1]) do xs, n
-            Iterators.flatmap(x -> [x * n, x + n], xs) |>
-                collect |>
-                filter(x -> x <= eqn.value)
-        end
-    end
-
-    sum(x.value for x in filter(eqn -> eqn.value ∈ eval_p1(eqn), parse_file(fname)))
+    data = parse_file(fname)
+    sum(x[2] for x in filter(tpl -> calibration(tpl...), data))
 end
 
 function d07_p2(fname::String = "input")
-    function eval_p2(eqn::Equation)
-        @assert length(eqn.numbers) > 1 "invalid data"
-
-        reduce(eqn.numbers[2:end], init = eqn.numbers[1:1]) do xs, n
-            Iterators.flatmap(x -> [x * n, x + n, x * 10 ^ ndigits(n) + n], xs) |>
-                collect |>
-                filter(x -> x <= eqn.value)
-        end
-    end
-
-    sum(x.value for x in filter(eqn -> eqn.value ∈ eval_p2(eqn), parse_file(fname)))
+    data = parse_file(fname)
+    sum(x[2] for x in filter(tpl -> calibration(tpl..., :P2), data))
 end
 
 end #module
