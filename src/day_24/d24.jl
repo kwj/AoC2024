@@ -203,15 +203,12 @@ function check_adder(c::Circuit, idx::Int)
     end
 end
 
-function is_valid_FA(
-    XOR1::LogicGate,
-    XOR2::LogicGate,
-    AND1::LogicGate,
-    AND2::LogicGate,
-    OR::LogicGate,
-    idx::Int
-)
-    XOR1.out ∈ XOR2.inp && XOR1.out ∈ AND2.inp && AND1.out ∈ OR.inp && AND2.out ∈ OR.inp && XOR2.out == tag('z', idx)
+function is_valid_FA(XOR1::LogicGate, XOR2::LogicGate, AND1::LogicGate, AND2::LogicGate, OR::LogicGate, idx::Int)
+    XOR1.out ∉ XOR2.inp && return false
+    XOR1.out ∉ AND2.inp && return false
+    AND1.out ∉ OR.inp && return false
+    AND2.out ∉ OR.inp && return false
+    XOR2.out == tag('z', idx)
 end
 
 # Full adder
