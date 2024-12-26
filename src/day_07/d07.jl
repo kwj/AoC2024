@@ -8,6 +8,8 @@ function parse_file(fname::String)
     end
 end
 
+# Note:
+# Checking numbers from back to front allows some pruning.
 function calibration(ns::AbstractVector{Int}, target::Int, mode::Symbol = :P1)
     if length(ns) == 1
         return target == ns[1]
