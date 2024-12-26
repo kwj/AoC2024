@@ -22,6 +22,18 @@ function new_state(p::AbstractVector{Int}, v::AbstractVector{Int}, m::Int, t::In
     mod1.(p + t * v, m)
 end
 
+function ascii_art(px::AbstractVector{Int}, py::AbstractVector{Int}, w::Int = WIDTH, h::Int = HEIGHT)
+    grid = fill('.', w, h)
+    for (i, j) in eachrow(hcat(px, py))
+        grid[i, j] = '#'
+    end
+
+    for col in eachcol(grid)
+        println(join(col, ""))
+    end
+    println("")
+end
+
 function d14_p1(fname::String = "input")
     px, py, vx, vy = parse_file(fname)
 
@@ -34,12 +46,15 @@ function d14_p1(fname::String = "input")
     end
 end
 
-function d14_p2(fname::String = "input")
+function d14_p2(fname::String = "input"; verbose = false)
     px, py, vx, vy = parse_file(fname)
 
     # The problem statement says that most of the robots should arrange
-    # themselves INTO a picture of a Christmas tree when the picture
-    # is appeared.
+    # themselves *INTO* a picture of a Christmas tree when the picture
+    # is appeared. So, many robots should be crowded together.
+    #
+    # Of course, they may be gathering for nothing, however, I trust
+    # there is no such nastiness in this problem.
     #
     # I first find the timings when the variances of px and py are lowest
     # in the first cycle of each. These smallest variances mean the timings when
@@ -75,7 +90,14 @@ function d14_p2(fname::String = "input")
     # T = t1 + t2 * WIDTH
     #   = b1 + mod((b2 - b1) * invmod(WIDTH, HEIGHT), HEIGHT) * WIDTH
     # ------------------------------------------------------
-    b1 + mod((b2 - b1) * invmod(WIDTH, HEIGHT), HEIGHT) * WIDTH
+    T = b1 + mod((b2 - b1) * invmod(WIDTH, HEIGHT), HEIGHT) * WIDTH
+
+    # Show a picture of what appears to be a Christmas tree
+    if verbose
+        ascii_art(new_state(px, vx, WIDTH, T), new_state(py, vy, HEIGHT, T))
+    end
+
+    return T
 
 
     # Note: Chinese remainder theorem version
