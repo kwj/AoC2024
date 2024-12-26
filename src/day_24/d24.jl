@@ -93,16 +93,26 @@ The given data may be a ripple-carry adder circuit.
         2 42 42
         2 43 43
         2 44 44
+  $ grep -e '->' input | grep -e 'z[0-9]' | awk '{print $5}' | sort
+  z00
+  z01
+  ...
+  z44
+  z45
+  $ grep -e '->' input | grep -e 'z[0-9]' | awk '{print $5}' | sort | wc -l
+  46
 
 It shows that initial information of wires, all x## and y##, are correct. No omissions, no leaks.
+The input/output wires between adders would be as follows.
 
-     x00 y00          x01 y01                       x43 y43          x44 y44
-      v   v            v   v                         v   v            v   v
-     +-----+          +-----+                       +-----+          +-----+
-     | HA  | -(C01)-> | FA  | -(C02)-> ... -(C43)-> | FA  | -(C44)-> | FA  | -(C45)-+
-     +-----+          +-----+                       +-----+          +-----+        |
-        v                v                             v                v           v
-       z00              z01                           z43              z44         z45
+  [MSB]                                                                        [LSB]
+            x44 y44          x43 y43                       x01 y01          x00 y00
+             v   v            v   v                         v   v            v   v
+            +-----+          +-----+                       +-----+          +-----+
+   .-(C45)-.| FA  | <-(C44)- | FA  | <-(C43)- ... <-(C02)- | FA  | <-(C01)- | HA  |
+   |        +-----+          +-----+                       +-----+          +-----+
+   v           v                v                             v                v
+  z45         z44              z43                           z01              z00
 
       * HA: half adder, FA: full adder
 
@@ -137,9 +147,9 @@ Perhaps each circuit would look like the following:
             | |            | .--> +------+  V
             | |            |      | AND2 | ---> +----+
             | |            .----> +------+      | OR | --> C[## + 1]
-            | |                          .----> +----+
-            | .--> +------+      U       |
-            |      | AND1 | -------------.
+            | |                       .-------> +----+
+            | .--> +------+      U    |
+            |      | AND1 | ----------.
             .----> +------+
 
      A xor B = T
@@ -206,12 +216,16 @@ end
 
 # Full adder
 function check_adder(c::Circuit, idx::Int, cin::String)
-    XOR1 = first(find_gates(c.gates, [tag('x', idx), tag('y', idx)], op = :XOR))
-    AND1 = first(find_gates(c.gates, [tag('x', idx), tag('y', idx)], op = :AND))
+    # Note: It is assumed that only one gate is found in the follwoing searches.
 
-    # It is assumed that only one gate is found in the follwoing searches.
+    # Names of input wires from outside the adder are reliable. (x##, y## and carry-in)
+    xin, yin = tag('x', idx), tag('y', idx)
+    XOR1 = find_gates(c.gates, [xin, yin], op = :XOR) |> first
+    AND1 = find_gates(c.gates, [xin, yin], op = :AND) |> first
     XOR2 = find_gates(c.gates, [cin], op = :XOR) |> first
     AND2 = find_gates(c.gates, [cin], op = :AND) |> first
+
+    # Append `mode = :ANY` for search based on the output wire names of the internal gates.
     OR = find_gates(c.gates, [AND1.out, AND2.out], op = :OR, mode = :ANY) |> first
 
     if is_valid_FA(XOR1, XOR2, AND1, AND2, OR, idx)
