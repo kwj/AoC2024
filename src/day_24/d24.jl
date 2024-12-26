@@ -102,7 +102,6 @@ The given data may be a ripple-carry adder circuit.
   $ grep -e '->' input | grep -e 'z[0-9]' | awk '{print $5}' | sort | wc -l
   46
 
-It shows that initial information of wires, all x## and y##, are correct. No omissions, no leaks.
 The input/output wires between adders would be as follows.
 
   [MSB]                                                                        [LSB]
@@ -186,9 +185,9 @@ end
 
 # Half adder
 function check_adder(c::Circuit, idx::Int)
-    xin, yin = tag('x', idx), tag('y', idx)
-    XOR = first(find_gates(c.gates, [xin, yin], op = :XOR))
-    AND = first(find_gates(c.gates, [xin, yin], op = :AND))
+    x_in, y_in = tag('x', idx), tag('y', idx)
+    XOR = first(find_gates(c.gates, [x_in, y_in], op = :XOR))
+    AND = first(find_gates(c.gates, [x_in, y_in], op = :AND))
 
     if XOR.out == tag('z', idx)
         AND.out
@@ -213,15 +212,15 @@ function is_valid_FA(XOR1::LogicGate, XOR2::LogicGate, AND1::LogicGate, AND2::Lo
 end
 
 # Full adder
-function check_adder(c::Circuit, idx::Int, cin::String)
+function check_adder(c::Circuit, idx::Int, c_in::String)
     # Note: It is assumed that only one gate is found in the follwoing searches.
 
     # Names of input wires from outside the adder are reliable. (x##, y## and carry-in)
-    xin, yin = tag('x', idx), tag('y', idx)
-    XOR1 = find_gates(c.gates, [xin, yin], op = :XOR) |> first
-    AND1 = find_gates(c.gates, [xin, yin], op = :AND) |> first
-    XOR2 = find_gates(c.gates, [cin], op = :XOR) |> first
-    AND2 = find_gates(c.gates, [cin], op = :AND) |> first
+    x_in, y_in = tag('x', idx), tag('y', idx)
+    XOR1 = find_gates(c.gates, [x_in, y_in], op = :XOR) |> first
+    AND1 = find_gates(c.gates, [x_in, y_in], op = :AND) |> first
+    XOR2 = find_gates(c.gates, [c_in], op = :XOR) |> first
+    AND2 = find_gates(c.gates, [c_in], op = :AND) |> first
 
     # Append `mode = :ANY` for search based on the output wire names of the internal gates.
     OR = find_gates(c.gates, [AND1.out, AND2.out], op = :OR, mode = :ANY) |> first
@@ -232,7 +231,7 @@ function check_adder(c::Circuit, idx::Int, cin::String)
         # wrong adder
         println("[Wrong Adder]")
         println("No.: ", idx)
-        println("  Cin: ", cin)
+        println("  Cin: ", c_in)
         println("  XOR1: ", XOR1)
         println("  XOR2: ", XOR2)
         println("  AND1: ", AND1)
@@ -283,11 +282,11 @@ function d24_p2(fname::String = "input")
     C = Circuit(parse_file(fname)...)
     n_adders = count(k -> k[1] == 'x', collect(keys(C.wires)))
 
-    cin = ""
+    carry_in = ""
     for idx = 0:(n_adders - 1)
         # idx == 0 -> Half adder, otherwise -> Full adder
-        result = iszero(idx) ? check_adder(C, idx) : check_adder(C, idx, cin)
-        cin = typeof(result) == String ? result : fix_adder(C, result)
+        result = iszero(idx) ? check_adder(C, idx) : check_adder(C, idx, carry_in)
+        carry_in = typeof(result) == String ? result : fix_adder(C, result)
     end
 
     # validation
