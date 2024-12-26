@@ -4,7 +4,7 @@ module Day07
 function parse_file(fname::String)
     map(split.(readlines(joinpath(@__DIR__, fname)), r":? +")) do lst
         vs = parse.(Int, lst)
-        (vs[2:end], vs[1])
+        (numbers = vs[2:end], value = vs[1])
     end
 end
 
@@ -40,12 +40,12 @@ end
 
 function d07_p1(fname::String = "input")
     data = parse_file(fname)
-    sum(x[2] for x in filter(tpl -> calibration(tpl...), data))
+    sum(x.value for x in filter(tpl -> calibration(tpl...), data))
 end
 
 function d07_p2(fname::String = "input")
     data = parse_file(fname)
-    sum(x[2] for x in filter(tpl -> calibration(tpl..., :P2), data))
+    sum(x.value for x in filter(tpl -> calibration(tpl..., :P2), data))
 end
 
 end #module
