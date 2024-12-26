@@ -6,63 +6,85 @@ const CIdx = CartesianIndex
 # up(1), right(2), down(3), left(4)
 const STEP = CIdx.([(-1, 0), (0, 1), (1, 0), (0, -1)])
 
+turn_right90(x) = mod1(x + 1, length(STEP))
+
 function parse_file(fname::String)
     first.(stack(split.(readlines(joinpath(@__DIR__, fname)), ""), dims = 1))
 end
 
-function check_grid(grid::Array{Char, 2}, path::Vector{Tuple{CIdx{2}, Int}})
-    turn_right90(x) = mod1(x + 1, 4)
-    pos, dir = path[end]
+function d06_p1(fname::String = "input")
+    grid = parse_file(fname)
+    footprints = falses(size(grid)...)
 
-    route = copy(path)  # Don't change the `path` argument of the caller for safty
-    visited = Set(route)
+    pos = findfirst(==('^'), grid)
+    dir = 1  # inital direction is up(1)
     while true
+        footprints[pos] = true
+
         next_pos = pos + STEP[dir]
-        if (next_pos, dir) ∈ visited
-            return nothing
-        elseif !checkbounds(Bool, grid, next_pos)
-            return route
+        if !checkbounds(Bool, grid, next_pos)
+            break
         elseif grid[next_pos] == '#'
             dir = turn_right90(dir)
         else
             pos = next_pos
         end
-        push!(route, (pos, dir))
-        push!(visited, (pos, dir))
     end
+
+    count(footprints)
 end
 
-function d06_p1(fname::String = "input")
-    grid = parse_file(fname)
-    start = findfirst(==('^'), grid)
+function check_loop(grid::Array{Char, 2}, pos::CIdx{2}, dir::Int)
+    # Loop is detected at a position where there is a wall in front of it
+    visited = Set{Tuple{CIdx{2}, Int}}()
 
-    path = check_grid(grid, [(start, 1)])  # direction: up(1)
-    @assert !isnothing(path) "found a loop"
+    push!(visited, (pos, dir))
+    dir = turn_right90(dir)
 
-    length(Set(pos for (pos, _) in path))
+    while true
+        if (pos, dir) ∈ visited
+            return true
+        end
+
+        next_pos = pos + STEP[dir]
+        if !checkbounds(Bool, grid, next_pos)
+            return false
+        elseif grid[next_pos] == '#'
+            push!(visited, (pos, dir))
+            dir = turn_right90(dir)
+        else
+            pos = next_pos
+        end
+    end
 end
 
 function d06_p2(fname::String = "input")
     grid = parse_file(fname)
-    start = findfirst(==('^'), grid)
+    footprints = Set{CIdx{2}}()
 
-    path = check_grid(grid, [(start, 1)])  # direction: up(1)
-    @assert !isnothing(path) "found a loop"
-
-    confirmed = Set{CIdx{2}}([start])
+    pos = findfirst(==('^'), grid)
+    dir = 1  # inital direction is up(1)
     acc = 0
-    for i = 1:(lastindex(path) - 1)
-        next_pos = path[i + 1][1]
-        if next_pos ∈ confirmed
-            continue
-        end
+    while true
+        push!(footprints, pos)
 
-        grid[next_pos] = '#'
-        if isnothing(check_grid(grid, path[1:i]))
-            acc += 1
+        next_pos = pos + STEP[dir]
+        if !checkbounds(Bool, grid, next_pos)
+            break
+        elseif grid[next_pos] == '#'
+            dir = turn_right90(dir)
+        else
+            if next_pos ∉ footprints
+                backup = grid[next_pos]
+                grid[next_pos] = '#'
+                if check_loop(grid, pos, dir)
+                    acc += 1
+                end
+                grid[next_pos] = backup
+            end
+
+            pos = next_pos
         end
-        grid[next_pos] = '.'
-        push!(confirmed, next_pos)
     end
 
     acc
