@@ -30,8 +30,9 @@ function add_edge!(g::UDGraph, u::String, v::String)
     end
 end
 
-# TODO: Read the paper carefully later
-# https://doi.org/10.1007/978-3-319-53925-6_1
+# Etsuji Tomita: Efficient algorithms for finding maximum and maximal cliques and their applications
+# Lecture Notes in Computer Science, 10167, pp.3-15 (2017)
+# DOI: 10.1007/978-3-319-53925-6_1
 gamma(g::UDGraph, x::String) = g.adj_map[x]
 degree(g::UDGraph, x::String) = length(gamma(g, x))
 
