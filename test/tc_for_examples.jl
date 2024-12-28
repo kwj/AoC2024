@@ -1,5 +1,17 @@
 # test cases for example inputs on Advent of Code 2024
 
+# I also placed the example inputs shown in the problem statements in separate
+# files such as `input0`, `input1`, etc.
+#
+# For example:
+#
+# $ ls ./day_01
+# d01.jl  input  input0
+# $ ls ./day_03
+# d03.jl  input  input0  input1
+#
+# Of course, input files can be freely named. These examples are my taste.
+
 @testset verbose = true "Advent of Code 2024 (examples)" begin
     @testset "Day 1 / Part 1" begin
         @test d01_p1("input0") == 11

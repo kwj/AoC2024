@@ -1,6 +1,12 @@
 # Note: This is a template file.
 
-# test cases for given inputs on Advent of Code 2024
+# Test cases for given inputs on Advent of Code 2024
+#
+# I placed the files as `input` in each folder, because each program uses
+# the default input file name as `input`.
+#
+# However, the following examples explicitly specifies the file name.
+# This is my policy.
 
 @testset verbose = true "Advent of Code 2024 (my given input data)" begin
     @testset "Day 1 / Part 1" begin
