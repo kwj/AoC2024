@@ -4,10 +4,9 @@ module Day09
 function parse_file(fname::String)
     data = parse.(Int64, split(chomp(read(joinpath(@__DIR__, fname), String)), ""))
     file_capacities = data[1:2:end]
-    file_IDs = collect(0:(length(file_capacities) - 1))
     gap_capacities = data[2:2:end]
 
-    file_capacities, file_IDs, gap_capacities
+    file_capacities, gap_capacities
 end
 
 function blk_chksum(pos::Int64, id::Int64, len::Int64)
@@ -15,7 +14,7 @@ function blk_chksum(pos::Int64, id::Int64, len::Int64)
 end
 
 function d09_p1(fname::String = "input")
-    file_capacities, file_IDs, gap_capacities = parse_file(fname)
+    file_capacities, gap_capacities = parse_file(fname)
 
     chksum = 0
     pos = 0
@@ -25,7 +24,7 @@ function d09_p1(fname::String = "input")
     while idx <= last_idx
         # file block
         if file_capacities[idx] > 0
-            chksum += blk_chksum(pos, file_IDs[idx], file_capacities[idx])
+            chksum += blk_chksum(pos, (idx - 1), file_capacities[idx])
             pos += file_capacities[idx]
         end
 
@@ -38,7 +37,7 @@ function d09_p1(fname::String = "input")
                 end
 
                 len = min(gap_capacities[idx], file_capacities[last_idx])
-                chksum += blk_chksum(pos, file_IDs[last_idx], len)
+                chksum += blk_chksum(pos, (last_idx - 1), len)
                 pos += len
                 gap_capacities[idx] -= len
                 file_capacities[last_idx] -= len
@@ -52,8 +51,8 @@ function d09_p1(fname::String = "input")
 end
 
 function d09_p2(fname::String = "input")
-    file_capacities, file_IDs, gap_capacities = parse_file(fname)
-    exist_file = trues(length(file_IDs))
+    file_capacities, gap_capacities = parse_file(fname)
+    exist_file = trues(length(file_capacities))
 
     chksum = 0
     pos = 0
@@ -64,7 +63,7 @@ function d09_p2(fname::String = "input")
         if file_capacities[idx] > 0
             # if the block is not exist, skip to the next block
             if exist_file[idx]
-                chksum += blk_chksum(pos, file_IDs[idx], file_capacities[idx])
+                chksum += blk_chksum(pos, (idx - 1), file_capacities[idx])
             end
             pos += file_capacities[idx]
         end
@@ -82,7 +81,7 @@ function d09_p2(fname::String = "input")
                 move_idx <= idx && break
 
                 len = file_capacities[move_idx]
-                chksum += blk_chksum(pos, file_IDs[move_idx], len)
+                chksum += blk_chksum(pos, (move_idx - 1), len)
                 pos += len
                 gap_capacities[idx] -= len
                 exist_file[move_idx] = false
