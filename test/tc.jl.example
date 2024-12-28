@@ -1,0 +1,177 @@
+# Note: This is a template file.
+
+# test cases for given inputs on Advent of Code 2024
+
+@testset verbose = true "Advent of Code 2024 (my given input data)" begin
+    @testset "Day 1 / Part 1" begin
+        @test d01_p1("input") == 0
+    end
+    @testset "Day 1 / Part 2" begin
+        @test d01_p2("input") == 0
+    end
+
+    @testset "Day 2 / Part 1" begin
+        @test d02_p1("input") == 0
+    end
+    @testset "Day 2 / Part 2" begin
+        @test d02_p2("input") == 0
+    end
+
+    @testset "Day 3 / Part 1" begin
+        @test d03_p1("input") == 0
+    end
+    @testset "Day 3 / Part 2" begin
+        @test d03_p2("input") == 0
+    end
+
+    @testset "Day 4 / Part 1" begin
+        @test d04_p1("input") == 0
+    end
+    @testset "Day 4 / Part 2" begin
+        @test d04_p2("input") == 0
+    end
+
+    @testset "Day 5 / Part 1" begin
+        @test d05_p1("input") == 0
+    end
+    @testset "Day 5 / Part 2" begin
+        @test d05_p2("input") == 0
+    end
+
+    @testset "Day 6 / Part 1" begin
+        @test d06_p1("input") == 0
+    end
+    @testset "Day 6 / Part 2" begin
+        @test d06_p2("input") == 0
+    end
+
+    @testset "Day 7 / Part 1" begin
+        @test d07_p1("input") == 0
+    end
+    @testset "Day 7 / Part 2" begin
+        @test d07_p2("input") == 0
+    end
+
+    @testset "Day 8 / Part 1" begin
+        @test d08_p1("input") == 0
+    end
+    @testset "Day 8 / Part 2" begin
+        @test d08_p2("input") == 0
+    end
+
+    @testset "Day 9 / Part 1" begin
+        @test d09_p1("input") == 0
+    end
+    @testset "Day 9 / Part 2" begin
+        @test d09_p2("input") == 0
+    end
+
+    @testset "Day 10 / Part 1" begin
+        @test d10_p1("input") == 0
+    end
+    @testset "Day 10 / Part 2" begin
+        @test d10_p2("input") == 0
+    end
+
+    @testset "Day 11 / Part 1" begin
+        @test d11_p1("input") == 0
+    end
+    @testset "Day 11 / Part 2" begin
+        @test d11_p2("input") == 0
+    end
+
+    @testset "Day 12 / Part 1" begin
+        @test d12_p1("input") == 0
+    end
+    @testset "Day 12 / Part 2" begin
+        @test d12_p2("input") == 0
+    end
+
+    @testset "Day 13 / Part 1" begin
+        @test d13_p1("input") == 0
+    end
+    @testset "Day 13 / Part 2" begin
+        @test d13_p2("input") == 0
+    end
+
+    @testset "Day 14 / Part 1" begin
+        @test d14_p1("input") == 0
+    end
+    @testset "Day 14 / Part 2" begin
+        @test d14_p2("input") == 0
+    end
+
+    @testset "Day 15 / Part 1" begin
+        @test d15_p1("input") == 0
+    end
+    @testset "Day 15 / Part 2" begin
+        @test d15_p2("input") == 0
+    end
+
+    @testset "Day 16 / Part 1" begin
+        @test d16_p1("input") == 0
+    end
+    @testset "Day 16 / Part 2" begin
+        @test d16_p2("input") == 0
+    end
+
+    @testset "Day 17 / Part 1" begin
+        @test d17_p1("input") == "0,0,0,0,0,0,0,0,0"
+    end
+    @testset "Day 17 / Part 2" begin
+        @test d17_p2("input") == 0
+    end
+
+    @testset "Day 18 / Part 1" begin
+        @test d18_p1("input") == 0
+    end
+    @testset "Day 18 / Part 2" begin
+        @test d18_p2("input") == "0,0"
+    end
+
+    @testset "Day 19 / Part 1" begin
+        @test d19_p1("input") == 0
+    end
+    @testset "Day 19 / Part 2" begin
+        @test d19_p2("input") == 0
+    end
+
+    @testset "Day 20 / Part 1" begin
+        @test d20_p1("input") == 0
+    end
+    @testset "Day 20 / Part 2" begin
+        @test d20_p2("input") == 0
+    end
+
+    @testset "Day 21 / Part 1" begin
+        @test d21_p1("input") == 0
+    end
+    @testset "Day 21 / Part 2" begin
+        @test d21_p2("input") == 0
+    end
+
+    @testset "Day 22 / Part 1" begin
+        @test d22_p1("input") == 0
+    end
+    @testset "Day 22 / Part 2" begin
+        @test d22_p2("input") == 0
+    end
+
+    @testset "Day 23 / Part 1" begin
+        @test d23_p1("input") == 0
+    end
+    @testset "Day 23 / Part 2" begin
+        @test d23_p2("input") == "aa,bb,cc,dd,ee,ff,gg,hh,ii,jj,kk"
+    end
+
+    @testset "Day 24 / Part 1" begin
+        @test d24_p1("input") == 0
+    end
+    @testset "Day 24 / Part 2" begin
+        @test d24_p2("input") == "abc,def,ghi,jkl,mno,pqr,stu,vwx"
+    end
+
+    @testset "Day 25 / Part 1" begin
+        @test d25_p1("input") == 0
+    end
+end
