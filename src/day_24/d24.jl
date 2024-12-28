@@ -184,7 +184,7 @@ function find_gates(
 end
 
 # Half adder
-function check_adder(c::Circuit, idx::Int)
+function check_adder(c::Circuit, idx::Int, verbose = false)
     x_in, y_in = tag('x', idx), tag('y', idx)
     XOR = first(find_gates(c.gates, [x_in, y_in], op = :XOR))
     AND = first(find_gates(c.gates, [x_in, y_in], op = :AND))
@@ -192,12 +192,14 @@ function check_adder(c::Circuit, idx::Int)
     if XOR.out == tag('z', idx)
         AND.out
     else
-        # wrong adder
-        println("[Wrong Adder]")
-        println("No.: ", idx)
-        println("  Cin: ", cin)
-        println("  XOR: ", XOR)
-        println("  AND: ", AND)
+        if verbose
+            # wrong adder
+            println("[Wrong Adder]")
+            println("No.: ", idx)
+            println("  Cin: ", cin)
+            println("  XOR: ", XOR)
+            println("  AND: ", AND)
+        end
 
         (idx, [XOR, AND])
     end
@@ -212,7 +214,7 @@ function is_valid_FA(XOR1::LogicGate, XOR2::LogicGate, AND1::LogicGate, AND2::Lo
 end
 
 # Full adder
-function check_adder(c::Circuit, idx::Int, c_in::String)
+function check_adder(c::Circuit, idx::Int, c_in::String, verbose = false)
     # Note: It is assumed that only one gate is found in the follwoing searches.
 
     # Names of input wires from outside the adder are reliable. (x##, y## and carry-in)
@@ -228,21 +230,23 @@ function check_adder(c::Circuit, idx::Int, c_in::String)
     if is_valid_FA(XOR1, XOR2, AND1, AND2, OR, idx)
         return OR.out
     else
-        # wrong adder
-        println("[Wrong Adder]")
-        println("No.: ", idx)
-        println("  Cin: ", c_in)
-        println("  XOR1: ", XOR1)
-        println("  XOR2: ", XOR2)
-        println("  AND1: ", AND1)
-        println("  AND2: ", AND2)
-        println("  OR: ", OR)
+        if verbose
+            # wrong adder
+            println("[Wrong Adder]")
+            println("No.: ", idx)
+            println("  Cin: ", c_in)
+            println("  XOR1: ", XOR1)
+            println("  XOR2: ", XOR2)
+            println("  AND1: ", AND1)
+            println("  AND2: ", AND2)
+            println("  OR: ", OR)
+        end
 
         (idx, [XOR1, XOR2, AND1, AND2, OR])
     end
 end
 
-function fix_adder(c::Circuit, tpl::Tuple{Int, Vector{LogicGate}})
+function fix_adder(c::Circuit, tpl::Tuple{Int, Vector{LogicGate}}, verbose = false)
     idx, lg_vec = tpl
     ns = map(lg -> lg.id, lg_vec)
 
@@ -251,7 +255,10 @@ function fix_adder(c::Circuit, tpl::Tuple{Int, Vector{LogicGate}})
         XOR, AND = c.gates[ns[1]], c.gates[ns[2]]
         XOR.out, AND.out = AND.out, XOR.out
         push!(c.swapped, XOR.out, AND.out)
-        println("\nSwapped output lines: ", XOR.out, ", ", AND.out)
+
+        if verbose
+            println("\nSwapped output lines: ", XOR.out, ", ", AND.out)
+        end
 
         return AND.out
     else
@@ -265,7 +272,9 @@ function fix_adder(c::Circuit, tpl::Tuple{Int, Vector{LogicGate}})
 
             if is_valid_FA(lg_vec..., idx)
                 push!(c.swapped, lg_vec[i].out, lg_vec[j].out)
-                println("\nSwapped output lines: ", lg_vec[i].out, ", ", lg_vec[j].out, "\n")
+                if verbose
+                    println("\nSwapped output lines: ", lg_vec[i].out, ", ", lg_vec[j].out, "\n")
+                end
 
                 return lg_vec[end].out
             end
@@ -278,27 +287,29 @@ function fix_adder(c::Circuit, tpl::Tuple{Int, Vector{LogicGate}})
     @error "panic!"
 end
 
-function d24_p2(fname::String = "input")
+function d24_p2(fname::String = "input"; verbose = false)
     C = Circuit(parse_file(fname)...)
     n_adders = count(k -> k[1] == 'x', collect(keys(C.wires)))
 
     carry_in = ""
     for idx = 0:(n_adders - 1)
         # idx == 0 -> Half adder, otherwise -> Full adder
-        result = iszero(idx) ? check_adder(C, idx) : check_adder(C, idx, carry_in)
-        carry_in = typeof(result) == String ? result : fix_adder(C, result)
+        result = iszero(idx) ? check_adder(C, idx, verbose) : check_adder(C, idx, carry_in, verbose)
+        carry_in = typeof(result) == String ? result : fix_adder(C, result, verbose)
     end
 
-    # validation
-    x = to_decimal(C.wires, 'x')
-    y = to_decimal(C.wires, 'y')
-    z = simulate(C.wires, C.gates)
+    if verbose
+        # validation
+        x = to_decimal(C.wires, 'x')
+        y = to_decimal(C.wires, 'y')
+        z = simulate(C.wires, C.gates)
 
-    @printf "x = %d, y = %d, x + y = %d\n" x y (x + y)
-    @printf "Simulation result: %d  -- " z
-    x + y == z ? println("Matched.\n") : println("Mismatched.\n")
+        @printf "x = %d, y = %d, x + y = %d\n" x y (x + y)
+        @printf "Simulation result: %d  -- " z
+        x + y == z ? println("Matched.\n") : println("Mismatched.\n")
+    end
 
-    println(join(sort(C.swapped), ","))
+    join(sort(C.swapped), ",")
 end
 
 end #module

@@ -6,11 +6,6 @@ import DataStructures: PriorityQueue, dequeue!
 const CIdx = CartesianIndex
 const DIRS = CIdx.([(-1, 0), (0, 1), (1, 0), (0, -1)])
 
-const X_SIZE = 71
-const Y_SIZE = 71
-
-const NUM_FALLING_OBJS = 1024
-
 function parse_file(fname::String)
     data = parse.(Int, stack(split.(readlines(joinpath(@__DIR__, fname)), ","), dims = 1)) .+ 1
     zip(data[:, 1], data[:, 2]) |> collect
@@ -49,7 +44,7 @@ function drop_objects!(grid::Array{Int, 2}, objects::Vector{NTuple{2, Int}}, n::
     foreach(x -> grid[x...] = 1, objects[1:n])
 end
 
-function d18_p1(fname::String = "input")
+function d18_p1(fname::String = "input"; X_SIZE = 71, Y_SIZE = 71, NUM_FALLING_OBJS = 1024)
     start = CIdx(1, 1)
     goal = CIdx(X_SIZE, Y_SIZE)
     grid = zeros(Int, X_SIZE, Y_SIZE)
@@ -60,7 +55,7 @@ function d18_p1(fname::String = "input")
     dijkstra(grid, start, goal)
 end
 
-function d18_p2(fname::String = "input")
+function d18_p2(fname::String = "input"; X_SIZE = 71, Y_SIZE = 71, NUM_FALLING_OBJS = 1024)
     start = CIdx(1, 1)
     goal = CIdx(X_SIZE, Y_SIZE)
     grid = zeros(Int, X_SIZE, Y_SIZE)
@@ -82,7 +77,7 @@ function d18_p2(fname::String = "input")
         end
     end
 
-    println(join(all_objects[R] .- 1, ","))
+    join(all_objects[R] .- 1, ",")
 end
 
 end #module

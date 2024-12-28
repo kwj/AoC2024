@@ -3,9 +3,6 @@ module Day14
 
 import Statistics: var
 
-const WIDTH = 101
-const HEIGHT = 103
-
 function parse_file(fname::String)
     re = r"p=(\d+),(\d+) v=(-?\d+),(-?\d+)"
     tpl = stack(
@@ -22,7 +19,7 @@ function new_state(p::AbstractVector{Int}, v::AbstractVector{Int}, m::Int, t::In
     mod1.(p + t * v, m)
 end
 
-function ascii_art(px::AbstractVector{Int}, py::AbstractVector{Int}, w::Int = WIDTH, h::Int = HEIGHT)
+function ascii_art(px::AbstractVector{Int}, py::AbstractVector{Int}, w::Int, h::Int)
     grid = fill('.', w, h)
     for (i, j) in eachrow(hcat(px, py))
         grid[i, j] = '#'
@@ -34,7 +31,7 @@ function ascii_art(px::AbstractVector{Int}, py::AbstractVector{Int}, w::Int = WI
     println("")
 end
 
-function d14_p1(fname::String = "input")
+function d14_p1(fname::String = "input"; WIDTH = 101, HEIGHT = 103)
     px, py, vx, vy = parse_file(fname)
 
     robots = hcat(
@@ -46,7 +43,7 @@ function d14_p1(fname::String = "input")
     end
 end
 
-function d14_p2(fname::String = "input"; verbose = false)
+function d14_p2(fname::String = "input"; WIDTH = 101, HEIGHT = 103, verbose = false)
     px, py, vx, vy = parse_file(fname)
 
     # The problem statement says that most of the robots should arrange
@@ -94,7 +91,7 @@ function d14_p2(fname::String = "input"; verbose = false)
 
     # Show a picture of what appears to be a Christmas tree
     if verbose
-        ascii_art(new_state(px, vx, WIDTH, T), new_state(py, vy, HEIGHT, T))
+        ascii_art(new_state(px, vx, WIDTH, T), new_state(py, vy, HEIGHT, T), WIDTH, HEIGHT)
     end
 
     return T

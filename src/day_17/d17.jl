@@ -82,7 +82,7 @@ end
 function d17_p1(fname::String = "input")
     reg, program = parse_file(fname)
 
-    println(join(string.(run_program!(reg, program)), ","))
+    join(string.(run_program!(reg, program)), ",")
 end
 
 #=
