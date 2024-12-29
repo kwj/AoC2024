@@ -12,7 +12,9 @@ end
 file_ID(idx::Int64) = idx - 1
 
 function blk_chksum(pos::Int64, id::Int64, len::Int64)
-    sum(p -> p * id, pos:(pos + len - 1))
+    # sum of arithmetic progression: S = n/2 * (2a + (n - 1)d)
+    # chksum = S * id = len/2 * (2 * pos + (len - 1)) * id
+    (((pos << 1) + len - 1) * len * id) >> 1
 end
 
 function d09_p1(fname::String = "input")
