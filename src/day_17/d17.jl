@@ -103,14 +103,14 @@ Specifically, they are as follows:
     ...
 =#
 function d17_p2(fname::String = "input")
-    function dfs(a::Int64, n::Int64)
+    function dfs(a::Int64, n::Int64, program::Vector{Int64})
         for i = 0:7
-            if run_program!(Register(a + i, reg.B, reg.C), program) == program[n:end]
+            if run_program!(Register(a + i, 0, 0), program) == @view program[n:end]
                 if n == 1
                     return a + i
                 end
 
-                if (result = dfs((a + i) << 3, n - 1); !isnothing(result))
+                if (result = dfs((a + i) << 3, n - 1, program); !isnothing(result))
                     return result
                 end
             end
@@ -119,9 +119,9 @@ function d17_p2(fname::String = "input")
         nothing
     end
 
-    reg, program = parse_file(fname)
+    _, program = parse_file(fname)
 
-    result = dfs(0, length(program))
+    result = dfs(0, length(program), program)
     @assert !isnothing(result) "Can't find the answer"
 
     result
