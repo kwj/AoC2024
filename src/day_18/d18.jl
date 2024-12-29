@@ -41,7 +41,7 @@ end
 
 # Note: The matrix referenced by the argument `grid` is modified
 function drop_objects!(grid::Array{Int, 2}, objects::Vector{NTuple{2, Int}}, n::Int)
-    foreach(x -> grid[x...] = 1, objects[1:n])
+    foreach(x -> grid[x...] = 1, @view objects[1:n])
 end
 
 function d18_p1(fname::String = "input"; X_SIZE = 71, Y_SIZE = 71, NUM_FALLING_OBJS = 1024)
