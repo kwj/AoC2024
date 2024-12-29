@@ -23,6 +23,9 @@ function d09_p1(fname::String = "input")
     idx = 1  # Use for both file_blocks and gap_blocks
     last_file_idx = lastindex(file_blocks)
 
+    # Note:
+    # This implementation doesn't keep the original block in correct state
+    # after a file is moved from the block. It cuts corners.
     while idx <= last_file_idx
         # file block
         if file_blocks[idx] > 0
@@ -64,7 +67,7 @@ function d09_p2(fname::String = "input")
     while idx <= lastindex(file_blocks)
         # file block
         if file_blocks[idx] > 0
-            # if the block is not exist, skip to the next block
+            # If a file is exist in this block, calculate its checksum.
             if exist_file[idx]
                 chksum += blk_chksum(pos, file_ID(idx), file_blocks[idx])
             end
