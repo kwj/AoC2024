@@ -35,7 +35,8 @@ function d06_p1(fname::String = "input")
 end
 
 function check_loop(grid::Array{Char, 2}, pos::CIdx{2}, dir::Int)
-    # Loop is detected at a position where there is a wall in front of it
+    # Since keeping all visited positions would use a lot of memory,
+    # the detection of loops is only done in front of walls.
     visited = Set{Tuple{CIdx{2}, Int}}()
 
     push!(visited, (pos, dir))
@@ -60,7 +61,7 @@ end
 
 function d06_p2(fname::String = "input")
     grid = parse_file(fname)
-    footprints = Set{CIdx{2}}()
+    footprints = Set{CIdx{2}}()  # Unlike the part 1, I'll try to use a set collection here
 
     pos = findfirst(==('^'), grid)
     dir = 1  # inital direction is up(1)

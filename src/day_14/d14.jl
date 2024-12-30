@@ -48,7 +48,7 @@ function d14_p2(fname::String = "input"; WIDTH = 101, HEIGHT = 103, verbose = fa
 
     # The problem statement says that most of the robots should arrange
     # themselves *INTO* a picture of a Christmas tree when the picture
-    # is appeared. So, many robots should be crowded together.
+    # is appeared. So, many robots should be unevenly distributed.
     #
     # Of course, they may be gathering for nothing, however, I trust
     # there is no such nastiness in this problem.
@@ -97,7 +97,13 @@ function d14_p2(fname::String = "input"; WIDTH = 101, HEIGHT = 103, verbose = fa
     return T
 
 
-    # Note: Chinese remainder theorem version
+    # Note:
+    # A bit of a sly method in Julia
+    #
+    # T = intersect(b1:WIDTH:(WIDTH * HEIGHT), b2:HEIGHT:(WIDTH * HEIGHT)) |> first
+
+    # Note:
+    # A naive method using Chinese remainder theorem
     #
     # x ≡ b₁ (modulo m₁)
     # x ≡ b₂ (modulo m₂)
@@ -122,7 +128,7 @@ function d14_p2(fname::String = "input"; WIDTH = 101, HEIGHT = 103, verbose = fa
     # (d, p, _) = gcdx(WIDTH, HEIGHT)
     # @assert mod(b1 - b2, d) == 0 "There is no solution"
     #
-    # mod(b1 + div(b2 - b1, d) * WIDTH * p, WIDTH * HEIGHT)
+    # T = mod(b1 + div(b2 - b1, d) * WIDTH * p, WIDTH * HEIGHT)
 end
 
 end #module
