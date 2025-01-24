@@ -35,8 +35,8 @@ function d14_p1(fname::String = "input"; WIDTH = 101, HEIGHT = 103)
     px, py, vx, vy = parse_file(fname)
 
     robots = hcat(
-        cmp.(<, new_state(px, vx, WIDTH, 100), cld(WIDTH, 2)),
-        cmp.(<, new_state(py, vy, HEIGHT, 100), cld(HEIGHT, 2)),
+        cmp.(new_state(px, vx, WIDTH, 100), cld(WIDTH, 2)),
+        cmp.(new_state(py, vy, HEIGHT, 100), cld(HEIGHT, 2)),
     )
     mapreduce(*, [[1, 1], [1, -1], [-1, 1], [-1, -1]]) do quad
         count(==(quad), eachrow(robots))
