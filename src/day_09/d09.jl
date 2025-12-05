@@ -2,7 +2,7 @@
 module Day09
 
 function parse_file(fname::String)
-    data = parse.(Int64, split(chomp(read(joinpath(@__DIR__, fname), String)), ""))
+    data = parse.(Int64, collect(readchomp(joinpath(@__DIR__, fname))))
     file_blocks = data[1:2:end]
     gap_blocks = data[2:2:end]
 

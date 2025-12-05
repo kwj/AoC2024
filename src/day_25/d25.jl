@@ -5,7 +5,7 @@ const WIDTH = 5
 const HEIGHT = 7
 
 function parse_file(fname::String)
-    lines = map(x -> replace(x, "\n" => ""), split(read(joinpath(@__DIR__, fname), String), "\n\n"))
+    lines = replace.(split(readchomp(joinpath(@__DIR__, fname)), "\n\n"), "\n" => "")
     data = map(m -> permutedims(reshape(m, WIDTH, HEIGHT)), map(x -> map(==('#'), collect(x)), lines))
 
     lock = Vector{Array{Bool, 2}}()
